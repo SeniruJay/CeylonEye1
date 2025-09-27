@@ -13,10 +13,6 @@ const activityRoutes = require("./src/routes/activityRoutes");
 const bookingExtraRoutes = require("./src/routes/bookingExtraRoutes");
 const userRoutes = require("./src/routes/userRoutes");
 const { router: authRoutes } = require("./src/routes/authRoutes");
-const accommodationRoutes = require("./src/routes/accommodationRoutes");
-const locationRoutes = require("./src/routes/locationRoutes");
-const activityRoutes = require("./src/routes/activityRoutes");
-const bookingExtraRoutes = require("./src/routes/bookingExtraRoutes");
 
 const app = express();
 
