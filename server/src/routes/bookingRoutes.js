@@ -27,6 +27,20 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Get bookings by userId (for user)
+router.get("/by-user/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const bookings = await Booking.find({ userId })
+      .populate('providerId', 'name contact vehicleType')
+      .sort({ createdAt: -1 });
+    res.json(bookings);
+  } catch (err) {
+    console.error("Error fetching user bookings:", err);
+    res.status(500).json({ error: "Failed to fetch user bookings", message: err.message });
+  }
+});
+
 // Get single booking by ID
 router.get("/:id", async (req, res) => {
   try {
@@ -110,7 +124,8 @@ router.post("/", async (req, res) => {
       numberOfPassengers,
       specialRequests: specialRequests || "",
       totalPrice,
-      status: 'pending'
+      status: 'pending',
+      userId: req.body.userId || null
     });
 
     await booking.save();
@@ -167,6 +182,88 @@ router.put("/:id/status", async (req, res) => {
       error: "Failed to update booking status",
       message: err.message 
     });
+  }
+});
+
+// User confirms a booking (moving it to awaiting admin approval)
+router.put('/:id/confirm', async (req, res) => {
+  try {
+    const booking = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { userConfirmed: true, adminStatus: 'pending', status: 'pending' },
+      { new: true }
+    );
+    if (!booking) return res.status(404).json({ error: 'Booking not found' });
+    res.json(booking);
+  } catch (err) {
+    console.error('Error confirming booking:', err);
+    res.status(500).json({ error: 'Failed to confirm booking', message: err.message });
+  }
+});
+
+// Admin approves a confirmed booking
+router.put('/:id/approve', async (req, res) => {
+  try {
+    const booking = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { adminStatus: 'approved', status: 'confirmed' },
+      { new: true }
+    );
+    if (!booking) return res.status(404).json({ error: 'Booking not found' });
+    res.json(booking);
+  } catch (err) {
+    console.error('Error approving booking:', err);
+    res.status(500).json({ error: 'Failed to approve booking', message: err.message });
+  }
+});
+
+// Admin rejects a confirmed booking
+router.put('/:id/reject', async (req, res) => {
+  try {
+    const booking = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { adminStatus: 'rejected', status: 'cancelled' },
+      { new: true }
+    );
+    if (!booking) return res.status(404).json({ error: 'Booking not found' });
+    res.json(booking);
+  } catch (err) {
+    console.error('Error rejecting booking:', err);
+    res.status(500).json({ error: 'Failed to reject booking', message: err.message });
+  }
+});
+
+// Mark a booking as paid (user payment after admin approves)
+router.put('/:id/pay', async (req, res) => {
+  try {
+    const booking = await Booking.findById(req.params.id);
+    if (!booking) return res.status(404).json({ error: 'Booking not found' });
+    if (booking.adminStatus !== 'approved') {
+      return res.status(400).json({ error: 'Booking must be approved by admin before payment' });
+    }
+    booking.paymentStatus = 'paid';
+    booking.paymentAt = new Date();
+    await booking.save();
+    res.json(booking);
+  } catch (err) {
+    console.error('Error marking booking paid:', err);
+    res.status(500).json({ error: 'Failed to mark booking as paid', message: err.message });
+  }
+});
+
+// Calculate total price of all bookings for a user
+router.get('/total/by-user/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const result = await Booking.aggregate([
+      { $match: { userId: new require('mongoose').Types.ObjectId(userId) } },
+      { $group: { _id: null, total: { $sum: '$totalPrice' } } }
+    ]);
+    const total = result[0]?.total || 0;
+    res.json({ userId, total });
+  } catch (err) {
+    console.error('Error calculating total:', err);
+    res.status(500).json({ error: 'Failed to calculate total', message: err.message });
   }
 });
 

@@ -10,11 +10,15 @@ const AddTransportProvider = () => {
     availability: true,
     seats: 4,
     price: 0,
+    currency: "USD",
     priceUnit: "per day",
-    description: ""
+    description: "",
+    images: []
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [imageFiles, setImageFiles] = useState([]);
+  const [imagePreview, setImagePreview] = useState([]);
 
   const navigate = useNavigate();
 
@@ -23,13 +27,55 @@ const AddTransportProvider = () => {
     setForm({ ...form, [name]: type === "checkbox" ? checked : value });
   };
 
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length + imageFiles.length > 5) {
+      setError("Maximum 5 images allowed");
+      return;
+    }
+    
+    setImageFiles(prev => [...prev, ...files]);
+    
+    // Create preview URLs
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(prev => [...prev, e.target.result]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const removeImage = (index) => {
+    setImageFiles(prev => prev.filter((_, i) => i !== index));
+    setImagePreview(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      await axios.post("http://localhost:5000/api/transport-providers", form);
+      const formData = new FormData();
+      
+      // Add form fields
+      Object.keys(form).forEach(key => {
+        if (key !== 'images') {
+          formData.append(key, form[key]);
+        }
+      });
+      
+      // Add image files
+      imageFiles.forEach((file, index) => {
+        formData.append('images', file);
+      });
+
+      await axios.post("http://localhost:5000/api/transport-providers", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
       alert("Transport provider added successfully!");
       navigate("/");
     } catch (err) {
@@ -223,29 +269,133 @@ const AddTransportProvider = () => {
           </div>
         </div>
 
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "20px" }}>
+          <div>
+            <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
+              Currency *
+            </label>
+            <select 
+              name="currency" 
+              value={form.currency} 
+              onChange={handleChange} 
+              required 
+              style={{
+                width: "100%",
+                padding: "10px",
+                border: "1px solid #ced4da",
+                borderRadius: "4px",
+                fontSize: "16px",
+                boxSizing: "border-box",
+                backgroundColor: "white"
+              }}
+            >
+              <option value="LKR">🇱🇰 Sri Lankan Rupee (LKR)</option>
+              <option value="USD">🇺🇸 US Dollar (USD)</option>
+              <option value="EUR">🇪🇺 Euro (EUR)</option>
+              <option value="GBP">🇬🇧 British Pound (GBP)</option>
+              <option value="AUD">🇦🇺 Australian Dollar (AUD)</option>
+              <option value="CAD">🇨🇦 Canadian Dollar (CAD)</option>
+              <option value="JPY">🇯🇵 Japanese Yen (JPY)</option>
+              <option value="INR">🇮🇳 Indian Rupee (INR)</option>
+            </select>
+          </div>
+
+          <div>
+            <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
+              Price Unit
+            </label>
+            <select 
+              name="priceUnit" 
+              value={form.priceUnit} 
+              onChange={handleChange} 
+              style={{
+                width: "100%",
+                padding: "10px",
+                border: "1px solid #ced4da",
+                borderRadius: "4px",
+                fontSize: "16px",
+                boxSizing: "border-box",
+                backgroundColor: "white"
+              }}
+            >
+              <option value="per day">Per Day</option>
+              <option value="per hour">Per Hour</option>
+              <option value="per trip">Per Trip</option>
+              <option value="per km">Per Kilometer</option>
+            </select>
+          </div>
+        </div>
+
         <div style={{ marginBottom: "20px" }}>
-          <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
-            Price Unit
+          <label style={{ display: "block", marginBottom: "8px", fontWeight: "500", color: "#2d5a27" }}>
+            Vehicle Images (Max 5)
           </label>
-          <select 
-            name="priceUnit" 
-            value={form.priceUnit} 
-            onChange={handleChange} 
+          <input 
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleImageChange}
             style={{
               width: "100%",
               padding: "10px",
-              border: "1px solid #ced4da",
-              borderRadius: "4px",
+              border: "2px dashed #4a7c59",
+              borderRadius: "8px",
               fontSize: "16px",
               boxSizing: "border-box",
-              backgroundColor: "white"
+              backgroundColor: "#f8fff8",
+              cursor: "pointer"
             }}
-          >
-            <option value="per day">Per Day</option>
-            <option value="per hour">Per Hour</option>
-            <option value="per trip">Per Trip</option>
-            <option value="per km">Per Kilometer</option>
-          </select>
+          />
+          <p style={{ fontSize: "12px", color: "#666", margin: "5px 0 0 0" }}>
+            Upload high-quality images of your vehicle (JPG, PNG, WebP)
+          </p>
+          
+          {imagePreview.length > 0 && (
+            <div style={{ 
+              display: "grid", 
+              gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))", 
+              gap: "10px", 
+              marginTop: "15px" 
+            }}>
+              {imagePreview.map((preview, index) => (
+                <div key={index} style={{ position: "relative" }}>
+                  <img 
+                    src={preview} 
+                    alt={`Preview ${index + 1}`}
+                    style={{
+                      width: "100%",
+                      height: "80px",
+                      objectFit: "cover",
+                      borderRadius: "6px",
+                      border: "2px solid #e8f5e8"
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeImage(index)}
+                    style={{
+                      position: "absolute",
+                      top: "-8px",
+                      right: "-8px",
+                      backgroundColor: "#dc3545",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "50%",
+                      width: "24px",
+                      height: "24px",
+                      fontSize: "12px",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div style={{ marginBottom: "20px" }}>
