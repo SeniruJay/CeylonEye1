@@ -64,6 +64,96 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Create comprehensive booking (new booking flow)
+router.post("/comprehensive", async (req, res) => {
+  try {
+    const {
+      locations,
+      transport,
+      accommodations,
+      activities,
+      payment,
+      userId,
+      bookingDate,
+      status
+    } = req.body;
+
+    // Generate booking ID
+    const bookingId = generateBookingId();
+
+    // Calculate total price
+    let totalPrice = 0;
+    
+    // Transport cost (assuming 3 days)
+    if (transport) {
+      totalPrice += transport.price * 3;
+    }
+    
+    // Accommodation cost (assuming 3 nights)
+    if (accommodations && accommodations.length > 0) {
+      totalPrice += accommodations.reduce((sum, acc) => sum + acc.price, 0) * 3;
+    }
+    
+    // Activity costs
+    if (activities && activities.length > 0) {
+      totalPrice += activities.reduce((sum, act) => sum + act.price, 0);
+    }
+
+    // Create comprehensive booking
+    const booking = new Booking({
+      bookingId,
+      providerId: transport ? transport._id : null,
+      providerName: transport ? transport.name : "Comprehensive Package",
+      vehicleType: transport ? transport.vehicleType : "Package",
+      userId: userId || null,
+      customerName: payment.name,
+      customerEmail: payment.email,
+      customerPhone: payment.phone,
+      pickupLocation: "Sri Lanka Tour",
+      dropoffLocation: "Sri Lanka Tour",
+      bookingDate: new Date(bookingDate),
+      bookingTime: "Full Day",
+      numberOfPassengers: 1,
+      specialRequests: `Comprehensive booking including: ${locations?.length || 0} locations, ${accommodations?.length || 0} accommodations, ${activities?.length || 0} activities`,
+      totalPrice,
+      status: status || 'pending',
+      userConfirmed: true,
+      adminStatus: 'pending',
+      paymentStatus: 'unpaid',
+      // Store additional data in specialRequests for now (could be extended with a new schema)
+      comprehensiveData: {
+        locations: locations || [],
+        transport: transport || null,
+        accommodations: accommodations || [],
+        activities: activities || [],
+        payment: payment || {}
+      }
+    });
+
+    await booking.save();
+
+    res.status(201).json({
+      _id: booking._id,
+      bookingId: booking.bookingId,
+      message: "Comprehensive booking created successfully",
+      totalPrice: booking.totalPrice,
+      status: booking.status
+    });
+  } catch (err) {
+    console.error("Error creating comprehensive booking:", err);
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ 
+        error: "Validation error",
+        details: err.message 
+      });
+    }
+    res.status(500).json({ 
+      error: "Failed to create comprehensive booking",
+      message: err.message 
+    });
+  }
+});
+
 // Create new booking
 router.post("/", async (req, res) => {
   try {
