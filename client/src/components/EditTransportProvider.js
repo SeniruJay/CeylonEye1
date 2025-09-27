@@ -11,6 +11,7 @@ const EditTransportProvider = () => {
     availability: true,
     seats: 4,
     price: 0,
+    currency: "USD",
     priceUnit: "per day",
     description: ""
   });
@@ -30,7 +31,7 @@ const EditTransportProvider = () => {
       const res = await axios.get(`http://localhost:5000/api/transport-providers`);
       const provider = res.data.find(p => p._id === id);
       if (provider) {
-        setForm(provider);
+        setForm({ ...provider, currency: provider.currency || 'USD' });
         setError(null);
       } else {
         setError("Transport provider not found");
@@ -255,29 +256,60 @@ const EditTransportProvider = () => {
           </div>
         </div>
 
-        <div style={{ marginBottom: "20px" }}>
-          <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
-            Price Unit
-          </label>
-          <select 
-            name="priceUnit" 
-            value={form.priceUnit} 
-            onChange={handleChange} 
-            style={{
-              width: "100%",
-              padding: "10px",
-              border: "1px solid #ced4da",
-              borderRadius: "4px",
-              fontSize: "16px",
-              boxSizing: "border-box",
-              backgroundColor: "white"
-            }}
-          >
-            <option value="per day">Per Day</option>
-            <option value="per hour">Per Hour</option>
-            <option value="per trip">Per Trip</option>
-            <option value="per km">Per Kilometer</option>
-          </select>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "20px" }}>
+          <div>
+            <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
+              Currency
+            </label>
+            <select 
+              name="currency" 
+              value={form.currency} 
+              onChange={handleChange} 
+              style={{
+                width: "100%",
+                padding: "10px",
+                border: "1px solid #ced4da",
+                borderRadius: "4px",
+                fontSize: "16px",
+                boxSizing: "border-box",
+                backgroundColor: "white"
+              }}
+            >
+              <option value="LKR">🇱🇰 Sri Lankan Rupee (LKR)</option>
+              <option value="USD">🇺🇸 US Dollar (USD)</option>
+              <option value="EUR">🇪🇺 Euro (EUR)</option>
+              <option value="GBP">🇬🇧 British Pound (GBP)</option>
+              <option value="AUD">🇦🇺 Australian Dollar (AUD)</option>
+              <option value="CAD">🇨🇦 Canadian Dollar (CAD)</option>
+              <option value="JPY">🇯🇵 Japanese Yen (JPY)</option>
+              <option value="INR">🇮🇳 Indian Rupee (INR)</option>
+            </select>
+          </div>
+
+          <div>
+            <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
+              Price Unit
+            </label>
+            <select 
+              name="priceUnit" 
+              value={form.priceUnit} 
+              onChange={handleChange} 
+              style={{
+                width: "100%",
+                padding: "10px",
+                border: "1px solid #ced4da",
+                borderRadius: "4px",
+                fontSize: "16px",
+                boxSizing: "border-box",
+                backgroundColor: "white"
+              }}
+            >
+              <option value="per day">Per Day</option>
+              <option value="per hour">Per Hour</option>
+              <option value="per trip">Per Trip</option>
+              <option value="per km">Per Kilometer</option>
+            </select>
+          </div>
         </div>
 
         <div style={{ marginBottom: "20px" }}>
