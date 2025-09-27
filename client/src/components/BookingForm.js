@@ -40,7 +40,9 @@ const BookingForm = ({ provider, onSuccess, onCancel }) => {
         window.open(`http://localhost:5000/api/bookings/${response.data._id}/pdf`, '_blank');
       };
 
-      const successMessage = `Your transport has been booked successfully!\n\nBooking ID: ${response.data.bookingId}\nTotal Price: $${response.data.totalPrice}\n\nClick OK to download your confirmation document.`;
+      const currency = provider.currency || 'USD';
+      const symbol = getCurrencySymbol(currency);
+      const successMessage = `Your transport has been booked successfully!\n\nBooking ID: ${response.data.bookingId}\nTotal Price: ${symbol}${response.data.totalPrice}\n\nClick OK to download your confirmation document.`;
       
       if (window.confirm(successMessage)) {
         downloadPDF();
@@ -68,8 +70,29 @@ const BookingForm = ({ provider, onSuccess, onCancel }) => {
     return icons[vehicleType] || '🚙';
   };
 
+  const getCurrencySymbol = (currency) => {
+    const symbols = {
+      'LKR': 'Rs.',
+      'USD': '$',
+      'EUR': '€',
+      'GBP': '£',
+      'AUD': 'A$',
+      'CAD': 'C$',
+      'JPY': '¥',
+      'INR': '₹'
+    };
+    return symbols[currency] || currency;
+  };
+
+  const calculateTotalPrice = () => {
+    const basePrice = provider.price;
+    const passengers = parseInt(form.numberOfPassengers);
+    // Backend currently computes total as price * numberOfPassengers
+    return (basePrice * passengers).toFixed(2);
+  };
+
   return (
-    <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
+    <div style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }}>
       <div style={{ marginBottom: "20px" }}>
         <button 
           onClick={onCancel}
@@ -121,7 +144,7 @@ const BookingForm = ({ provider, onSuccess, onCancel }) => {
               Book {provider.name}
             </h2>
             <p style={{ margin: "5px 0 0 0", color: "#4a7c59", fontSize: "1.1rem" }}>
-              {provider.vehicleType} • {provider.seats} seats • ${provider.price} {provider.priceUnit}
+              {provider.vehicleType} • {provider.seats} seats • {getCurrencySymbol(provider.currency || 'USD')}{provider.price} {provider.priceUnit}
             </p>
           </div>
         </div>
@@ -139,8 +162,9 @@ const BookingForm = ({ provider, onSuccess, onCancel }) => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "20px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "24px" }}>
+          <form onSubmit={handleSubmit}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "20px" }}>
             <div>
               <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
                 Full Name *
@@ -191,9 +215,9 @@ const BookingForm = ({ provider, onSuccess, onCancel }) => {
                 placeholder="Enter your email"
               />
             </div>
-          </div>
+            </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "20px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "20px" }}>
             <div>
               <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
                 Phone Number *
@@ -353,9 +377,9 @@ const BookingForm = ({ provider, onSuccess, onCancel }) => {
                 onBlur={(e) => e.target.style.borderColor = "#e8f5e8"}
               />
             </div>
-          </div>
+            </div>
 
-          <div style={{ marginBottom: "30px" }}>
+            <div style={{ marginBottom: "30px" }}>
             <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
               Special Requests (Optional)
             </label>
@@ -379,75 +403,123 @@ const BookingForm = ({ provider, onSuccess, onCancel }) => {
               onBlur={(e) => e.target.style.borderColor = "#e8f5e8"}
               placeholder="Any special requests or requirements..."
             />
-          </div>
+            </div>
 
-          <div style={{ 
-            display: "flex", 
-            gap: "15px",
-            paddingTop: "20px",
-            borderTop: "2px solid #f0f7f0"
-          }}>
-            <button 
-              type="submit" 
-              disabled={loading}
-              style={{
-                flex: "1",
-                padding: "15px",
-                backgroundColor: loading ? "#6c757d" : "#4a7c59",
-                color: "white",
-                border: "none",
-                borderRadius: "8px",
-                fontSize: "16px",
-                fontWeight: "600",
-                cursor: loading ? "not-allowed" : "pointer",
-                boxShadow: "0 2px 4px rgba(74, 124, 89, 0.3)",
-                transition: "all 0.3s ease"
-              }}
-              onMouseOver={(e) => {
-                if (!loading) {
-                  e.target.style.backgroundColor = "#3d6b4a";
+            <div style={{ 
+              display: "flex", 
+              gap: "15px",
+              paddingTop: "20px",
+              borderTop: "2px solid #f0f7f0"
+            }}>
+              <button 
+                type="submit" 
+                disabled={loading}
+                style={{
+                  flex: "1",
+                  padding: "15px",
+                  backgroundColor: loading ? "#6c757d" : "#4a7c59",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  cursor: loading ? "not-allowed" : "pointer",
+                  boxShadow: "0 2px 4px rgba(74, 124, 89, 0.3)",
+                  transition: "all 0.3s ease"
+                }}
+                onMouseOver={(e) => {
+                  if (!loading) {
+                    e.target.style.backgroundColor = "#3d6b4a";
+                    e.target.style.transform = "translateY(-2px)";
+                  }
+                }}
+                onMouseOut={(e) => {
+                  if (!loading) {
+                    e.target.style.backgroundColor = "#4a7c59";
+                    e.target.style.transform = "translateY(0)";
+                  }
+                }}
+              >
+                {loading ? "Processing..." : "Confirm Booking"}
+              </button>
+              
+              <button 
+                type="button"
+                onClick={onCancel}
+                style={{
+                  flex: "1",
+                  padding: "15px",
+                  backgroundColor: "#6c757d",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                  boxShadow: "0 2px 4px rgba(108, 117, 125, 0.3)",
+                  transition: "all 0.3s ease"
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.backgroundColor = "#5a6268";
                   e.target.style.transform = "translateY(-2px)";
-                }
-              }}
-              onMouseOut={(e) => {
-                if (!loading) {
-                  e.target.style.backgroundColor = "#4a7c59";
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.backgroundColor = "#6c757d";
                   e.target.style.transform = "translateY(0)";
-                }
-              }}
-            >
-              {loading ? "Processing..." : "Confirm Booking"}
-            </button>
-            
-            <button 
-              type="button"
-              onClick={onCancel}
-              style={{
-                flex: "1",
-                padding: "15px",
-                backgroundColor: "#6c757d",
-                color: "white",
-                border: "none",
-                borderRadius: "8px",
-                fontSize: "16px",
-                fontWeight: "600",
-                cursor: "pointer",
-                boxShadow: "0 2px 4px rgba(108, 117, 125, 0.3)",
-                transition: "all 0.3s ease"
-              }}
-              onMouseOver={(e) => {
-                e.target.style.backgroundColor = "#5a6268";
-                e.target.style.transform = "translateY(-2px)";
-              }}
-              onMouseOut={(e) => {
-                e.target.style.backgroundColor = "#6c757d";
-                e.target.style.transform = "translateY(0)";
-              }}
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+
+          {/* Booking Summary */}
+          <aside style={{
+            border: "1px solid #e8f5e8",
+            borderRadius: "12px",
+            padding: "16px",
+            backgroundColor: "#f8fff8",
+            height: "fit-content"
+          }}>
+            <h3 style={{ marginTop: 0, color: "#2d5a27" }}>Booking Summary</h3>
+            <div style={{ display: "grid", rowGap: 8 }}>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ color: "#666" }}>Provider</span>
+                <strong style={{ color: "#2d5a27" }}>{provider.name}</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ color: "#666" }}>Vehicle</span>
+                <strong style={{ color: "#2d5a27" }}>{provider.vehicleType} • {provider.seats} seats</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ color: "#666" }}>Pickup</span>
+                <strong style={{ color: "#2d5a27" }}>{form.pickupLocation || '-'}</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ color: "#666" }}>Drop-off</span>
+                <strong style={{ color: "#2d5a27" }}>{form.dropoffLocation || '-'}</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ color: "#666" }}>Date & Time</span>
+                <strong style={{ color: "#2d5a27" }}>{form.bookingDate || '-'} {form.bookingTime || ''}</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", borderTop: "1px dashed #cfe3cf", paddingTop: 8 }}>
+                <span style={{ color: "#666" }}>Passengers</span>
+                <strong style={{ color: "#2d5a27" }}>{form.numberOfPassengers}</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ color: "#666" }}>Rate</span>
+                <strong style={{ color: "#2d5a27" }}>{getCurrencySymbol(provider.currency || 'USD')}{provider.price} {provider.priceUnit}</strong>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", borderTop: "2px solid #e8f5e8", paddingTop: 8 }}>
+                <span style={{ color: "#2d5a27", fontWeight: 700 }}>Estimated Total</span>
+                <span style={{ color: "#2d5a27", fontWeight: 800, fontSize: "1.1rem" }}>
+                  {getCurrencySymbol(provider.currency || 'USD')}{calculateTotalPrice()}
+                </span>
+              </div>
+            </div>
+          </aside>
+        </div>
       </div>
     </div>
   );

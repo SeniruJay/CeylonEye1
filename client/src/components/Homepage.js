@@ -1,317 +1,66 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
-const Homepage = ({ user, onLogout }) => {
-  const [showProfile, setShowProfile] = useState(false);
-  const [profileData, setProfileData] = useState({
-    firstName: user.firstName || "",
-    lastName: user.lastName || "",
-    phone: user.phone || "",
-    address: {
-      street: user.address?.street || "",
-      city: user.address?.city || "",
-      country: user.address?.country || "Sri Lanka",
-      postalCode: user.address?.postalCode || ""
-    },
-    preferences: {
-      language: user.preferences?.language || "English",
-      currency: user.preferences?.currency || "USD",
-      notifications: user.preferences?.notifications !== false
-    }
-  });
-
-  const handleProfileUpdate = async (e) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.put(
-        "http://localhost:5000/api/auth/profile",
-        profileData,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
-      
-      alert("Profile updated successfully!");
-      setShowProfile(false);
-    } catch (err) {
-      alert("Failed to update profile");
-      console.error(err);
-    }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    onLogout();
-  };
-
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return "Good Morning";
-    if (hour < 18) return "Good Afternoon";
-    return "Good Evening";
-  };
-
-  const getVehicleIcon = (type) => {
-    const icons = {
-      'Car': '🚗',
-      'Van': '🚐',
-      'Bus': '🚌',
-      'Motorcycle': '🏍️',
-      'Bicycle': '🚲',
-      'Tuk-tuk': '🛺',
-      'Other': '🚙'
-    };
-    return icons[type] || '🚙';
-  };
+const Homepage = () => {
 
   return (
     <div style={{ padding: "20px", maxWidth: "1200px", margin: "0 auto" }}>
-      {/* Welcome Section */}
-      <div style={{
-        backgroundColor: "white",
-        borderRadius: "15px",
-        padding: "30px",
-        marginBottom: "30px",
-        boxShadow: "0 4px 12px rgba(74, 124, 89, 0.15)",
-        border: "1px solid #e8f5e8"
-      }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div>
-            <h1 style={{ 
-              margin: "0 0 10px 0", 
-              color: "#2d5a27", 
-              fontSize: "2.5rem",
-              fontWeight: "300"
-            }}>
-              {getGreeting()}, {user.firstName}! 👋
-            </h1>
-            <p style={{ 
-              margin: "0", 
-              color: "#4a7c59", 
-              fontSize: "1.2rem" 
-            }}>
-              Welcome to CeylonEye Tourism Management System
-            </p>
+      {/* Hero Slider */}
+      <div style={{ borderRadius: "18px", overflow: "hidden", marginBottom: "30px", boxShadow: "0 12px 32px rgba(0,0,0,0.2)" }}>
+        <style>{`
+          @keyframes ceSlider {
+            0% { transform: translateX(0%); }
+            28% { transform: translateX(0%); }
+            33% { transform: translateX(-100%); }
+            61% { transform: translateX(-100%); }
+            66% { transform: translateX(-200%); }
+            95% { transform: translateX(-200%); }
+            100% { transform: translateX(0%); }
+          }
+        `}</style>
+        <div style={{ position: "relative", width: "100%", height: 360 }}>
+          <div style={{ width: "300%", height: "100%", display: "flex", animation: "ceSlider 24s infinite" }}>
+            {[
+              "https://images.unsplash.com/photo-1561893670-23b63a781f1c?q=80&w=1400&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1544989164-31dc3c645987?q=80&w=1400&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1400&auto=format&fit=crop"
+            ].map((src, idx) => (
+              <div key={idx} style={{ width: "100%" }}>
+                <div style={{ width: "100%", height: "100%", background: `linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('${src}') center/cover no-repeat` }} />
+              </div>
+            ))}
           </div>
-          <div style={{ display: "flex", gap: "10px" }}>
-            <button
-              onClick={() => setShowProfile(true)}
-              style={{
-                padding: "10px 20px",
-                backgroundColor: "#4a7c59",
-                color: "white",
-                border: "none",
-                borderRadius: "8px",
-                fontSize: "14px",
-                fontWeight: "600",
-                cursor: "pointer",
-                transition: "all 0.3s ease"
-              }}
-            >
-              👤 Edit Profile
-            </button>
-            <button
-              onClick={handleLogout}
-              style={{
-                padding: "10px 20px",
-                backgroundColor: "#dc3545",
-                color: "white",
-                border: "none",
-                borderRadius: "8px",
-                fontSize: "14px",
-                fontWeight: "600",
-                cursor: "pointer",
-                transition: "all 0.3s ease"
-              }}
-            >
-              🚪 Logout
-            </button>
+          <div style={{ position: "absolute", bottom: 20, left: 20, color: "#fff" }}>
+            <h1 style={{ margin: 0, fontSize: "2.2rem", fontWeight: 800 }}>Experience Sri Lanka</h1>
+            <p style={{ marginTop: 6, marginBottom: 0, fontSize: "1.05rem" }}>Beaches, heritage, wildlife, and hill country adventures</p>
           </div>
         </div>
       </div>
 
-      {/* Services Grid */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-        gap: "25px",
-        marginBottom: "30px"
-      }}>
-        {/* Transport */}
-        <div style={{
-          backgroundColor: "white",
-          borderRadius: "15px",
-          padding: "30px",
-          boxShadow: "0 4px 12px rgba(74, 124, 89, 0.15)",
-          border: "1px solid #e8f5e8",
-          textAlign: "center",
-          transition: "transform 0.3s ease, box-shadow 0.3s ease"
-        }}
-        onMouseOver={(e) => {
-          e.currentTarget.style.transform = "translateY(-5px)";
-          e.currentTarget.style.boxShadow = "0 8px 20px rgba(74, 124, 89, 0.2)";
-        }}
-        onMouseOut={(e) => {
-          e.currentTarget.style.transform = "translateY(0)";
-          e.currentTarget.style.boxShadow = "0 4px 12px rgba(74, 124, 89, 0.15)";
-        }}>
-          <div style={{ fontSize: "4rem", marginBottom: "20px" }}>🚗</div>
-          <h3 style={{ color: "#2d5a27", marginBottom: "15px", fontSize: "1.5rem" }}>
-            Transport Services
-          </h3>
-          <p style={{ color: "#666", marginBottom: "25px", lineHeight: "1.6" }}>
-            Book your transportation needs with our reliable transport providers
-          </p>
-          <Link
-            to="/transport"
-            style={{
-              display: "inline-block",
-              padding: "12px 24px",
-              backgroundColor: "#4a7c59",
-              color: "white",
-              textDecoration: "none",
-              borderRadius: "8px",
-              fontSize: "16px",
-              fontWeight: "600",
-              transition: "all 0.3s ease"
-            }}
-          >
-            Book Transport
-          </Link>
-        </div>
+      {/* Highlights */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16, marginBottom: 24 }}>
+        {[{icon:"🏖️", title:"Pristine Beaches", text:"Unwind at the golden coasts"}, {icon:"🕌", title:"Rich Heritage", text:"Explore ancient cities"}, {icon:"🐘", title:"Wildlife Safaris", text:"Yala, Minneriya, Wilpattu"}, {icon:"⛰️", title:"Hill Country", text:"Tea trails and scenic trains"}].map((h, i) => (
+          <div key={i} style={{ background: "white", borderRadius: 12, padding: 16, border: "1px solid #e8f5e8", boxShadow: "0 6px 16px rgba(0,0,0,0.06)", textAlign: "center" }}>
+            <div style={{ fontSize: "2rem" }}>{h.icon}</div>
+            <div style={{ color: "#2d5a27", fontWeight: 700, marginTop: 8 }}>{h.title}</div>
+            <div style={{ color: "#555", marginTop: 6 }}>{h.text}</div>
+          </div>
+        ))}
+      </div>
 
-        {/* Accommodation */}
-        <div style={{
-          backgroundColor: "white",
-          borderRadius: "15px",
-          padding: "30px",
-          boxShadow: "0 4px 12px rgba(74, 124, 89, 0.15)",
-          border: "1px solid #e8f5e8",
-          textAlign: "center",
-          transition: "transform 0.3s ease, box-shadow 0.3s ease"
-        }}
-        onMouseOver={(e) => {
-          e.currentTarget.style.transform = "translateY(-5px)";
-          e.currentTarget.style.boxShadow = "0 8px 20px rgba(74, 124, 89, 0.2)";
-        }}
-        onMouseOut={(e) => {
-          e.currentTarget.style.transform = "translateY(0)";
-          e.currentTarget.style.boxShadow = "0 4px 12px rgba(74, 124, 89, 0.15)";
-        }}>
-          <div style={{ fontSize: "4rem", marginBottom: "20px" }}>🏨</div>
-          <h3 style={{ color: "#2d5a27", marginBottom: "15px", fontSize: "1.5rem" }}>
-            Accommodation
-          </h3>
-          <p style={{ color: "#666", marginBottom: "25px", lineHeight: "1.6" }}>
-            Find and book the perfect place to stay during your visit
-          </p>
-          <button
-            style={{
-              padding: "12px 24px",
-              backgroundColor: "#6c757d",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              fontSize: "16px",
-              fontWeight: "600",
-              cursor: "not-allowed"
-            }}
-            disabled
-          >
-            Coming Soon
-          </button>
-        </div>
-
-        {/* Locations */}
-        <div style={{
-          backgroundColor: "white",
-          borderRadius: "15px",
-          padding: "30px",
-          boxShadow: "0 4px 12px rgba(74, 124, 89, 0.15)",
-          border: "1px solid #e8f5e8",
-          textAlign: "center",
-          transition: "transform 0.3s ease, box-shadow 0.3s ease"
-        }}
-        onMouseOver={(e) => {
-          e.currentTarget.style.transform = "translateY(-5px)";
-          e.currentTarget.style.boxShadow = "0 8px 20px rgba(74, 124, 89, 0.2)";
-        }}
-        onMouseOut={(e) => {
-          e.currentTarget.style.transform = "translateY(0)";
-          e.currentTarget.style.boxShadow = "0 4px 12px rgba(74, 124, 89, 0.15)";
-        }}>
-          <div style={{ fontSize: "4rem", marginBottom: "20px" }}>🗺️</div>
-          <h3 style={{ color: "#2d5a27", marginBottom: "15px", fontSize: "1.5rem" }}>
-            Tourist Locations
-          </h3>
-          <p style={{ color: "#666", marginBottom: "25px", lineHeight: "1.6" }}>
-            Discover amazing places to visit in Sri Lanka
-          </p>
-          <button
-            style={{
-              padding: "12px 24px",
-              backgroundColor: "#6c757d",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              fontSize: "16px",
-              fontWeight: "600",
-              cursor: "not-allowed"
-            }}
-            disabled
-          >
-            Coming Soon
-          </button>
-        </div>
-
-        {/* Leisure Activities */}
-        <div style={{
-          backgroundColor: "white",
-          borderRadius: "15px",
-          padding: "30px",
-          boxShadow: "0 4px 12px rgba(74, 124, 89, 0.15)",
-          border: "1px solid #e8f5e8",
-          textAlign: "center",
-          transition: "transform 0.3s ease, box-shadow 0.3s ease"
-        }}
-        onMouseOver={(e) => {
-          e.currentTarget.style.transform = "translateY(-5px)";
-          e.currentTarget.style.boxShadow = "0 8px 20px rgba(74, 124, 89, 0.2)";
-        }}
-        onMouseOut={(e) => {
-          e.currentTarget.style.transform = "translateY(0)";
-          e.currentTarget.style.boxShadow = "0 4px 12px rgba(74, 124, 89, 0.15)";
-        }}>
-          <div style={{ fontSize: "4rem", marginBottom: "20px" }}>🎯</div>
-          <h3 style={{ color: "#2d5a27", marginBottom: "15px", fontSize: "1.5rem" }}>
-            Leisure Activities
-          </h3>
-          <p style={{ color: "#666", marginBottom: "25px", lineHeight: "1.6" }}>
-            Explore exciting activities and experiences
-          </p>
-          <button
-            style={{
-              padding: "12px 24px",
-              backgroundColor: "#6c757d",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              fontSize: "16px",
-              fontWeight: "600",
-              cursor: "not-allowed"
-            }}
-            disabled
-          >
-            Coming Soon
-          </button>
+      {/* Quick Links */}
+      <div style={{ background: "white", border: "1px solid #e8f5e8", borderRadius: 16, padding: 20, boxShadow: "0 8px 24px rgba(0,0,0,0.06)", marginBottom: 24 }}>
+        <div style={{ color: "#2d5a27", fontWeight: 700, marginBottom: 12, fontSize: 18 }}>Plan Your Trip</div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+          <Link to="/services" style={{ padding: "10px 16px", background: "#4a7c59", color: "#fff", borderRadius: 8, textDecoration: "none", fontWeight: 700 }}>Explore Services</Link>
+          <Link to="/transport" style={{ padding: "10px 16px", background: "#2d5a27", color: "#fff", borderRadius: 8, textDecoration: "none", fontWeight: 700 }}>Book Transport</Link>
+          <Link to="/about" style={{ padding: "10px 16px", background: "#6c757d", color: "#fff", borderRadius: 8, textDecoration: "none", fontWeight: 700 }}>About Us</Link>
+          <Link to="/contact" style={{ padding: "10px 16px", background: "#6c757d", color: "#fff", borderRadius: 8, textDecoration: "none", fontWeight: 700 }}>Contact</Link>
         </div>
       </div>
 
       {/* Admin Panel Link (Admin Only) */}
-      {user.role === 'admin' && (
+      {false && (
         <div style={{
           backgroundColor: "white",
           borderRadius: "15px",
@@ -345,132 +94,7 @@ const Homepage = ({ user, onLogout }) => {
         </div>
       )}
 
-      {/* Profile Modal */}
-      {showProfile && (
-        <div style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: "rgba(0,0,0,0.5)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: 1000,
-          padding: "20px"
-        }}>
-          <div style={{
-            backgroundColor: "white",
-            borderRadius: "15px",
-            padding: "30px",
-            width: "100%",
-            maxWidth: "500px",
-            maxHeight: "90vh",
-            overflow: "auto"
-          }}>
-            <h2 style={{ color: "#2d5a27", marginBottom: "25px" }}>
-              Edit Profile
-            </h2>
-            
-            <form onSubmit={handleProfileUpdate}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginBottom: "20px" }}>
-                <div>
-                  <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    value={profileData.firstName}
-                    onChange={(e) => setProfileData({...profileData, firstName: e.target.value})}
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      border: "2px solid #e8f5e8",
-                      borderRadius: "6px",
-                      fontSize: "14px",
-                      boxSizing: "border-box"
-                    }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    value={profileData.lastName}
-                    onChange={(e) => setProfileData({...profileData, lastName: e.target.value})}
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      border: "2px solid #e8f5e8",
-                      borderRadius: "6px",
-                      fontSize: "14px",
-                      boxSizing: "border-box"
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  value={profileData.phone}
-                  onChange={(e) => setProfileData({...profileData, phone: e.target.value})}
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    border: "2px solid #e8f5e8",
-                    borderRadius: "6px",
-                    fontSize: "14px",
-                    boxSizing: "border-box"
-                  }}
-                />
-              </div>
-
-              <div style={{ display: "flex", gap: "10px", marginTop: "25px" }}>
-                <button
-                  type="submit"
-                  style={{
-                    flex: 1,
-                    padding: "12px",
-                    backgroundColor: "#4a7c59",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "6px",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    cursor: "pointer"
-                  }}
-                >
-                  Update Profile
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowProfile(false)}
-                  style={{
-                    flex: 1,
-                    padding: "12px",
-                    backgroundColor: "#6c757d",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "6px",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    cursor: "pointer"
-                  }}
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      {/* Profile modal removed; now handled in header */}
     </div>
   );
 };
