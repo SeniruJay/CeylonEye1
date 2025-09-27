@@ -6,6 +6,7 @@ require("dotenv").config();
 
 const transportRoutes = require("./src/routes/transportRoutes");
 const bookingRoutes = require("./src/routes/bookingRoutes");
+const userRoutes = require("./src/routes/userRoutes");
 const { router: authRoutes } = require("./src/routes/authRoutes");
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(morgan("dev"));
 app.use("/api/auth", authRoutes);
 app.use("/api/transport-providers", transportRoutes);
 app.use("/api/bookings", bookingRoutes);
+app.use("/api/users", userRoutes);
 
 // MongoDB Connection
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/tourism_management";
