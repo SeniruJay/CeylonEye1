@@ -1,7 +1,67 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import BookingForm from "./BookingForm";
 import { RefreshCw, XCircle, CheckCircle, Car as CarIcon, Bus as BusIcon, Bike as BikeIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+// Small hover carousel used inside each card's image area
+const HoverCarousel = ({ images = [], alt = "" }) => {
+  const [index, setIndex] = useState(0);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    // reset index when images change
+    setIndex(0);
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [images.join(',')]);
+
+  const start = () => {
+    if (timerRef.current || !images || images.length <= 1) return;
+    timerRef.current = setInterval(() => {
+      setIndex(prev => (prev + 1) % images.length);
+    }, 1400);
+  };
+
+  const stop = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  if (!images || images.length === 0) return null;
+
+  return (
+    <img
+      src={`http://localhost:5000${images[index]}`}
+      alt={alt}
+      style={{
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        transform: "scale(1.02)",
+        transition: "transform 0.6s ease"
+      }}
+      onMouseEnter={start}
+      onMouseLeave={stop}
+      onError={(e) => {
+        e.currentTarget.style.display = 'none';
+        const fallback = e.currentTarget.nextSibling;
+        if (fallback) fallback.style.display = 'flex';
+      }}
+      onMouseOver={(e) => {
+        e.currentTarget.style.transform = "scale(1.06)";
+      }}
+      onMouseOut={(e) => {
+        e.currentTarget.style.transform = "scale(1.02)";
+      }}
+    />
+  );
+};
 
 const TransportBooking = () => {
   const [providers, setProviders] = useState([]);
@@ -9,7 +69,14 @@ const TransportBooking = () => {
   const [error, setError] = useState(null);
   const [selectedProvider, setSelectedProvider] = useState(null);
   const [showBookingForm, setShowBookingForm] = useState(false);
-  const [filters, setFilters] = useState({ vehicleType: "", seats: "" });
+  const [filters, setFilters] = useState({
+    vehicleType: "",
+    seats: "",
+    currency: "",
+    priceMin: "",
+    priceMax: ""
+  });
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProviders();
@@ -137,9 +204,12 @@ const TransportBooking = () => {
   const filteredProviders = providers.filter(p => {
     const byType = filters.vehicleType ? p.vehicleType === filters.vehicleType : true;
     const bySeats = filters.seats ? Number(p.seats) === Number(filters.seats) : true;
-    // If either matches, include (OR logic). If no filters, include all.
-    if (!filters.vehicleType && !filters.seats) return true;
-    return (filters.vehicleType && byType) || (filters.seats && bySeats);
+    const byCurrency = filters.currency ? (p.currency === filters.currency) : true;
+    const price = Number(p.price || 0);
+    const byPriceMin = filters.priceMin !== "" ? price >= Number(filters.priceMin) : true;
+    const byPriceMax = filters.priceMax !== "" ? price <= Number(filters.priceMax) : true;
+
+    return byType && bySeats && byCurrency && byPriceMin && byPriceMax;
   });
 
   return (
@@ -158,28 +228,51 @@ const TransportBooking = () => {
           100% { background-position: 0% 50%; }
         }
       `}</style>
-      <div style={{ textAlign: "center", marginBottom: 32 }}>
-        <h1 style={{ color: "#1f4b1a", marginBottom: 8, fontSize: "2rem", letterSpacing: 0.3 }}>
-          🚗 Book Your Transport
+      <div style={{
+        position: "relative",
+        maxWidth: "1600px",
+        width: "100%",
+        margin: "0 auto 24px auto",
+        padding: "40px 0 28px 0",
+        borderRadius: 18,
+        overflow: "hidden",
+        backgroundImage: 'linear-gradient(rgba(15,51,37,0.35), rgba(15,51,37,0.35)), url("https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=1600&auto=format&fit=crop")',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: 420,
+        boxShadow: "0 10px 24px rgba(0,0,0,0.08)"
+      }}>
+      {/* gradient masks top/bottom */}
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 60, background: "linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0))" }} />
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 80, background: "linear-gradient(0deg, rgba(0,0,0,0.18), rgba(0,0,0,0))" }} />
+      </div>
+      <div style={{ textAlign: "center", marginBottom: 12, maxWidth: "1600px", marginInline: "auto", paddingInline: 24 }}>
+        <h1 style={{ color: "#ecfff5", textShadow: "0 2px 8px rgba(0,0,0,0.25)", marginBottom: 8, fontSize: "3rem", letterSpacing: 0.3, fontWeight: 900 }}>
+          Book Your Transport
         </h1>
-        <p style={{ color: "#4a7c59", fontSize: "1.05rem" }}>
+        <p style={{ color: "#f6fffa", textShadow: "0 2px 6px rgba(0,0,0,0.2)", fontSize: "1.1rem", fontWeight: 700 }}>
           Choose from our available transport providers
         </p>
       </div>
 
       {/* Filters */}
       <div style={{
-        backgroundColor: "white",
-        borderRadius: 14,
-        padding: 16,
-        marginBottom: 24,
-        boxShadow: "0 8px 16px rgba(74, 124, 89, 0.12)",
-        border: "1px solid #e8f5e8",
-        maxWidth: 1000,
-        marginInline: "auto"
+        backgroundColor: "rgba(255,255,255,0.45)",
+        borderRadius: 16,
+        padding: 20,
+        marginBottom: 4,
+        boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
+        border: "1px solid rgba(255,255,255,0.4)",
+        backdropFilter: "saturate(180%) blur(10px)",
+        WebkitBackdropFilter: "saturate(180%) blur(10px)",
+        maxWidth: 1280,
+        width: "100%",
+        marginInline: "auto",
+        paddingInline: 24
       }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
-          <div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(12, minmax(0, 1fr))", gap: 20, alignItems: "end" }}>
+          <div style={{ gridColumn: "span 4" }}>
             <label style={{ display: "block", marginBottom: 6, color: "#2d5a27", fontWeight: 700, fontSize: 14 }}>Vehicle Type</label>
             <select
               value={filters.vehicleType}
@@ -192,7 +285,7 @@ const TransportBooking = () => {
               ))}
             </select>
           </div>
-          <div>
+          <div style={{ gridColumn: "span 4" }}>
             <label style={{ display: "block", marginBottom: 6, color: "#2d5a27", fontWeight: 700, fontSize: 14 }}>Seats</label>
             <input
               type="number"
@@ -203,15 +296,52 @@ const TransportBooking = () => {
               style={{ width: "100%", padding: 12, borderRadius: 10, border: "2px solid #e8f5e8", fontWeight: 600 }}
             />
           </div>
-          <div style={{ alignSelf: "end", display: "flex", gap: 8 }}>
+          <div style={{ gridColumn: "span 4" }}>
+            <label style={{ display: "block", marginBottom: 6, color: "#2d5a27", fontWeight: 700, fontSize: 14 }}>Currency</label>
+            <select
+              value={filters.currency}
+              onChange={(e) => setFilters({ ...filters, currency: e.target.value })}
+              style={{ width: "100%", padding: 12, borderRadius: 10, border: "2px solid #e8f5e8", background: "#fff", fontWeight: 600 }}
+            >
+              <option value="">Any</option>
+              <option value="LKR">LKR</option>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+            </select>
+          </div>
+          <div style={{ gridColumn: "span 5" }}>
+            <label style={{ display: "block", marginBottom: 6, color: "#2d5a27", fontWeight: 700, fontSize: 14 }}>Price Min</label>
+            <input
+              type="number"
+              min="0"
+              placeholder="0"
+              value={filters.priceMin}
+              onChange={(e) => setFilters({ ...filters, priceMin: e.target.value })}
+              style={{ width: "100%", padding: 12, borderRadius: 10, border: "2px solid #e8f5e8", fontWeight: 600 }}
+            />
+          </div>
+          <div style={{ gridColumn: "span 5" }}>
+            <label style={{ display: "block", marginBottom: 6, color: "#2d5a27", fontWeight: 700, fontSize: 14 }}>Price Max</label>
+            <input
+              type="number"
+              min="0"
+              placeholder="Any"
+              value={filters.priceMax}
+              onChange={(e) => setFilters({ ...filters, priceMax: e.target.value })}
+              style={{ width: "100%", padding: 12, borderRadius: 10, border: "2px solid #e8f5e8", fontWeight: 600 }}
+            />
+          </div>
+          <div style={{ gridColumn: "span 2", display: "flex", justifyContent: "flex-end", alignItems: "end" }}>
             <button
-              onClick={() => setFilters({ vehicleType: "", seats: "" })}
-              style={{ padding: "12px 16px", background: "#eef7f0", color: "#2d7a50", border: "2px solid #cfe3cf", borderRadius: 10, fontWeight: 800 }}
+              onClick={() => setFilters({ vehicleType: "", seats: "", currency: "", priceMin: "", priceMax: "" })}
+              style={{ padding: "12px 18px", background: "#eef7f0", color: "#2d7a50", border: "2px solid #cfe3cf", borderRadius: 12, fontWeight: 800 }}
             >
               Clear Filters
             </button>
           </div>
         </div>
+      </div>
       </div>
 
       {filteredProviders.length === 0 ? (
@@ -229,9 +359,10 @@ const TransportBooking = () => {
       ) : (
         <div style={{ 
           display: "grid", 
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", 
-          gap: 24,
-          maxWidth: "1400px",
+          gridTemplateColumns: "repeat(auto-fit, minmax(380px, 1fr))", 
+          gap: 32,
+          maxWidth: "1600px",
+          width: "100%",
           margin: "0 auto"
         }}>
           {filteredProviders.map(provider => (
@@ -239,57 +370,37 @@ const TransportBooking = () => {
               key={provider._id}
               style={{
                 backgroundColor: "white",
-                borderRadius: 16,
-                padding: 20,
-                boxShadow: "0 6px 18px rgba(74, 124, 89, 0.18)",
-                border: "1px solid #e8f5e8",
-                transition: "transform 0.35s ease, box-shadow 0.35s ease",
+                borderRadius: 18,
+                padding: 24,
+                boxShadow: "0 12px 24px rgba(74, 124, 89, 0.16)",
+                border: "1px solid #e6efe9",
+                transition: "transform 0.3s ease, box-shadow 0.3s ease",
                 overflow: "hidden"
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.transform = "translateY(-6px) scale(1.01)";
-                e.currentTarget.style.boxShadow = "0 16px 28px rgba(74, 124, 89, 0.22)";
+                e.currentTarget.style.transform = "translateY(-6px) scale(1.02)";
+                e.currentTarget.style.boxShadow = "0 18px 36px rgba(74, 124, 89, 0.24)";
               }}
               onMouseOut={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
                 e.currentTarget.style.boxShadow = "0 6px 18px rgba(74, 124, 89, 0.18)";
               }}
+              onClick={() => navigate('/transport/provider/' + provider._id)}
+              role="button"
+              tabIndex={0}
             >
               {/* Image Area with 16:9 ratio */}
-              <div style={{ marginBottom: 16 }}>
+              <div style={{ marginBottom: 18 }}>
                 <div style={{
                   width: "100%",
                   position: "relative",
-                  borderRadius: 12,
+                  borderRadius: 14,
                   overflow: "hidden",
                   backgroundColor: "#f0f7f0"
                 }}>
                   <div style={{ paddingTop: "56.25%" }} />
                   {provider.images && provider.images.length > 0 ? (
-                    <img
-                      src={`http://localhost:5000${provider.images[0]}`}
-                      alt={provider.name}
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        transform: "scale(1.02)",
-                        transition: "transform 0.6s ease"
-                      }}
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        const fallback = e.target.nextSibling;
-                        if (fallback) fallback.style.display = 'flex';
-                      }}
-                      onMouseOver={(e) => {
-                        e.currentTarget.style.transform = "scale(1.06)";
-                      }}
-                      onMouseOut={(e) => {
-                        e.currentTarget.style.transform = "scale(1.02)";
-                      }}
-                    />
+                    <HoverCarousel images={provider.images} alt={provider.name} />
                   ) : null}
                   {/* Fallback icon */}
                   <div style={{
@@ -304,6 +415,25 @@ const TransportBooking = () => {
                   }}>
                     {getVehicleIcon(provider.vehicleType)}
                   </div>
+
+                  {/* Vehicle type badge (highlighted on top) */}
+                  {provider.vehicleType && (
+                    <div style={{
+                      position: "absolute",
+                      top: 8,
+                      left: 8,
+                      backgroundColor: "rgba(74, 124, 89, 0.95)",
+                      color: "white",
+                      padding: "6px 10px",
+                      borderRadius: 10,
+                      fontSize: 12,
+                      fontWeight: 800,
+                      letterSpacing: 0.5,
+                      boxShadow: "0 4px 10px rgba(0,0,0,0.15)"
+                    }}>
+                      {provider.vehicleType}
+                    </div>
+                  )}
 
                   {provider.images && provider.images.length > 1 && (
                     <div style={{
@@ -325,30 +455,37 @@ const TransportBooking = () => {
               </div>
 
               <div style={{ display: "flex", alignItems: "center", marginBottom: 12 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: 'wrap' }}>
                   {getVehicleIcon(provider.vehicleType)}
-                  <div>
-                    <h3 style={{ 
-                      margin: 0, 
-                      color: "#1f4b1a", 
-                      fontSize: "1.1rem",
-                      fontWeight: 800
-                    }}>
-                      {provider.name}
-                    </h3>
-                    <p style={{ 
-                      margin: "4px 0 0 0", 
-                      color: "#2d7a50", 
-                      fontSize: ".9rem",
-                      fontWeight: 600
-                    }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
+                    <span style={{ color: "#0f3325", fontSize: "1.05rem", fontWeight: 900 }}>
                       {provider.vehicleType}
-                    </p>
+                    </span>
+                    {(provider.vehicleBrand || provider.vehicleModel) && (
+                      <span style={{ color: "#2d7a50", fontSize: ".95rem", fontWeight: 800 }}>
+                        • {((provider.vehicleBrand || "") + " " + (provider.vehicleModel || "")).trim()}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
 
               <div style={{ marginBottom: "20px" }}>
+                {(provider.vehicleBrand || provider.vehicleModel) && (
+                  <div style={{ 
+                    display: "flex", 
+                    justifyContent: "space-between", 
+                    marginBottom: 8,
+                    padding: "8px 0",
+                    borderBottom: "1px solid #f0f7f0"
+                  }}>
+                    <span style={{ color: "#666", fontWeight: 600 }}>Vehicle:</span>
+                    <span style={{ color: "#2d5a27", fontWeight: 700 }}>
+                      {((provider.vehicleBrand || "") + " " + (provider.vehicleModel || "")).trim()}
+                    </span>
+                  </div>
+                )}
+
                 <div style={{ 
                   display: "flex", 
                   justifyContent: "space-between", 
@@ -356,8 +493,8 @@ const TransportBooking = () => {
                   padding: "8px 0",
                   borderBottom: "1px solid #f0f7f0"
                 }}>
-                  <span style={{ color: "#666", fontWeight: "500" }}>Seats:</span>
-                  <span style={{ color: "#2d5a27", fontWeight: "600" }}>{provider.seats}</span>
+                  <span style={{ color: "#666", fontWeight: 600 }}>Seats:</span>
+                  <span style={{ color: "#2d5a27", fontWeight: 700 }}>{provider.seats}</span>
                 </div>
                 
                 <div style={{ 
@@ -367,8 +504,8 @@ const TransportBooking = () => {
                   padding: "8px 0",
                   borderBottom: "1px solid #f0f7f0"
                 }}>
-                  <span style={{ color: "#666", fontWeight: "500" }}>Price:</span>
-                  <span style={{ color: "#2d5a27", fontWeight: "600" }}>
+                  <span style={{ color: "#666", fontWeight: 600 }}>Price:</span>
+                  <span style={{ color: "#0f3325", fontWeight: 900 }}>
                     {getCurrencySymbol(provider.currency || 'USD')}{provider.price} {provider.priceUnit}
                   </span>
                 </div>
@@ -412,35 +549,36 @@ const TransportBooking = () => {
               )}
 
               <button
-                onClick={() => handleBookNow(provider)}
-                disabled={!provider.availability}
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  background: provider.availability ? "linear-gradient(135deg, #4a7c59, #3f6e4d)" : "#6c757d",
-                  color: "white",
-                  border: "none",
-                  borderRadius: 10,
-                  fontSize: 16,
-                  fontWeight: 700,
-                  cursor: provider.availability ? "pointer" : "not-allowed",
-                  boxShadow: "0 6px 14px rgba(74, 124, 89, 0.28)",
-                  transition: "transform 0.25s ease, box-shadow 0.25s ease, background 0.4s ease"
-                }}
-                onMouseOver={(e) => {
-                  if (provider.availability) {
-                    e.target.style.transform = "translateY(-2px)";
-                    e.target.style.boxShadow = "0 12px 22px rgba(74, 124, 89, 0.35)";
-                  }
-                }}
-                onMouseOut={(e) => {
-                  if (provider.availability) {
-                    e.target.style.transform = "translateY(0)";
-                    e.target.style.boxShadow = "0 6px 14px rgba(74, 124, 89, 0.28)";
-                  }
-                }}
-              >
-                {provider.availability ? "Book Now" : "Not Available"}
+                  onClick={(e) => { e.stopPropagation(); handleBookNow(provider); }}
+                  disabled={!provider.availability}
+                  style={{
+                    width: "100%",
+                    padding: "12px 18px",
+                    background: provider.availability ? "linear-gradient(135deg, #1f7a55, #146442)" : "#94a3b8",
+                    color: "white",
+                    border: "none",
+                    borderRadius: 999,
+                    fontSize: 16,
+                    fontWeight: 800,
+                    letterSpacing: 0.3,
+                    cursor: provider.availability ? "pointer" : "not-allowed",
+                    boxShadow: provider.availability ? "0 10px 22px rgba(31, 122, 85, 0.28)" : "none",
+                    transition: "transform 0.25s ease, box-shadow 0.25s ease, background 0.4s ease"
+                  }}
+                  onMouseOver={(e) => {
+                    if (provider.availability) {
+                      e.target.style.transform = "translateY(-2px)";
+                      e.target.style.boxShadow = "0 16px 28px rgba(31, 122, 85, 0.35)";
+                    }
+                  }}
+                  onMouseOut={(e) => {
+                    if (provider.availability) {
+                      e.target.style.transform = "translateY(0)";
+                      e.target.style.boxShadow = "0 10px 22px rgba(31, 122, 85, 0.28)";
+                    }
+                  }}
+                >
+                  {provider.availability ? "Book Now" : "Not Available"}
               </button>
             </div>
           ))}

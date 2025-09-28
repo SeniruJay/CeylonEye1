@@ -3,7 +3,10 @@ const mongoose = require("mongoose");
 const transportProviderSchema = new mongoose.Schema({
   name: { type: String, required: true },
   contact: { type: String, required: true },
+  email: { type: String, default: "" },
   vehicleType: { type: String, required: true },
+  vehicleBrand: { type: String, default: "" },
+  vehicleModel: { type: String, default: "" },
   availability: { type: Boolean, default: true },
   seats: { type: Number, required: true, default: 4 },
   price: { type: Number, required: true, default: 0 },

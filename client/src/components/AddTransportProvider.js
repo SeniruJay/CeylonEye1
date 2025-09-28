@@ -4,14 +4,21 @@ import { useNavigate, Link } from "react-router-dom";
 
 const AddTransportProvider = () => {
   const [form, setForm] = useState({
+    // Personal information
     name: "",
     contact: "",
+    email: "",
+    // Vehicle information
     vehicleType: "",
-    availability: true,
+    vehicleBrand: "",
+    vehicleModel: "",
     seats: 4,
+    // Charges & fees
     price: 0,
-    currency: "USD",
+    currency: "LKR",
     priceUnit: "per day",
+    // Other
+    availability: true,
     description: "",
     images: []
   });
@@ -87,7 +94,7 @@ const AddTransportProvider = () => {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
+    <div style={{ padding: "20px", maxWidth: "1200px", margin: "0 auto" }}>
       <div style={{ marginBottom: "20px" }}>
         <Link 
           to="/admin" 
@@ -124,205 +131,187 @@ const AddTransportProvider = () => {
         boxShadow: "0 4px 12px rgba(74, 124, 89, 0.15)",
         border: "1px solid #e8f5e8"
       }}>
-        <div style={{ marginBottom: "20px" }}>
-          <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
-            Provider Name *
-          </label>
-          <input 
-            name="name" 
-            value={form.name} 
-            onChange={handleChange} 
-            required 
-            style={{
-              width: "100%",
-              padding: "12px",
-              border: "2px solid #e8f5e8",
-              borderRadius: "8px",
-              fontSize: "16px",
-              boxSizing: "border-box",
-              transition: "border-color 0.3s ease",
-              outline: "none"
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = "#4a7c59";
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = "#e8f5e8";
-            }}
-            placeholder="Enter provider name"
-          />
-        </div>
-
-        <div style={{ marginBottom: "20px" }}>
-          <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
-            Contact Information *
-          </label>
-          <input 
-            name="contact" 
-            value={form.contact} 
-            onChange={handleChange} 
-            required 
-            style={{
-              width: "100%",
-              padding: "12px",
-              border: "2px solid #e8f5e8",
-              borderRadius: "8px",
-              fontSize: "16px",
-              boxSizing: "border-box",
-              transition: "border-color 0.3s ease",
-              outline: "none"
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = "#4a7c59";
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = "#e8f5e8";
-            }}
-            placeholder="Enter phone number or email"
-          />
-        </div>
-
-        <div style={{ marginBottom: "20px" }}>
-          <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
-            Vehicle Type *
-          </label>
-          <select 
-            name="vehicleType" 
-            value={form.vehicleType} 
-            onChange={handleChange} 
-            required 
-            style={{
-              width: "100%",
-              padding: "12px",
-              border: "2px solid #e8f5e8",
-              borderRadius: "8px",
-              fontSize: "16px",
-              boxSizing: "border-box",
-              backgroundColor: "white",
-              transition: "border-color 0.3s ease",
-              outline: "none"
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = "#4a7c59";
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = "#e8f5e8";
-            }}
-          >
-            <option value="">Select vehicle type</option>
-            <option value="Car">Car</option>
-            <option value="Van">Van</option>
-            <option value="Bus">Bus</option>
-            <option value="Motorcycle">Motorcycle</option>
-            <option value="Bicycle">Bicycle</option>
-            <option value="Tuk-tuk">Tuk-tuk</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "20px" }}>
-          <div>
-            <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
-              Number of Seats *
-            </label>
-            <input 
-              type="number"
-              name="seats" 
-              value={form.seats} 
-              onChange={handleChange} 
-              required 
-              min="1"
-              max="50"
-              style={{
-                width: "100%",
-                padding: "10px",
-                border: "1px solid #ced4da",
-                borderRadius: "4px",
-                fontSize: "16px",
-                boxSizing: "border-box"
-              }}
-            />
-          </div>
-
-          <div>
-            <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
-              Price *
-            </label>
-            <input 
-              type="number"
-              name="price" 
-              value={form.price} 
-              onChange={handleChange} 
-              required 
-              min="0"
-              step="0.01"
-              style={{
-                width: "100%",
-                padding: "10px",
-                border: "1px solid #ced4da",
-                borderRadius: "4px",
-                fontSize: "16px",
-                boxSizing: "border-box"
-              }}
-              placeholder="Enter price"
-            />
+        {/* Section 1: Personal Information */}
+        <div style={{
+          marginBottom: "24px",
+          border: "1px solid #e8f5e8",
+          borderRadius: "10px",
+          padding: "20px",
+          background: "#fbfffb"
+        }}>
+          <h3 style={{ marginTop: 0, color: "#2d5a27" }}>Personal Information</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" }}>
+            <div>
+              <label style={{ display: "block", marginBottom: 6, fontWeight: 500 }}>Owner Name *</label>
+              <input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                required
+                style={{ width: "100%", padding: 12, border: "2px solid #e8f5e8", borderRadius: 8, fontSize: 16 }}
+                placeholder="Enter owner's name"
+              />
+            </div>
+            <div>
+              <label style={{ display: "block", marginBottom: 6, fontWeight: 500 }}>Contact Number *</label>
+              <input
+                name="contact"
+                value={form.contact}
+                onChange={handleChange}
+                required
+                style={{ width: "100%", padding: 12, border: "2px solid #e8f5e8", borderRadius: 8, fontSize: 16 }}
+                placeholder="Enter contact number"
+              />
+            </div>
+            <div>
+              <label style={{ display: "block", marginBottom: 6, fontWeight: 500 }}>Email</label>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                style={{ width: "100%", padding: 12, border: "2px solid #e8f5e8", borderRadius: 8, fontSize: 16 }}
+                placeholder="Enter email (optional)"
+              />
+            </div>
           </div>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "20px" }}>
-          <div>
-            <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
-              Currency *
-            </label>
-            <select 
-              name="currency" 
-              value={form.currency} 
-              onChange={handleChange} 
-              required 
-              style={{
-                width: "100%",
-                padding: "10px",
-                border: "1px solid #ced4da",
-                borderRadius: "4px",
-                fontSize: "16px",
-                boxSizing: "border-box",
-                backgroundColor: "white"
-              }}
-            >
-              <option value="LKR">🇱🇰 Sri Lankan Rupee (LKR)</option>
-              <option value="USD">🇺🇸 US Dollar (USD)</option>
-              <option value="EUR">🇪🇺 Euro (EUR)</option>
-              <option value="GBP">🇬🇧 British Pound (GBP)</option>
-              <option value="AUD">🇦🇺 Australian Dollar (AUD)</option>
-              <option value="CAD">🇨🇦 Canadian Dollar (CAD)</option>
-              <option value="JPY">🇯🇵 Japanese Yen (JPY)</option>
-              <option value="INR">🇮🇳 Indian Rupee (INR)</option>
-            </select>
+        {/* Section 2: Vehicle Information */}
+        <div style={{
+          marginBottom: "24px",
+          border: "1px solid #e8f5e8",
+          borderRadius: "10px",
+          padding: "20px",
+          background: "#fbfffb"
+        }}>
+          <h3 style={{ marginTop: 0, color: "#2d5a27" }}>Vehicle Information</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" }}>
+            <div>
+              <label style={{ display: "block", marginBottom: 6, fontWeight: 500 }}>Vehicle Type *</label>
+              <select
+                name="vehicleType"
+                value={form.vehicleType}
+                onChange={handleChange}
+                required
+                style={{ width: "100%", padding: 12, border: "2px solid #e8f5e8", borderRadius: 8, fontSize: 16, background: "white" }}
+              >
+                <option value="">Select vehicle type</option>
+                <option value="Car">Car</option>
+                <option value="Van">Van</option>
+                <option value="Bus">Bus</option>
+                <option value="Motorcycle">Motorcycle</option>
+                <option value="Bicycle">Bicycle</option>
+                <option value="Tuk-tuk">Tuk-tuk</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label style={{ display: "block", marginBottom: 6, fontWeight: 500 }}>Vehicle Brand</label>
+              <input
+                name="vehicleBrand"
+                value={form.vehicleBrand}
+                onChange={handleChange}
+                style={{ width: "100%", padding: 12, border: "2px solid #e8f5e8", borderRadius: 8, fontSize: 16 }}
+                placeholder="e.g. Toyota"
+              />
+            </div>
+            <div>
+              <label style={{ display: "block", marginBottom: 6, fontWeight: 500 }}>Vehicle Model</label>
+              <input
+                name="vehicleModel"
+                value={form.vehicleModel}
+                onChange={handleChange}
+                style={{ width: "100%", padding: 12, border: "2px solid #e8f5e8", borderRadius: 8, fontSize: 16 }}
+                placeholder="e.g. Prius"
+              />
+            </div>
           </div>
 
-          <div>
-            <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
-              Price Unit
-            </label>
-            <select 
-              name="priceUnit" 
-              value={form.priceUnit} 
-              onChange={handleChange} 
-              style={{
-                width: "100%",
-                padding: "10px",
-                border: "1px solid #ced4da",
-                borderRadius: "4px",
-                fontSize: "16px",
-                boxSizing: "border-box",
-                backgroundColor: "white"
-              }}
-            >
-              <option value="per day">Per Day</option>
-              <option value="per hour">Per Hour</option>
-              <option value="per trip">Per Trip</option>
-              <option value="per km">Per Kilometer</option>
-            </select>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 16 }}>
+            <div>
+              <label style={{ display: "block", marginBottom: 6, fontWeight: 500 }}>Number of Seats *</label>
+              <input
+                type="number"
+                name="seats"
+                value={form.seats}
+                onChange={handleChange}
+                required
+                min="1"
+                max="50"
+                style={{ width: "100%", padding: 12, border: "2px solid #e8f5e8", borderRadius: 8, fontSize: 16 }}
+              />
+            </div>
+            <div>
+              <label style={{ display: "block", marginBottom: 6, fontWeight: 500 }}>Description</label>
+              <input
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                style={{ width: "100%", padding: 12, border: "2px solid #e8f5e8", borderRadius: 8, fontSize: 16 }}
+                placeholder="Optional notes about the vehicle"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Section 3: Charges & Fees */}
+        <div style={{
+          marginBottom: "24px",
+          border: "1px solid #e8f5e8",
+          borderRadius: "10px",
+          padding: "20px",
+          background: "#fbfffb"
+        }}>
+          <h3 style={{ marginTop: 0, color: "#2d5a27" }}>Charges & Fees</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
+            <div>
+              <label style={{ display: "block", marginBottom: 6, fontWeight: 500 }}>Currency *</label>
+              <select 
+                name="currency" 
+                value={form.currency} 
+                onChange={handleChange} 
+                required 
+                style={{ width: "100%", padding: 12, border: "2px solid #e8f5e8", borderRadius: 8, fontSize: 16, background: "white" }}
+              >
+                <option value="LKR">Sri Lankan Rupee (LKR)</option>
+                <option value="USD">US Dollar (USD)</option>
+                <option value="EUR">Euro (EUR)</option>
+                <option value="GBP">British Pound (GBP)</option>
+                <option value="AUD">Australian Dollar (AUD)</option>
+                <option value="CAD">Canadian Dollar (CAD)</option>
+                <option value="JPY">Japanese Yen (JPY)</option>
+                <option value="INR">Indian Rupee (INR)</option>
+              </select>
+            </div>
+            <div>
+              <label style={{ display: "block", marginBottom: 6, fontWeight: 500 }}>Price *</label>
+              <input 
+                type="number"
+                name="price" 
+                value={form.price} 
+                onChange={handleChange} 
+                required 
+                min="0"
+                step="0.01"
+                style={{ width: "100%", padding: 12, border: "2px solid #e8f5e8", borderRadius: 8, fontSize: 16 }}
+                placeholder="Enter price"
+              />
+            </div>
+            <div>
+              <label style={{ display: "block", marginBottom: 6, fontWeight: 500 }}>Price Unit</label>
+              <select 
+                name="priceUnit" 
+                value={form.priceUnit} 
+                onChange={handleChange} 
+                style={{ width: "100%", padding: 12, border: "2px solid #e8f5e8", borderRadius: 8, fontSize: 16, background: "white" }}
+              >
+                <option value="per day">Per Day</option>
+                <option value="per km">Per Kilometer</option>
+                <option value="per trip">Per Trip</option>
+                <option value="per hour">Per Hour</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -396,28 +385,6 @@ const AddTransportProvider = () => {
               ))}
             </div>
           )}
-        </div>
-
-        <div style={{ marginBottom: "20px" }}>
-          <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
-            Description
-          </label>
-          <textarea 
-            name="description" 
-            value={form.description} 
-            onChange={handleChange} 
-            rows="3"
-            style={{
-              width: "100%",
-              padding: "10px",
-              border: "1px solid #ced4da",
-              borderRadius: "4px",
-              fontSize: "16px",
-              boxSizing: "border-box",
-              resize: "vertical"
-            }}
-            placeholder="Enter description (optional)"
-          />
         </div>
 
         <div style={{ marginBottom: "30px" }}>

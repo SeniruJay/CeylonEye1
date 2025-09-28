@@ -64,21 +64,6 @@ const TransportList = () => {
         <h2>Registered Transport Providers</h2>
         <div style={{ display: "flex", gap: "10px" }}>
           <Link 
-            to="/admin/users" 
-            style={{
-              backgroundColor: "#6c757d",
-              color: "white",
-              padding: "12px 24px",
-              textDecoration: "none",
-              borderRadius: "8px",
-              fontWeight: "bold",
-              boxShadow: "0 2px 4px rgba(108, 117, 125, 0.3)",
-              transition: "all 0.3s ease"
-            }}
-          >
-            👥 Manage Users
-          </Link>
-          <Link 
             to="/admin/add" 
             style={{
             backgroundColor: "#4a7c59",

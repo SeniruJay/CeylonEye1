@@ -18,6 +18,7 @@ import AdminActivities from "./components/admin/AdminActivities";
 import AddTransportProvider from "./components/AddTransportProvider";
 import EditTransportProvider from "./components/EditTransportProvider";
 import TransportBooking from "./components/TransportBooking";
+import TransportDetail from "./components/TransportDetail";
 import UserManagement from "./components/UserManagement";
 
 // CeylonEye Logo Component
@@ -392,6 +393,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/faqs" element={<FAQs />} />
             <Route path="/transport" element={<TransportBooking />} />
+            <Route path="/transport/provider/:id" element={<TransportDetail />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/transport" element={<TransportList />} />
             <Route path="/admin/accommodations" element={<AdminAccommodations />} />
