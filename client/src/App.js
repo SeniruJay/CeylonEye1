@@ -183,11 +183,16 @@ function App() {
         fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif"
       }}>
         <header style={{
-          backgroundColor: "white",
-          padding: "15px 0",
+          background: "rgba(255, 255, 255, 0.1)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          padding: "20px 0",
           marginBottom: "20px",
-          boxShadow: "0 2px 8px rgba(45, 90, 39, 0.1)",
-          borderBottom: "2px solid #4a7c59"
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+          position: "sticky",
+          top: 0,
+          zIndex: 1000
         }}>
           <div style={{ 
             maxWidth: "1400px", 
@@ -243,7 +248,8 @@ function App() {
                 fontSize: "1.8rem", 
                 fontWeight: "bold",
                 color: "#2d5a27",
-                letterSpacing: "1px"
+                letterSpacing: "1px",
+                textShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"
               }}>
                 CEYLONEYE
               </h1>
@@ -254,15 +260,28 @@ function App() {
               <Link
                 to="/"
                 style={{
-                  padding: "8px 16px",
-                  backgroundColor: "transparent",
-                  color: "#4a7c59",
-                  border: "2px solid #4a7c59",
-                  borderRadius: "20px",
+                  padding: "10px 20px",
+                  background: "rgba(255, 255, 255, 0.2)",
+                  color: "#2d5a27",
+                  border: "1px solid rgba(45, 90, 39, 0.3)",
+                  borderRadius: "25px",
                   fontSize: "14px",
                   fontWeight: "600",
                   textDecoration: "none",
-                  transition: "all 0.3s ease"
+                  transition: "all 0.3s ease",
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
+                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.background = "rgba(45, 90, 39, 0.2)";
+                  e.target.style.transform = "translateY(-2px)";
+                  e.target.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.background = "rgba(255, 255, 255, 0.2)";
+                  e.target.style.transform = "translateY(0)";
+                  e.target.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
                 }}
               >
                 🏠 Home
@@ -270,15 +289,28 @@ function App() {
               <Link
                 to="/services"
                 style={{
-                  padding: "8px 16px",
-                  backgroundColor: "transparent",
-                  color: "#4a7c59",
-                  border: "2px solid #4a7c59",
-                  borderRadius: "20px",
+                  padding: "10px 20px",
+                  background: "rgba(255, 255, 255, 0.2)",
+                  color: "#2d5a27",
+                  border: "1px solid rgba(45, 90, 39, 0.3)",
+                  borderRadius: "25px",
                   fontSize: "14px",
                   fontWeight: "600",
                   textDecoration: "none",
-                  transition: "all 0.3s ease"
+                  transition: "all 0.3s ease",
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
+                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.background = "rgba(45, 90, 39, 0.2)";
+                  e.target.style.transform = "translateY(-2px)";
+                  e.target.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.background = "rgba(255, 255, 255, 0.2)";
+                  e.target.style.transform = "translateY(0)";
+                  e.target.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
                 }}
               >
                 🧭 Services
@@ -286,15 +318,28 @@ function App() {
               <Link
                 to="/about"
                 style={{
-                  padding: "8px 16px",
-                  backgroundColor: "transparent",
-                  color: "#4a7c59",
-                  border: "2px solid #4a7c59",
-                  borderRadius: "20px",
+                  padding: "10px 20px",
+                  background: "rgba(255, 255, 255, 0.2)",
+                  color: "#2d5a27",
+                  border: "1px solid rgba(45, 90, 39, 0.3)",
+                  borderRadius: "25px",
                   fontSize: "14px",
                   fontWeight: "600",
                   textDecoration: "none",
-                  transition: "all 0.3s ease"
+                  transition: "all 0.3s ease",
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
+                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.background = "rgba(45, 90, 39, 0.2)";
+                  e.target.style.transform = "translateY(-2px)";
+                  e.target.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.background = "rgba(255, 255, 255, 0.2)";
+                  e.target.style.transform = "translateY(0)";
+                  e.target.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
                 }}
               >
                 🏝️ About
@@ -302,15 +347,28 @@ function App() {
               <Link
                 to="/contact"
                 style={{
-                  padding: "8px 16px",
-                  backgroundColor: "transparent",
-                  color: "#4a7c59",
-                  border: "2px solid #4a7c59",
-                  borderRadius: "20px",
+                  padding: "10px 20px",
+                  background: "rgba(255, 255, 255, 0.2)",
+                  color: "#2d5a27",
+                  border: "1px solid rgba(45, 90, 39, 0.3)",
+                  borderRadius: "25px",
                   fontSize: "14px",
                   fontWeight: "600",
                   textDecoration: "none",
-                  transition: "all 0.3s ease"
+                  transition: "all 0.3s ease",
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
+                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.background = "rgba(45, 90, 39, 0.2)";
+                  e.target.style.transform = "translateY(-2px)";
+                  e.target.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.background = "rgba(255, 255, 255, 0.2)";
+                  e.target.style.transform = "translateY(0)";
+                  e.target.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
                 }}
               >
                 ✉️ Contact
@@ -318,15 +376,28 @@ function App() {
               <Link
                 to="/faqs"
                 style={{
-                  padding: "8px 16px",
-                  backgroundColor: "transparent",
-                  color: "#4a7c59",
-                  border: "2px solid #4a7c59",
-                  borderRadius: "20px",
+                  padding: "10px 20px",
+                  background: "rgba(255, 255, 255, 0.2)",
+                  color: "#2d5a27",
+                  border: "1px solid rgba(45, 90, 39, 0.3)",
+                  borderRadius: "25px",
                   fontSize: "14px",
                   fontWeight: "600",
                   textDecoration: "none",
-                  transition: "all 0.3s ease"
+                  transition: "all 0.3s ease",
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
+                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.background = "rgba(45, 90, 39, 0.2)";
+                  e.target.style.transform = "translateY(-2px)";
+                  e.target.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.background = "rgba(255, 255, 255, 0.2)";
+                  e.target.style.transform = "translateY(0)";
+                  e.target.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
                 }}
               >
                 ❓ FAQs
@@ -334,15 +405,28 @@ function App() {
               <Link
                 to="/booking"
                 style={{
-                  padding: "8px 16px",
-                  backgroundColor: "#4a7c59",
+                  padding: "10px 20px",
+                  background: "linear-gradient(135deg, rgba(45, 90, 39, 0.8), rgba(45, 90, 39, 0.9))",
                   color: "white",
-                  border: "2px solid #4a7c59",
-                  borderRadius: "20px",
+                  border: "1px solid rgba(45, 90, 39, 0.5)",
+                  borderRadius: "25px",
                   fontSize: "14px",
                   fontWeight: "600",
                   textDecoration: "none",
-                  transition: "all 0.3s ease"
+                  transition: "all 0.3s ease",
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
+                  boxShadow: "0 4px 15px rgba(45, 90, 39, 0.3)"
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.background = "linear-gradient(135deg, rgba(45, 90, 39, 0.9), rgba(45, 90, 39, 1))";
+                  e.target.style.transform = "translateY(-2px)";
+                  e.target.style.boxShadow = "0 6px 20px rgba(45, 90, 39, 0.4)";
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.background = "linear-gradient(135deg, rgba(45, 90, 39, 0.8), rgba(45, 90, 39, 0.9))";
+                  e.target.style.transform = "translateY(0)";
+                  e.target.style.boxShadow = "0 4px 15px rgba(45, 90, 39, 0.3)";
                 }}
               >
                 📋 Book Now
@@ -351,14 +435,28 @@ function App() {
               <button
                 onClick={openProfile}
                 style={{
-                  padding: "8px 16px",
-                  backgroundColor: "#4a7c59",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "20px",
+                  padding: "10px 20px",
+                  background: "rgba(255, 255, 255, 0.2)",
+                  color: "#2d5a27",
+                  border: "1px solid rgba(45, 90, 39, 0.3)",
+                  borderRadius: "25px",
                   fontSize: "14px",
                   fontWeight: "600",
-                  cursor: "pointer"
+                  cursor: "pointer",
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
+                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
+                  transition: "all 0.3s ease"
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.background = "rgba(45, 90, 39, 0.2)";
+                  e.target.style.transform = "translateY(-2px)";
+                  e.target.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.background = "rgba(255, 255, 255, 0.2)";
+                  e.target.style.transform = "translateY(0)";
+                  e.target.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
                 }}
               >
                 👤 Edit Profile
@@ -366,14 +464,28 @@ function App() {
               <button
                 onClick={handleLogout}
                 style={{
-                  padding: "8px 16px",
-                  backgroundColor: "#dc3545",
+                  padding: "10px 20px",
+                  background: "linear-gradient(135deg, rgba(220, 53, 69, 0.8), rgba(220, 53, 69, 0.9))",
                   color: "white",
-                  border: "none",
-                  borderRadius: "20px",
+                  border: "1px solid rgba(220, 53, 69, 0.5)",
+                  borderRadius: "25px",
                   fontSize: "14px",
                   fontWeight: "600",
-                  cursor: "pointer"
+                  cursor: "pointer",
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
+                  boxShadow: "0 4px 15px rgba(220, 53, 69, 0.3)",
+                  transition: "all 0.3s ease"
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.background = "linear-gradient(135deg, rgba(220, 53, 69, 0.9), rgba(220, 53, 69, 1))";
+                  e.target.style.transform = "translateY(-2px)";
+                  e.target.style.boxShadow = "0 6px 20px rgba(220, 53, 69, 0.4)";
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.background = "linear-gradient(135deg, rgba(220, 53, 69, 0.8), rgba(220, 53, 69, 0.9))";
+                  e.target.style.transform = "translateY(0)";
+                  e.target.style.boxShadow = "0 4px 15px rgba(220, 53, 69, 0.3)";
                 }}
               >
                 🚪 Logout
@@ -382,15 +494,28 @@ function App() {
                 <Link
                   to="/admin"
                   style={{
-                    padding: "8px 16px",
-                    backgroundColor: "transparent",
+                    padding: "10px 20px",
+                    background: "rgba(255, 255, 255, 0.2)",
                     color: "#dc3545",
-                    border: "2px solid #dc3545",
-                    borderRadius: "20px",
+                    border: "1px solid rgba(220, 53, 69, 0.3)",
+                    borderRadius: "25px",
                     fontSize: "14px",
                     fontWeight: "600",
                     textDecoration: "none",
-                    transition: "all 0.3s ease"
+                    transition: "all 0.3s ease",
+                    backdropFilter: "blur(10px)",
+                    WebkitBackdropFilter: "blur(10px)",
+                    boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
+                  }}
+                  onMouseOver={(e) => {
+                    e.target.style.background = "rgba(220, 53, 69, 0.2)";
+                    e.target.style.transform = "translateY(-2px)";
+                    e.target.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
+                  }}
+                  onMouseOut={(e) => {
+                    e.target.style.background = "rgba(255, 255, 255, 0.2)";
+                    e.target.style.transform = "translateY(0)";
+                    e.target.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
                   }}
                 >
                   ⚙️ Admin
