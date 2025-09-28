@@ -147,25 +147,42 @@ function App() {
       <div
         style={{
           minHeight: "100vh",
-          backgroundColor: "#f8fff8",
+          background: "linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #0f0f23 100%)",
+          backgroundSize: "400% 400%",
+          animation: "gradientShift 20s ease infinite",
           fontFamily:
             "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif",
         }}
       >
+        <style>
+          {`
+            @keyframes gradientShift {
+              0% { background-position: 0% 50%; }
+              50% { background-position: 100% 50%; }
+              100% { background-position: 0% 50%; }
+            }
+          `}
+        </style>
         <header
           style={{
-            backgroundColor: "white",
-            padding: "20px 0",
+            backgroundColor: "rgba(15, 15, 35, 0.8)",
+            backdropFilter: "blur(20px)",
+            padding: "16px 0",
             marginBottom: "25px",
-            boxShadow: "0 2px 8px rgba(45, 90, 39, 0.1)",
-            borderBottom: "2px solid #4a7c59",
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+            borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+            position: "sticky",
+            top: 0,
+            zIndex: 1000,
+            border: "1px solid rgba(255, 255, 255, 0.05)",
+            borderRadius: "0 0 20px 20px",
           }}
         >
           <div
             style={{
               maxWidth: "1400px",
               margin: "0 auto",
-              padding: "0 20px",
+              padding: "0 24px",
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
@@ -177,16 +194,18 @@ function App() {
                 style={{
                   width: "140px",
                   height: "80px",
-                  marginRight: "20px",
+                  marginRight: "24px",
                   position: "relative",
-                  transition: "transform 0.3s ease",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                 }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.transform = "scale(1.05)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.transform = "scale(1)")
-                }
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "scale(1.05)";
+                  e.currentTarget.style.filter = "drop-shadow(0 4px 12px rgba(74, 124, 89, 0.2))";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "scale(1)";
+                  e.currentTarget.style.filter = "none";
+                }}
               >
                 <img
                   src={logo}
@@ -203,7 +222,7 @@ function App() {
             <nav
               style={{
                 display: "flex",
-                gap: "12px",
+                gap: "8px",
                 flexWrap: "wrap",
                 alignItems: "center",
               }}
@@ -211,213 +230,308 @@ function App() {
               <Link
                 to="/"
                 style={{
-                  padding: "8px 16px",
-                  backgroundColor: "transparent",
-                  color: "#4a7c59",
-                  border: "2px solid #4a7c59",
-                  borderRadius: "20px",
-                  fontSize: "14px",
-                  fontWeight: "600",
+                  padding: "12px 24px",
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  color: "rgba(255, 255, 255, 0.9)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  borderRadius: "8px",
+                  fontSize: "15px",
+                  fontWeight: "500",
                   textDecoration: "none",
-                  transition: "all 0.3s ease",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  position: "relative",
+                  overflow: "hidden",
+                  backdropFilter: "blur(10px)",
+                  letterSpacing: "0.5px",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#4a7c59";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
                   e.currentTarget.style.color = "white";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.3)";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent";
-                  e.currentTarget.style.color = "#4a7c59";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
                 }}
               >
-                🏠 Home
+                Home
               </Link>
               <Link
                 to="/services"
                 style={{
-                  padding: "8px 16px",
-                  backgroundColor: "transparent",
-                  color: "#4a7c59",
-                  border: "2px solid #4a7c59",
-                  borderRadius: "20px",
-                  fontSize: "14px",
-                  fontWeight: "600",
+                  padding: "12px 24px",
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  color: "rgba(255, 255, 255, 0.9)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  borderRadius: "8px",
+                  fontSize: "15px",
+                  fontWeight: "500",
                   textDecoration: "none",
-                  transition: "all 0.3s ease",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  position: "relative",
+                  overflow: "hidden",
+                  backdropFilter: "blur(10px)",
+                  letterSpacing: "0.5px",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#4a7c59";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
                   e.currentTarget.style.color = "white";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.3)";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent";
-                  e.currentTarget.style.color = "#4a7c59";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
                 }}
               >
-                🧭 Services
+                Services
               </Link>
               <Link
                 to="/about"
                 style={{
-                  padding: "8px 16px",
-                  backgroundColor: "transparent",
-                  color: "#4a7c59",
-                  border: "2px solid #4a7c59",
-                  borderRadius: "20px",
-                  fontSize: "14px",
-                  fontWeight: "600",
+                  padding: "12px 24px",
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  color: "rgba(255, 255, 255, 0.9)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  borderRadius: "8px",
+                  fontSize: "15px",
+                  fontWeight: "500",
                   textDecoration: "none",
-                  transition: "all 0.3s ease",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  position: "relative",
+                  overflow: "hidden",
+                  backdropFilter: "blur(10px)",
+                  letterSpacing: "0.5px",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#4a7c59";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
                   e.currentTarget.style.color = "white";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.3)";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent";
-                  e.currentTarget.style.color = "#4a7c59";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
                 }}
               >
-                🏝️ About
+                About
               </Link>
               <Link
                 to="/contact"
                 style={{
-                  padding: "8px 16px",
-                  backgroundColor: "transparent",
-                  color: "#4a7c59",
-                  border: "2px solid #4a7c59",
-                  borderRadius: "20px",
-                  fontSize: "14px",
-                  fontWeight: "600",
+                  padding: "12px 24px",
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  color: "rgba(255, 255, 255, 0.9)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  borderRadius: "8px",
+                  fontSize: "15px",
+                  fontWeight: "500",
                   textDecoration: "none",
-                  transition: "all 0.3s ease",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  position: "relative",
+                  overflow: "hidden",
+                  backdropFilter: "blur(10px)",
+                  letterSpacing: "0.5px",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#4a7c59";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
                   e.currentTarget.style.color = "white";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.3)";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent";
-                  e.currentTarget.style.color = "#4a7c59";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
                 }}
               >
-                ✉️ Contact
+                Contact
               </Link>
               <Link
                 to="/faqs"
                 style={{
-                  padding: "8px 16px",
-                  backgroundColor: "transparent",
-                  color: "#4a7c59",
-                  border: "2px solid #4a7c59",
-                  borderRadius: "20px",
-                  fontSize: "14px",
-                  fontWeight: "600",
+                  padding: "12px 24px",
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  color: "rgba(255, 255, 255, 0.9)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  borderRadius: "8px",
+                  fontSize: "15px",
+                  fontWeight: "500",
                   textDecoration: "none",
-                  transition: "all 0.3s ease",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  position: "relative",
+                  overflow: "hidden",
+                  backdropFilter: "blur(10px)",
+                  letterSpacing: "0.5px",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#4a7c59";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
                   e.currentTarget.style.color = "white";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.3)";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent";
-                  e.currentTarget.style.color = "#4a7c59";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
                 }}
               >
-                ❓ FAQs
+                FAQs
               </Link>
               <Link
                 to="/booking"
                 style={{
-                  padding: "8px 16px",
-                  backgroundColor: "#4a7c59",
+                  padding: "12px 24px",
+                  backgroundColor: "rgba(74, 124, 89, 0.8)",
                   color: "white",
-                  border: "2px solid #4a7c59",
-                  borderRadius: "20px",
-                  fontSize: "14px",
+                  border: "1px solid rgba(74, 124, 89, 0.6)",
+                  borderRadius: "8px",
+                  fontSize: "15px",
                   fontWeight: "600",
                   textDecoration: "none",
-                  transition: "all 0.3s ease",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  boxShadow: "0 4px 15px rgba(74, 124, 89, 0.3)",
+                  position: "relative",
+                  overflow: "hidden",
+                  backdropFilter: "blur(10px)",
+                  letterSpacing: "0.5px",
                 }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#3a6c49")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#4a7c59")
-                }
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(74, 124, 89, 0.4)";
+                  e.currentTarget.style.backgroundColor = "rgba(74, 124, 89, 0.9)";
+                  e.currentTarget.style.borderColor = "rgba(74, 124, 89, 0.8)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 4px 15px rgba(74, 124, 89, 0.3)";
+                  e.currentTarget.style.backgroundColor = "rgba(74, 124, 89, 0.8)";
+                  e.currentTarget.style.borderColor = "rgba(74, 124, 89, 0.6)";
+                }}
               >
-                📋 Book Now
+                Book Now
               </Link>
               <button
                 onClick={openProfile}
                 style={{
-                  padding: "8px 16px",
-                  backgroundColor: "#4a7c59",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "20px",
-                  fontSize: "14px",
-                  fontWeight: "600",
+                  padding: "12px 24px",
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  color: "rgba(255, 255, 255, 0.9)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  borderRadius: "8px",
+                  fontSize: "15px",
+                  fontWeight: "500",
                   cursor: "pointer",
-                  transition: "all 0.3s ease",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  position: "relative",
+                  overflow: "hidden",
+                  backdropFilter: "blur(10px)",
+                  letterSpacing: "0.5px",
                 }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#3a6c49")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#4a7c59")
-                }
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
+                  e.currentTarget.style.color = "white";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.3)";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                }}
               >
-                👤 Edit Profile
+                Edit Profile
               </button>
               <button
                 onClick={handleLogout}
                 style={{
-                  padding: "8px 16px",
-                  backgroundColor: "#dc3545",
+                  padding: "12px 24px",
+                  backgroundColor: "rgba(220, 53, 69, 0.8)",
                   color: "white",
-                  border: "none",
-                  borderRadius: "20px",
-                  fontSize: "14px",
-                  fontWeight: "600",
+                  border: "1px solid rgba(220, 53, 69, 0.6)",
+                  borderRadius: "8px",
+                  fontSize: "15px",
+                  fontWeight: "500",
                   cursor: "pointer",
-                  transition: "all 0.3s ease",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  position: "relative",
+                  overflow: "hidden",
+                  backdropFilter: "blur(10px)",
+                  letterSpacing: "0.5px",
                 }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#c82333")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#dc3545")
-                }
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(220, 53, 69, 0.9)";
+                  e.currentTarget.style.color = "white";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(220, 53, 69, 0.4)";
+                  e.currentTarget.style.borderColor = "rgba(220, 53, 69, 0.8)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(220, 53, 69, 0.8)";
+                  e.currentTarget.style.color = "white";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.borderColor = "rgba(220, 53, 69, 0.6)";
+                }}
               >
-                🚪 Logout
+                Logout
               </button>
               {user.role === "admin" && (
                 <Link
                   to="/admin"
                   style={{
-                    padding: "8px 16px",
-                    backgroundColor: "transparent",
-                    color: "#dc3545",
-                    border: "2px solid #dc3545",
-                    borderRadius: "20px",
-                    fontSize: "14px",
-                    fontWeight: "600",
+                    padding: "12px 24px",
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    color: "rgba(255, 255, 255, 0.9)",
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    borderRadius: "8px",
+                    fontSize: "15px",
+                    fontWeight: "500",
                     textDecoration: "none",
-                    transition: "all 0.3s ease",
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                    position: "relative",
+                    overflow: "hidden",
+                    backdropFilter: "blur(10px)",
+                    letterSpacing: "0.5px",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "#dc3545";
+                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
                     e.currentTarget.style.color = "white";
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                    e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.3)";
+                    e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "transparent";
-                    e.currentTarget.style.color = "#dc3545";
+                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                    e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "none";
+                    e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
                   }}
                 >
-                  ⚙️ Admin
+                  Admin
                 </Link>
               )}
             </nav>
@@ -663,12 +777,15 @@ function App() {
         )}
         <footer
           style={{
-            backgroundColor: "white",
-            color: "#4a7c59",
+            backgroundColor: "rgba(15, 15, 35, 0.8)",
+            backdropFilter: "blur(20px)",
+            color: "white",
             padding: "20px 0",
             marginTop: "40px",
-            borderTop: "2px solid #4a7c59",
-            boxShadow: "0 -2px 8px rgba(45, 90, 39, 0.1)",
+            borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+            boxShadow: "0 -8px 32px rgba(0, 0, 0, 0.3)",
+            border: "1px solid rgba(255, 255, 255, 0.05)",
+            borderRadius: "20px 20px 0 0",
           }}
         >
           <div
@@ -713,8 +830,9 @@ function App() {
                   margin: "0",
                   fontSize: "1.4rem",
                   fontWeight: "bold",
-                  color: "#2d5a27",
+                  color: "white",
                   letterSpacing: "1px",
+                  textShadow: "0 2px 4px rgba(0,0,0,0.3)",
                 }}
               >
                 CEYLONEYE
@@ -723,9 +841,11 @@ function App() {
             <p
               style={{
                 margin: "0",
-                opacity: "0.8",
+                opacity: "0.9",
                 fontSize: "1rem",
                 textAlign: "center",
+                color: "white",
+                textShadow: "0 1px 2px rgba(0,0,0,0.3)",
               }}
             >
               © 2024 CeylonEye Tourism Management System

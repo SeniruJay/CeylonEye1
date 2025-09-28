@@ -113,22 +113,34 @@ const BookingFlow = () => {
   return (
     <div style={{ 
       minHeight: "100vh", 
-      backgroundColor: "#f8fff8",
+      background: "linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #0f0f23 100%)",
+      backgroundSize: "400% 400%",
+      animation: "gradientShift 20s ease infinite",
       padding: "20px 0"
     }}>
+      <style>
+        {`
+          @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+        `}
+      </style>
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "40px" }}>
           <h1 style={{ 
-            color: "#2d5a27", 
+            color: "white", 
             fontSize: "2.5rem", 
             marginBottom: "10px",
-            fontWeight: "bold"
+            fontWeight: "bold",
+            textShadow: "0 2px 4px rgba(0,0,0,0.3)"
           }}>
             Plan Your Sri Lankan Adventure
           </h1>
           <p style={{ 
-            color: "#4a7c59", 
+            color: "rgba(255, 255, 255, 0.8)", 
             fontSize: "1.1rem",
             margin: 0
           }}>
@@ -155,22 +167,24 @@ const BookingFlow = () => {
                 width: "50px",
                 height: "50px",
                 borderRadius: "50%",
-                backgroundColor: currentStep >= step.id ? "#4a7c59" : "#e8f5e8",
-                color: currentStep >= step.id ? "white" : "#4a7c59",
+                backgroundColor: currentStep >= step.id ? "rgba(74, 124, 89, 0.8)" : "rgba(255, 255, 255, 0.1)",
+                color: currentStep >= step.id ? "white" : "rgba(255, 255, 255, 0.6)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 fontSize: "1.2rem",
                 fontWeight: "bold",
                 marginBottom: "8px",
-                transition: "all 0.3s ease"
+                transition: "all 0.3s ease",
+                border: "1px solid rgba(255, 255, 255, 0.2)",
+                backdropFilter: "blur(10px)"
               }}>
                 {currentStep > step.id ? "✓" : step.id}
               </div>
               <span style={{
                 fontSize: "0.9rem",
                 fontWeight: "600",
-                color: currentStep >= step.id ? "#2d5a27" : "#6c757d",
+                color: currentStep >= step.id ? "white" : "rgba(255, 255, 255, 0.6)",
                 textAlign: "center"
               }}>
                 {step.title}
@@ -191,11 +205,12 @@ const BookingFlow = () => {
 
         {/* Step Content */}
         <div style={{
-          backgroundColor: "white",
+          backgroundColor: "rgba(240, 240, 240, 0.95)",
+          backdropFilter: "blur(20px)",
           borderRadius: "15px",
           padding: "40px",
-          boxShadow: "0 8px 25px rgba(45, 90, 39, 0.1)",
-          border: "1px solid #e8f5e8"
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+          border: "1px solid rgba(255, 255, 255, 0.3)"
         }}>
           {renderStep()}
         </div>

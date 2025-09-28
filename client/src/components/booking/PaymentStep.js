@@ -117,7 +117,9 @@ const PaymentStep = ({ onBack, onSubmit, bookingData, loading }) => {
                   fontSize: "16px",
                   boxSizing: "border-box",
                   transition: "border-color 0.3s ease",
-                  outline: "none"
+                  outline: "none",
+                  backgroundColor: "white",
+                  color: "#2d5a27"
                 }}
                 onFocus={(e) => e.target.style.borderColor = "#4a7c59"}
                 onBlur={(e) => e.target.style.borderColor = "#e8f5e8"}
@@ -143,7 +145,9 @@ const PaymentStep = ({ onBack, onSubmit, bookingData, loading }) => {
                   fontSize: "16px",
                   boxSizing: "border-box",
                   transition: "border-color 0.3s ease",
-                  outline: "none"
+                  outline: "none",
+                  backgroundColor: "white",
+                  color: "#2d5a27"
                 }}
                 onFocus={(e) => e.target.style.borderColor = "#4a7c59"}
                 onBlur={(e) => e.target.style.borderColor = "#e8f5e8"}
@@ -169,7 +173,9 @@ const PaymentStep = ({ onBack, onSubmit, bookingData, loading }) => {
                   fontSize: "16px",
                   boxSizing: "border-box",
                   transition: "border-color 0.3s ease",
-                  outline: "none"
+                  outline: "none",
+                  backgroundColor: "white",
+                  color: "#2d5a27"
                 }}
                 onFocus={(e) => e.target.style.borderColor = "#4a7c59"}
                 onBlur={(e) => e.target.style.borderColor = "#e8f5e8"}
@@ -196,7 +202,9 @@ const PaymentStep = ({ onBack, onSubmit, bookingData, loading }) => {
                   fontSize: "16px",
                   boxSizing: "border-box",
                   transition: "border-color 0.3s ease",
-                  outline: "none"
+                  outline: "none",
+                  backgroundColor: "white",
+                  color: "#2d5a27"
                 }}
                 onFocus={(e) => e.target.style.borderColor = "#4a7c59"}
                 onBlur={(e) => e.target.style.borderColor = "#e8f5e8"}
@@ -489,30 +497,30 @@ const PaymentStep = ({ onBack, onSubmit, bookingData, loading }) => {
             </div>
           )}
 
-          <div style={{ 
-            borderTop: "2px solid #e8f5e8", 
-            paddingTop: "15px",
-            marginTop: "20px"
-          }}>
             <div style={{ 
-              display: "flex", 
-              justifyContent: "space-between", 
-              fontSize: "1.1rem",
-              fontWeight: "bold",
-              color: "#2d5a27"
+              borderTop: "2px solid #e8f5e8", 
+              paddingTop: "15px",
+              marginTop: "20px"
             }}>
-              <span>Total Cost</span>
-              <span>{getCurrencySymbol()}${total.toFixed(2)}</span>
+              <div style={{ 
+                display: "flex", 
+                justifyContent: "space-between", 
+                fontSize: "1.1rem",
+                fontWeight: "bold",
+                color: "#2d5a27"
+              }}>
+                <span>Total Cost</span>
+                <span>{getCurrencySymbol()}${total.toFixed(2)}</span>
+              </div>
+              <div style={{ 
+                fontSize: "0.8rem", 
+                color: "#666", 
+                marginTop: "5px",
+                textAlign: "center"
+              }}>
+                * Final pricing may vary based on availability
+              </div>
             </div>
-            <div style={{ 
-              fontSize: "0.8rem", 
-              color: "#666", 
-              marginTop: "5px",
-              textAlign: "center"
-            }}>
-              * Final pricing may vary based on availability
-            </div>
-          </div>
         </div>
       </div>
     </div>
