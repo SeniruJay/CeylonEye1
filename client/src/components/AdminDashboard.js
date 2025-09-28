@@ -36,6 +36,7 @@ const AdminDashboard = () => {
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
         <Tile to="/admin/users" emoji="👥" title="Manage Users" />
+        <Tile to="/admin/bookings" emoji="📋" title="Manage Bookings" color="#dc3545" />
         <Tile to="/admin/transport" emoji="🚗" title="Manage Transport Providers" />
         <Tile to="/admin/accommodations" emoji="🏨" title="Manage Accommodation" />
         <Tile to="/admin/locations" emoji="🗺️" title="Manage Locations" />

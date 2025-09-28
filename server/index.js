@@ -27,6 +27,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/transport-providers", transportRoutes);
+app.use("/api/transport", transportRoutes); // Alias for compatibility
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/accommodations", accommodationRoutes);
 app.use("/api/locations", locationRoutes);

@@ -15,13 +15,16 @@ import AdminDashboard from "./components/AdminDashboard";
 import AdminAccommodations from "./components/admin/AdminAccommodations";
 import AdminLocations from "./components/admin/AdminLocations";
 import AdminActivities from "./components/admin/AdminActivities";
+import AdminBookings from "./components/admin/AdminBookings";
 import AddTransportProvider from "./components/AddTransportProvider";
 import EditTransportProvider from "./components/EditTransportProvider";
 import TransportBooking from "./components/TransportBooking";
 import TransportDetail from "./components/TransportDetail";
+import BookingFlow from "./components/BookingFlow";
 import UserManagement from "./components/UserManagement";
 
-// CeylonEye Logo Component
+// CeylonEye Logo Component (currently unused but kept for future use)
+// eslint-disable-next-line no-unused-vars
 const CeylonEyeLogo = ({ size = "large" }) => {
   const logoSize = size === "large" ? "120px" : "60px";
   const textSize = size === "large" ? "2.5rem" : "1.5rem";
@@ -329,6 +332,22 @@ function App() {
               >
                 ❓ FAQs
               </Link>
+              <Link
+                to="/booking"
+                style={{
+                  padding: "8px 16px",
+                  backgroundColor: "#4a7c59",
+                  color: "white",
+                  border: "2px solid #4a7c59",
+                  borderRadius: "20px",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                  textDecoration: "none",
+                  transition: "all 0.3s ease"
+                }}
+              >
+                📋 Book Now
+              </Link>
               {/* Transport link removed; accessible via Services */}
               <button
                 onClick={openProfile}
@@ -392,6 +411,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/faqs" element={<FAQs />} />
+            <Route path="/booking" element={<BookingFlow />} />
             <Route path="/transport" element={<TransportBooking />} />
             <Route path="/transport/provider/:id" element={<TransportDetail />} />
             <Route path="/admin" element={<AdminDashboard />} />
@@ -399,6 +419,7 @@ function App() {
             <Route path="/admin/accommodations" element={<AdminAccommodations />} />
             <Route path="/admin/locations" element={<AdminLocations />} />
             <Route path="/admin/activities" element={<AdminActivities />} />
+            <Route path="/admin/bookings" element={<AdminBookings />} />
             <Route path="/admin/add" element={<AddTransportProvider />} />
             <Route path="/admin/edit/:id" element={<EditTransportProvider />} />
             <Route path="/admin/users" element={<UserManagement />} />
