@@ -7,11 +7,7 @@ const Auth = ({ onLogin }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [loginForm, setLoginForm] = useState({
-    username: "",
-    password: ""
-  });
-
+  const [loginForm, setLoginForm] = useState({ username: "", password: "" });
   const [registerForm, setRegisterForm] = useState({
     username: "",
     email: "",
@@ -19,32 +15,38 @@ const Auth = ({ onLogin }) => {
     confirmPassword: "",
     firstName: "",
     lastName: "",
-    phone: ""
+    phone: "",
   });
 
-  const handleLoginChange = (e) => {
-    setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
+  const inputStyle = {
+    width: "100%",
+    padding: "14px",
+    border: "2px solid #e8f5e8",
+    borderRadius: "8px",
+    fontSize: "15px",
+    outline: "none",
+    boxSizing: "border-box",
+    transition: "0.3s",
   };
 
-  const handleRegisterChange = (e) => {
+  const handleLoginChange = (e) =>
+    setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
+
+  const handleRegisterChange = (e) =>
     setRegisterForm({ ...registerForm, [e.target.name]: e.target.value });
-  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
     try {
       const response = await axios.post("http://localhost:5000/api/auth/login", {
         ...loginForm,
-        role: isAdmin ? "admin" : "user"
+        role: isAdmin ? "admin" : "user",
       });
-
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
       onLogin(response.data.user);
-
     } catch (err) {
       setError(err.response?.data?.error || "Login failed");
     } finally {
@@ -56,23 +58,19 @@ const Auth = ({ onLogin }) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
     if (registerForm.password !== registerForm.confirmPassword) {
       setError("Passwords do not match");
       setLoading(false);
       return;
     }
-
     try {
       const response = await axios.post("http://localhost:5000/api/auth/register", {
         ...registerForm,
-        role: isAdmin ? "admin" : "user"
+        role: isAdmin ? "admin" : "user",
       });
-
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
       onLogin(response.data.user);
-
     } catch (err) {
       setError(err.response?.data?.error || "Registration failed");
     } finally {
@@ -81,32 +79,48 @@ const Auth = ({ onLogin }) => {
   };
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      backgroundColor: "#f8fff8",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "20px"
-    }}>
-      <div style={{
-        backgroundColor: "white",
-        borderRadius: "15px",
-        boxShadow: "0 8px 32px rgba(74, 124, 89, 0.15)",
-        padding: "40px",
-        width: "100%",
-        maxWidth: "450px",
-        border: "1px solid #e8f5e8"
-      }}>
-        {/* Logo */}
-        <div style={{ textAlign: "center", marginBottom: "30px" }}>
-          <div style={{ 
-            width: "80px", 
-            height: "80px", 
-            margin: "0 auto 15px auto",
-            position: "relative"
-          }}>
-            <svg width="80" height="80" viewBox="0 0 100 100" style={{ position: "absolute", top: 0, left: 0 }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "20px",
+        backgroundImage: `url("https://images.unsplash.com/photo-1653959699604-1eb000740b57?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNyaSUyMGxhbmthJTIwYmVhY2h8ZW58MHx8MHx8fDA%3D")`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        position: "relative",
+      }}
+    >
+      {/* Overlay */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "linear-gradient(to bottom right, rgba(0,0,0,0.65), rgba(0,0,0,0.3))",
+          zIndex: 0,
+        }}
+      />
+
+      {/* Card */}
+      <div
+        style={{
+          background: "rgba(255, 255, 255, 0.92)",
+          borderRadius: "18px",
+          boxShadow: "0 12px 35px rgba(0,0,0,0.25)",
+          padding: "40px",
+          width: "100%",
+          maxWidth: "460px",
+          zIndex: 1,
+          backdropFilter: "blur(12px)",
+          border: "1px solid rgba(255,255,255,0.3)",
+        }}
+      >
+        {/* Logo + Title */}
+        <div style={{ textAlign: "center", marginBottom: "25px" }}>
+          <div style={{ width: "80px", height: "80px", margin: "0 auto 15px" }}>
+            {/* SVG Logo */}
+            <svg width="80" height="80" viewBox="0 0 100 100">
               <path
                 d="M20 30 L25 25 L35 20 L45 18 L55 20 L65 25 L75 30 L80 35 L82 45 L80 55 L75 65 L70 70 L60 75 L50 78 L40 75 L30 70 L25 65 L22 55 L20 45 Z"
                 fill="none"
@@ -139,41 +153,33 @@ const Auth = ({ onLogin }) => {
               />
             </svg>
           </div>
-          <h1 style={{ 
-            margin: "0", 
-            fontSize: "2rem", 
-            fontWeight: "bold",
-            color: "#2d5a27",
-            letterSpacing: "2px"
-          }}>
+          <h1 style={{ margin: "0", fontSize: "2.2rem", fontWeight: "bold", color: "#2d5a27" }}>
             CEYLONEYE
           </h1>
-          <p style={{ color: "#4a7c59", margin: "5px 0 0 0" }}>
-            Tourism Management System
-          </p>
+          <p style={{ color: "#4a7c59", margin: "5px 0 0" }}>Tourism Management System</p>
         </div>
 
-        {/* Toggle Buttons */}
-        <div style={{ 
-          display: "flex", 
-          marginBottom: "30px",
-          backgroundColor: "#f0f7f0",
-          borderRadius: "8px",
-          padding: "4px"
-        }}>
+        {/* Toggle */}
+        <div
+          style={{
+            display: "flex",
+            marginBottom: "25px",
+            backgroundColor: "#edf7ef",
+            borderRadius: "10px",
+            padding: "4px",
+          }}
+        >
           <button
             onClick={() => setIsLogin(true)}
             style={{
               flex: 1,
               padding: "12px",
               border: "none",
-              borderRadius: "6px",
+              borderRadius: "8px",
               backgroundColor: isLogin ? "#4a7c59" : "transparent",
               color: isLogin ? "white" : "#4a7c59",
-              fontSize: "16px",
               fontWeight: "600",
               cursor: "pointer",
-              transition: "all 0.3s ease"
             }}
           >
             Login
@@ -184,29 +190,29 @@ const Auth = ({ onLogin }) => {
               flex: 1,
               padding: "12px",
               border: "none",
-              borderRadius: "6px",
+              borderRadius: "8px",
               backgroundColor: !isLogin ? "#4a7c59" : "transparent",
               color: !isLogin ? "white" : "#4a7c59",
-              fontSize: "16px",
               fontWeight: "600",
               cursor: "pointer",
-              transition: "all 0.3s ease"
             }}
           >
             Sign Up
           </button>
         </div>
 
-        {/* Error Message */}
+        {/* Error */}
         {error && (
-          <div style={{
-            backgroundColor: "#f8d7da",
-            color: "#721c24",
-            padding: "12px",
-            borderRadius: "6px",
-            marginBottom: "20px",
-            border: "1px solid #f5c6cb"
-          }}>
+          <div
+            style={{
+              backgroundColor: "#f8d7da",
+              color: "#721c24",
+              padding: "12px",
+              borderRadius: "6px",
+              marginBottom: "20px",
+              border: "1px solid #f5c6cb",
+            }}
+          >
             {error}
           </div>
         )}
@@ -214,74 +220,36 @@ const Auth = ({ onLogin }) => {
         {/* Forms */}
         {isLogin ? (
           <form onSubmit={handleLogin}>
-            <div style={{ marginBottom: "20px" }}>
-              <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
-                Username or Email
-              </label>
-              <input
-                type="text"
-                name="username"
-                value={loginForm.username}
-                onChange={handleLoginChange}
-                required
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  border: "2px solid #e8f5e8",
-                  borderRadius: "8px",
-                  fontSize: "16px",
-                  boxSizing: "border-box",
-                  transition: "border-color 0.3s ease",
-                  outline: "none"
-                }}
-                onFocus={(e) => e.target.style.borderColor = "#4a7c59"}
-                onBlur={(e) => e.target.style.borderColor = "#e8f5e8"}
-                placeholder="Enter username or email"
-              />
-            </div>
-
-            <div style={{ marginBottom: "20px" }}>
-              <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
-                Password
-              </label>
-              <input
-                type="password"
-                name="password"
-                value={loginForm.password}
-                onChange={handleLoginChange}
-                required
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  border: "2px solid #e8f5e8",
-                  borderRadius: "8px",
-                  fontSize: "16px",
-                  boxSizing: "border-box",
-                  transition: "border-color 0.3s ease",
-                  outline: "none"
-                }}
-                onFocus={(e) => e.target.style.borderColor = "#4a7c59"}
-                onBlur={(e) => e.target.style.borderColor = "#e8f5e8"}
-                placeholder="Enter password"
-              />
-            </div>
-
+            <input
+              type="text"
+              name="username"
+              value={loginForm.username}
+              onChange={handleLoginChange}
+              placeholder="Enter username or email"
+              required
+              style={inputStyle}
+            />
+            <div style={{ height: "15px" }} />
+            <input
+              type="password"
+              name="password"
+              value={loginForm.password}
+              onChange={handleLoginChange}
+              placeholder="Enter password"
+              required
+              style={inputStyle}
+            />
+            <div style={{ height: "20px" }} />
             <button
               type="submit"
               disabled={loading}
               style={{
-                width: "100%",
-                padding: "15px",
+                ...inputStyle,
                 backgroundColor: loading ? "#6c757d" : "#4a7c59",
                 color: "white",
                 border: "none",
-                borderRadius: "8px",
-                fontSize: "16px",
                 fontWeight: "600",
                 cursor: loading ? "not-allowed" : "pointer",
-                boxShadow: "0 2px 4px rgba(74, 124, 89, 0.3)",
-                transition: "all 0.3s ease",
-                marginBottom: "20px"
               }}
             >
               {loading ? "Logging in..." : "Login"}
@@ -289,206 +257,88 @@ const Auth = ({ onLogin }) => {
           </form>
         ) : (
           <form onSubmit={handleRegister}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginBottom: "20px" }}>
-              <div>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  name="firstName"
-                  value={registerForm.firstName}
-                  onChange={handleRegisterChange}
-                  required
-                  style={{
-                    width: "100%",
-                    padding: "12px",
-                    border: "2px solid #e8f5e8",
-                    borderRadius: "8px",
-                    fontSize: "16px",
-                    boxSizing: "border-box",
-                    transition: "border-color 0.3s ease",
-                    outline: "none"
-                  }}
-                  onFocus={(e) => e.target.style.borderColor = "#4a7c59"}
-                  onBlur={(e) => e.target.style.borderColor = "#e8f5e8"}
-                  placeholder="First name"
-                />
-              </div>
-              <div>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  name="lastName"
-                  value={registerForm.lastName}
-                  onChange={handleRegisterChange}
-                  required
-                  style={{
-                    width: "100%",
-                    padding: "12px",
-                    border: "2px solid #e8f5e8",
-                    borderRadius: "8px",
-                    fontSize: "16px",
-                    boxSizing: "border-box",
-                    transition: "border-color 0.3s ease",
-                    outline: "none"
-                  }}
-                  onFocus={(e) => e.target.style.borderColor = "#4a7c59"}
-                  onBlur={(e) => e.target.style.borderColor = "#e8f5e8"}
-                  placeholder="Last name"
-                />
-              </div>
-            </div>
-
-            <div style={{ marginBottom: "20px" }}>
-              <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
-                Username
-              </label>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px" }}>
               <input
                 type="text"
-                name="username"
-                value={registerForm.username}
+                name="firstName"
+                value={registerForm.firstName}
                 onChange={handleRegisterChange}
+                placeholder="First Name"
                 required
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  border: "2px solid #e8f5e8",
-                  borderRadius: "8px",
-                  fontSize: "16px",
-                  boxSizing: "border-box",
-                  transition: "border-color 0.3s ease",
-                  outline: "none"
-                }}
-                onFocus={(e) => e.target.style.borderColor = "#4a7c59"}
-                onBlur={(e) => e.target.style.borderColor = "#e8f5e8"}
-                placeholder="Choose a username"
+                style={inputStyle}
               />
-            </div>
-
-            <div style={{ marginBottom: "20px" }}>
-              <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
-                Email
-              </label>
               <input
-                type="email"
-                name="email"
-                value={registerForm.email}
+                type="text"
+                name="lastName"
+                value={registerForm.lastName}
                 onChange={handleRegisterChange}
+                placeholder="Last Name"
                 required
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  border: "2px solid #e8f5e8",
-                  borderRadius: "8px",
-                  fontSize: "16px",
-                  boxSizing: "border-box",
-                  transition: "border-color 0.3s ease",
-                  outline: "none"
-                }}
-                onFocus={(e) => e.target.style.borderColor = "#4a7c59"}
-                onBlur={(e) => e.target.style.borderColor = "#e8f5e8"}
-                placeholder="Enter your email"
+                style={inputStyle}
               />
             </div>
-
-            <div style={{ marginBottom: "20px" }}>
-              <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
-                Phone Number
-              </label>
+            <div style={{ height: "15px" }} />
+            <input
+              type="text"
+              name="username"
+              value={registerForm.username}
+              onChange={handleRegisterChange}
+              placeholder="Choose a username"
+              required
+              style={inputStyle}
+            />
+            <div style={{ height: "15px" }} />
+            <input
+              type="email"
+              name="email"
+              value={registerForm.email}
+              onChange={handleRegisterChange}
+              placeholder="Enter your email"
+              required
+              style={inputStyle}
+            />
+            <div style={{ height: "15px" }} />
+            <input
+              type="tel"
+              name="phone"
+              value={registerForm.phone}
+              onChange={handleRegisterChange}
+              placeholder="Enter phone number"
+              required
+              style={inputStyle}
+            />
+            <div style={{ height: "15px" }} />
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px" }}>
               <input
-                type="tel"
-                name="phone"
-                value={registerForm.phone}
+                type="password"
+                name="password"
+                value={registerForm.password}
                 onChange={handleRegisterChange}
+                placeholder="Password"
                 required
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  border: "2px solid #e8f5e8",
-                  borderRadius: "8px",
-                  fontSize: "16px",
-                  boxSizing: "border-box",
-                  transition: "border-color 0.3s ease",
-                  outline: "none"
-                }}
-                onFocus={(e) => e.target.style.borderColor = "#4a7c59"}
-                onBlur={(e) => e.target.style.borderColor = "#e8f5e8"}
-                placeholder="Enter phone number"
+                style={inputStyle}
+              />
+              <input
+                type="password"
+                name="confirmPassword"
+                value={registerForm.confirmPassword}
+                onChange={handleRegisterChange}
+                placeholder="Confirm Password"
+                required
+                style={inputStyle}
               />
             </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginBottom: "20px" }}>
-              <div>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
-                  Password
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  value={registerForm.password}
-                  onChange={handleRegisterChange}
-                  required
-                  style={{
-                    width: "100%",
-                    padding: "12px",
-                    border: "2px solid #e8f5e8",
-                    borderRadius: "8px",
-                    fontSize: "16px",
-                    boxSizing: "border-box",
-                    transition: "border-color 0.3s ease",
-                    outline: "none"
-                  }}
-                  onFocus={(e) => e.target.style.borderColor = "#4a7c59"}
-                  onBlur={(e) => e.target.style.borderColor = "#e8f5e8"}
-                  placeholder="Password"
-                />
-              </div>
-              <div>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={registerForm.confirmPassword}
-                  onChange={handleRegisterChange}
-                  required
-                  style={{
-                    width: "100%",
-                    padding: "12px",
-                    border: "2px solid #e8f5e8",
-                    borderRadius: "8px",
-                    fontSize: "16px",
-                    boxSizing: "border-box",
-                    transition: "border-color 0.3s ease",
-                    outline: "none"
-                  }}
-                  onFocus={(e) => e.target.style.borderColor = "#4a7c59"}
-                  onBlur={(e) => e.target.style.borderColor = "#e8f5e8"}
-                  placeholder="Confirm password"
-                />
-              </div>
-            </div>
-
+            <div style={{ height: "20px" }} />
             <button
               type="submit"
               disabled={loading}
               style={{
-                width: "100%",
-                padding: "15px",
+                ...inputStyle,
                 backgroundColor: loading ? "#6c757d" : "#4a7c59",
                 color: "white",
                 border: "none",
-                borderRadius: "8px",
-                fontSize: "16px",
                 fontWeight: "600",
                 cursor: loading ? "not-allowed" : "pointer",
-                boxShadow: "0 2px 4px rgba(74, 124, 89, 0.3)",
-                transition: "all 0.3s ease",
-                marginBottom: "20px"
               }}
             >
               {loading ? "Creating Account..." : "Sign Up"}
@@ -496,8 +346,8 @@ const Auth = ({ onLogin }) => {
           </form>
         )}
 
-        {/* Admin Login Button */}
-        <div style={{ textAlign: "center", marginTop: "20px", paddingTop: "20px", borderTop: "1px solid #e8f5e8" }}>
+        {/* Admin Switch */}
+        <div style={{ textAlign: "center", marginTop: "20px", borderTop: "1px solid #e8f5e8", paddingTop: "15px" }}>
           <button
             onClick={() => setIsAdmin(!isAdmin)}
             style={{
@@ -506,16 +356,14 @@ const Auth = ({ onLogin }) => {
               color: "white",
               border: "none",
               borderRadius: "20px",
-              fontSize: "14px",
               fontWeight: "600",
               cursor: "pointer",
-              transition: "all 0.3s ease"
             }}
           >
             {isAdmin ? "👤 User Login" : "⚙️ Login as Admin"}
           </button>
           {isAdmin && (
-            <p style={{ margin: "10px 0 0 0", fontSize: "12px", color: "#666" }}>
+            <p style={{ marginTop: "8px", fontSize: "12px", color: "#666" }}>
               Admin credentials: username: admin, password: 1234
             </p>
           )}

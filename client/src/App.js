@@ -22,68 +22,32 @@ import TransportBooking from "./components/TransportBooking";
 import TransportDetail from "./components/TransportDetail";
 import BookingFlow from "./components/BookingFlow";
 import UserManagement from "./components/UserManagement";
+import logo from "./assets/horizontal logo.png"; 
 
-// CeylonEye Logo Component (currently unused but kept for future use)
-// eslint-disable-next-line no-unused-vars
-const CeylonEyeLogo = ({ size = "large" }) => {
-  const logoSize = size === "large" ? "120px" : "60px";
-  const textSize = size === "large" ? "2.5rem" : "1.5rem";
-  
+// CeylonEye Logo Component
+export const CeylonEyeLogo = ({ size = "large" }) => {
+  const logoSize = size === "large" ? "140px" : "80px";
+  const textSize = size === "large" ? "2.8rem" : "1.8rem";
+
   return (
-    <div style={{ textAlign: "center", marginBottom: "10px" }}>
-      <div style={{ 
-        width: logoSize, 
-        height: logoSize, 
-        margin: "0 auto 15px auto",
-        position: "relative"
-      }}>
-        {/* Sri Lanka Outline */}
-        <svg width={logoSize} height={logoSize} viewBox="0 0 100 100" style={{ position: "absolute", top: 0, left: 0 }}>
-          {/* Sri Lanka Island Shape */}
-          <path
-            d="M20 30 L25 25 L35 20 L45 18 L55 20 L65 25 L75 30 L80 35 L82 45 L80 55 L75 65 L70 70 L60 75 L50 78 L40 75 L30 70 L25 65 L22 55 L20 45 Z"
-            fill="none"
-            stroke="#2d5a27"
-            strokeWidth="3"
-          />
-          {/* Mountains */}
-          <path
-            d="M30 45 L35 40 L40 42 L45 38 L50 40 L55 35 L60 37 L65 40"
-            fill="none"
-            stroke="#2d5a27"
-            strokeWidth="1.5"
-          />
-          {/* Palm Trees */}
-          <path
-            d="M35 60 L35 70 M32 65 L38 65 M33 62 L37 62"
-            fill="none"
-            stroke="#2d5a27"
-            strokeWidth="1.5"
-          />
-          <path
-            d="M45 65 L45 72 M42 68 L48 68 M43 66 L47 66"
-            fill="none"
-            stroke="#2d5a27"
-            strokeWidth="1.5"
-          />
-          {/* Water lines */}
-          <path
-            d="M25 75 Q30 73 35 75 Q40 77 45 75 Q50 73 55 75 Q60 77 65 75 Q70 73 75 75"
-            fill="none"
-            stroke="#2d5a27"
-            strokeWidth="1"
-          />
-        </svg>
+    <div style={{ textAlign: "center", marginBottom: "15px" }}>
+      <div
+        style={{
+          width: logoSize,
+          height: logoSize,
+          margin: "0 auto 20px auto",
+          position: "relative",
+          transition: "transform 0.3s ease",
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+      >
+        <img
+          src={logo}
+          alt="CeylonEye Logo"
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
+        />
       </div>
-      <h1 style={{ 
-        margin: "0", 
-        fontSize: textSize, 
-        fontWeight: "bold",
-        color: "#2d5a27",
-        letterSpacing: "2px"
-      }}>
-        CEYLONEYE
-      </h1>
     </div>
   );
 };
@@ -98,7 +62,7 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userData = localStorage.getItem("user");
-    
+
     if (token && userData) {
       try {
         setUser(JSON.parse(userData));
@@ -128,13 +92,13 @@ function App() {
         street: currentUser.address?.street || "",
         city: currentUser.address?.city || "",
         country: currentUser.address?.country || "Sri Lanka",
-        postalCode: currentUser.address?.postalCode || ""
+        postalCode: currentUser.address?.postalCode || "",
       },
       preferences: {
         language: currentUser.preferences?.language || "English",
         currency: currentUser.preferences?.currency || "USD",
-        notifications: currentUser.preferences?.notifications !== false
-      }
+        notifications: currentUser.preferences?.notifications !== false,
+      },
     });
     setShowProfile(true);
   };
@@ -160,13 +124,15 @@ function App() {
 
   if (loading) {
     return (
-      <div style={{ 
-        minHeight: "100vh", 
-        backgroundColor: "#f8fff8",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
-      }}>
+      <div
+        style={{
+          minHeight: "100vh",
+          backgroundColor: "#f8fff8",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <h2 style={{ color: "#4a7c59" }}>Loading...</h2>
       </div>
     );
@@ -178,111 +144,90 @@ function App() {
 
   return (
     <Router>
-      <div style={{ 
-        minHeight: "100vh", 
-        backgroundColor: "#f8fff8",
-        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif"
-      }}>
-        <header style={{
-          background: "rgba(255, 255, 255, 0.1)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
-          padding: "20px 0",
-          marginBottom: "20px",
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          position: "sticky",
-          top: 0,
-          zIndex: 1000
-        }}>
-          <div style={{ 
-            maxWidth: "1400px", 
-            margin: "0 auto", 
-            padding: "0 20px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between"
-          }}>
+      <div
+        style={{
+          minHeight: "100vh",
+          backgroundColor: "#f8fff8",
+          fontFamily:
+            "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif",
+        }}
+      >
+        <header
+          style={{
+            backgroundColor: "white",
+            padding: "20px 0",
+            marginBottom: "25px",
+            boxShadow: "0 2px 8px rgba(45, 90, 39, 0.1)",
+            borderBottom: "2px solid #4a7c59",
+          }}
+        >
+          <div
+            style={{
+              maxWidth: "1400px",
+              margin: "0 auto",
+              padding: "0 20px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             {/* Logo on the left */}
             <div style={{ display: "flex", alignItems: "center" }}>
-              <div style={{ 
-                width: "50px", 
-                height: "50px", 
-                marginRight: "15px",
-                position: "relative"
-              }}>
-                <svg width="50" height="50" viewBox="0 0 100 100" style={{ position: "absolute", top: 0, left: 0 }}>
-                  <path
-                    d="M20 30 L25 25 L35 20 L45 18 L55 20 L65 25 L75 30 L80 35 L82 45 L80 55 L75 65 L70 70 L60 75 L50 78 L40 75 L30 70 L25 65 L22 55 L20 45 Z"
-                    fill="none"
-                    stroke="#2d5a27"
-                    strokeWidth="3"
-                  />
-                  <path
-                    d="M30 45 L35 40 L40 42 L45 38 L50 40 L55 35 L60 37 L65 40"
-                    fill="none"
-                    stroke="#2d5a27"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M35 60 L35 70 M32 65 L38 65 M33 62 L37 62"
-                    fill="none"
-                    stroke="#2d5a27"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M45 65 L45 72 M42 68 L48 68 M43 66 L47 66"
-                    fill="none"
-                    stroke="#2d5a27"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M25 75 Q30 73 35 75 Q40 77 45 75 Q50 73 55 75 Q60 77 65 75 Q70 73 75 75"
-                    fill="none"
-                    stroke="#2d5a27"
-                    strokeWidth="1"
-                  />
-                </svg>
+              <div
+                style={{
+                  width: "140px",
+                  height: "80px",
+                  marginRight: "20px",
+                  position: "relative",
+                  transition: "transform 0.3s ease",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "scale(1.05)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = "scale(1)")
+                }
+              >
+                <img
+                  src={logo}
+                  alt="CeylonEye Logo"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                  }}
+                />
               </div>
-              <h1 style={{ 
-                margin: "0", 
-                fontSize: "1.8rem", 
-                fontWeight: "bold",
-                color: "#2d5a27",
-                letterSpacing: "1px",
-                textShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"
-              }}>
-                CEYLONEYE
-              </h1>
             </div>
-
             {/* Navigation on the right */}
-            <nav style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
+            <nav
+              style={{
+                display: "flex",
+                gap: "12px",
+                flexWrap: "wrap",
+                alignItems: "center",
+              }}
+            >
               <Link
                 to="/"
                 style={{
-                  padding: "10px 20px",
-                  background: "rgba(255, 255, 255, 0.2)",
-                  color: "#2d5a27",
-                  border: "1px solid rgba(45, 90, 39, 0.3)",
-                  borderRadius: "25px",
+                  padding: "8px 16px",
+                  backgroundColor: "transparent",
+                  color: "#4a7c59",
+                  border: "2px solid #4a7c59",
+                  borderRadius: "20px",
                   fontSize: "14px",
                   fontWeight: "600",
                   textDecoration: "none",
                   transition: "all 0.3s ease",
-                  backdropFilter: "blur(10px)",
-                  WebkitBackdropFilter: "blur(10px)",
-                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
                 }}
-                onMouseOver={(e) => {
-                  e.target.style.background = "rgba(45, 90, 39, 0.2)";
-                  e.target.style.transform = "translateY(-2px)";
-                  e.target.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "#4a7c59";
+                  e.currentTarget.style.color = "white";
                 }}
-                onMouseOut={(e) => {
-                  e.target.style.background = "rgba(255, 255, 255, 0.2)";
-                  e.target.style.transform = "translateY(0)";
-                  e.target.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.color = "#4a7c59";
                 }}
               >
                 🏠 Home
@@ -290,28 +235,23 @@ function App() {
               <Link
                 to="/services"
                 style={{
-                  padding: "10px 20px",
-                  background: "rgba(255, 255, 255, 0.2)",
-                  color: "#2d5a27",
-                  border: "1px solid rgba(45, 90, 39, 0.3)",
-                  borderRadius: "25px",
+                  padding: "8px 16px",
+                  backgroundColor: "transparent",
+                  color: "#4a7c59",
+                  border: "2px solid #4a7c59",
+                  borderRadius: "20px",
                   fontSize: "14px",
                   fontWeight: "600",
                   textDecoration: "none",
                   transition: "all 0.3s ease",
-                  backdropFilter: "blur(10px)",
-                  WebkitBackdropFilter: "blur(10px)",
-                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
                 }}
-                onMouseOver={(e) => {
-                  e.target.style.background = "rgba(45, 90, 39, 0.2)";
-                  e.target.style.transform = "translateY(-2px)";
-                  e.target.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "#4a7c59";
+                  e.currentTarget.style.color = "white";
                 }}
-                onMouseOut={(e) => {
-                  e.target.style.background = "rgba(255, 255, 255, 0.2)";
-                  e.target.style.transform = "translateY(0)";
-                  e.target.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.color = "#4a7c59";
                 }}
               >
                 🧭 Services
@@ -319,28 +259,23 @@ function App() {
               <Link
                 to="/about"
                 style={{
-                  padding: "10px 20px",
-                  background: "rgba(255, 255, 255, 0.2)",
-                  color: "#2d5a27",
-                  border: "1px solid rgba(45, 90, 39, 0.3)",
-                  borderRadius: "25px",
+                  padding: "8px 16px",
+                  backgroundColor: "transparent",
+                  color: "#4a7c59",
+                  border: "2px solid #4a7c59",
+                  borderRadius: "20px",
                   fontSize: "14px",
                   fontWeight: "600",
                   textDecoration: "none",
                   transition: "all 0.3s ease",
-                  backdropFilter: "blur(10px)",
-                  WebkitBackdropFilter: "blur(10px)",
-                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
                 }}
-                onMouseOver={(e) => {
-                  e.target.style.background = "rgba(45, 90, 39, 0.2)";
-                  e.target.style.transform = "translateY(-2px)";
-                  e.target.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "#4a7c59";
+                  e.currentTarget.style.color = "white";
                 }}
-                onMouseOut={(e) => {
-                  e.target.style.background = "rgba(255, 255, 255, 0.2)";
-                  e.target.style.transform = "translateY(0)";
-                  e.target.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.color = "#4a7c59";
                 }}
               >
                 🏝️ About
@@ -348,28 +283,23 @@ function App() {
               <Link
                 to="/contact"
                 style={{
-                  padding: "10px 20px",
-                  background: "rgba(255, 255, 255, 0.2)",
-                  color: "#2d5a27",
-                  border: "1px solid rgba(45, 90, 39, 0.3)",
-                  borderRadius: "25px",
+                  padding: "8px 16px",
+                  backgroundColor: "transparent",
+                  color: "#4a7c59",
+                  border: "2px solid #4a7c59",
+                  borderRadius: "20px",
                   fontSize: "14px",
                   fontWeight: "600",
                   textDecoration: "none",
                   transition: "all 0.3s ease",
-                  backdropFilter: "blur(10px)",
-                  WebkitBackdropFilter: "blur(10px)",
-                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
                 }}
-                onMouseOver={(e) => {
-                  e.target.style.background = "rgba(45, 90, 39, 0.2)";
-                  e.target.style.transform = "translateY(-2px)";
-                  e.target.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "#4a7c59";
+                  e.currentTarget.style.color = "white";
                 }}
-                onMouseOut={(e) => {
-                  e.target.style.background = "rgba(255, 255, 255, 0.2)";
-                  e.target.style.transform = "translateY(0)";
-                  e.target.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.color = "#4a7c59";
                 }}
               >
                 ✉️ Contact
@@ -377,28 +307,23 @@ function App() {
               <Link
                 to="/faqs"
                 style={{
-                  padding: "10px 20px",
-                  background: "rgba(255, 255, 255, 0.2)",
-                  color: "#2d5a27",
-                  border: "1px solid rgba(45, 90, 39, 0.3)",
-                  borderRadius: "25px",
+                  padding: "8px 16px",
+                  backgroundColor: "transparent",
+                  color: "#4a7c59",
+                  border: "2px solid #4a7c59",
+                  borderRadius: "20px",
                   fontSize: "14px",
                   fontWeight: "600",
                   textDecoration: "none",
                   transition: "all 0.3s ease",
-                  backdropFilter: "blur(10px)",
-                  WebkitBackdropFilter: "blur(10px)",
-                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
                 }}
-                onMouseOver={(e) => {
-                  e.target.style.background = "rgba(45, 90, 39, 0.2)";
-                  e.target.style.transform = "translateY(-2px)";
-                  e.target.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "#4a7c59";
+                  e.currentTarget.style.color = "white";
                 }}
-                onMouseOut={(e) => {
-                  e.target.style.background = "rgba(255, 255, 255, 0.2)";
-                  e.target.style.transform = "translateY(0)";
-                  e.target.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.color = "#4a7c59";
                 }}
               >
                 ❓ FAQs
@@ -406,117 +331,90 @@ function App() {
               <Link
                 to="/booking"
                 style={{
-                  padding: "10px 20px",
-                  background: "linear-gradient(135deg, rgba(45, 90, 39, 0.8), rgba(45, 90, 39, 0.9))",
+                  padding: "8px 16px",
+                  backgroundColor: "#4a7c59",
                   color: "white",
-                  border: "1px solid rgba(45, 90, 39, 0.5)",
-                  borderRadius: "25px",
+                  border: "2px solid #4a7c59",
+                  borderRadius: "20px",
                   fontSize: "14px",
                   fontWeight: "600",
                   textDecoration: "none",
                   transition: "all 0.3s ease",
-                  backdropFilter: "blur(10px)",
-                  WebkitBackdropFilter: "blur(10px)",
-                  boxShadow: "0 4px 15px rgba(45, 90, 39, 0.3)"
                 }}
-                onMouseOver={(e) => {
-                  e.target.style.background = "linear-gradient(135deg, rgba(45, 90, 39, 0.9), rgba(45, 90, 39, 1))";
-                  e.target.style.transform = "translateY(-2px)";
-                  e.target.style.boxShadow = "0 6px 20px rgba(45, 90, 39, 0.4)";
-                }}
-                onMouseOut={(e) => {
-                  e.target.style.background = "linear-gradient(135deg, rgba(45, 90, 39, 0.8), rgba(45, 90, 39, 0.9))";
-                  e.target.style.transform = "translateY(0)";
-                  e.target.style.boxShadow = "0 4px 15px rgba(45, 90, 39, 0.3)";
-                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#3a6c49")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#4a7c59")
+                }
               >
                 📋 Book Now
               </Link>
-              {/* Transport link removed; accessible via Services */}
               <button
                 onClick={openProfile}
                 style={{
-                  padding: "10px 20px",
-                  background: "rgba(255, 255, 255, 0.2)",
-                  color: "#2d5a27",
-                  border: "1px solid rgba(45, 90, 39, 0.3)",
-                  borderRadius: "25px",
+                  padding: "8px 16px",
+                  backgroundColor: "#4a7c59",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "20px",
                   fontSize: "14px",
                   fontWeight: "600",
                   cursor: "pointer",
-                  backdropFilter: "blur(10px)",
-                  WebkitBackdropFilter: "blur(10px)",
-                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
-                  transition: "all 0.3s ease"
+                  transition: "all 0.3s ease",
                 }}
-                onMouseOver={(e) => {
-                  e.target.style.background = "rgba(45, 90, 39, 0.2)";
-                  e.target.style.transform = "translateY(-2px)";
-                  e.target.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
-                }}
-                onMouseOut={(e) => {
-                  e.target.style.background = "rgba(255, 255, 255, 0.2)";
-                  e.target.style.transform = "translateY(0)";
-                  e.target.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
-                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#3a6c49")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#4a7c59")
+                }
               >
                 👤 Edit Profile
               </button>
               <button
                 onClick={handleLogout}
                 style={{
-                  padding: "10px 20px",
-                  background: "linear-gradient(135deg, rgba(220, 53, 69, 0.8), rgba(220, 53, 69, 0.9))",
+                  padding: "8px 16px",
+                  backgroundColor: "#dc3545",
                   color: "white",
-                  border: "1px solid rgba(220, 53, 69, 0.5)",
-                  borderRadius: "25px",
+                  border: "none",
+                  borderRadius: "20px",
                   fontSize: "14px",
                   fontWeight: "600",
                   cursor: "pointer",
-                  backdropFilter: "blur(10px)",
-                  WebkitBackdropFilter: "blur(10px)",
-                  boxShadow: "0 4px 15px rgba(220, 53, 69, 0.3)",
-                  transition: "all 0.3s ease"
+                  transition: "all 0.3s ease",
                 }}
-                onMouseOver={(e) => {
-                  e.target.style.background = "linear-gradient(135deg, rgba(220, 53, 69, 0.9), rgba(220, 53, 69, 1))";
-                  e.target.style.transform = "translateY(-2px)";
-                  e.target.style.boxShadow = "0 6px 20px rgba(220, 53, 69, 0.4)";
-                }}
-                onMouseOut={(e) => {
-                  e.target.style.background = "linear-gradient(135deg, rgba(220, 53, 69, 0.8), rgba(220, 53, 69, 0.9))";
-                  e.target.style.transform = "translateY(0)";
-                  e.target.style.boxShadow = "0 4px 15px rgba(220, 53, 69, 0.3)";
-                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#c82333")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#dc3545")
+                }
               >
                 🚪 Logout
               </button>
-              {user.role === 'admin' && (
+              {user.role === "admin" && (
                 <Link
                   to="/admin"
                   style={{
-                    padding: "10px 20px",
-                    background: "rgba(255, 255, 255, 0.2)",
+                    padding: "8px 16px",
+                    backgroundColor: "transparent",
                     color: "#dc3545",
-                    border: "1px solid rgba(220, 53, 69, 0.3)",
-                    borderRadius: "25px",
+                    border: "2px solid #dc3545",
+                    borderRadius: "20px",
                     fontSize: "14px",
                     fontWeight: "600",
                     textDecoration: "none",
                     transition: "all 0.3s ease",
-                    backdropFilter: "blur(10px)",
-                    WebkitBackdropFilter: "blur(10px)",
-                    boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
                   }}
-                  onMouseOver={(e) => {
-                    e.target.style.background = "rgba(220, 53, 69, 0.2)";
-                    e.target.style.transform = "translateY(-2px)";
-                    e.target.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.15)";
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "#dc3545";
+                    e.currentTarget.style.color = "white";
                   }}
-                  onMouseOut={(e) => {
-                    e.target.style.background = "rgba(255, 255, 255, 0.2)";
-                    e.target.style.transform = "translateY(0)";
-                    e.target.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "transparent";
+                    e.currentTarget.style.color = "#dc3545";
                   }}
                 >
                   ⚙️ Admin
@@ -525,10 +423,14 @@ function App() {
             </nav>
           </div>
         </header>
-
-        <main style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
+        <main
+          style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}
+        >
           <Routes>
-            <Route path="/" element={<Homepage user={user} onLogout={handleLogout} />} />
+            <Route
+              path="/"
+              element={<Homepage user={user} onLogout={handleLogout} />}
+            />
             <Route path="/services" element={<Services />} />
             <Route path="/services/accommodation" element={<Accommodation />} />
             <Route path="/services/locations" element={<Locations />} />
@@ -538,10 +440,16 @@ function App() {
             <Route path="/faqs" element={<FAQs />} />
             <Route path="/booking" element={<BookingFlow />} />
             <Route path="/transport" element={<TransportBooking />} />
-            <Route path="/transport/provider/:id" element={<TransportDetail />} />
+            <Route
+              path="/transport/provider/:id"
+              element={<TransportDetail />}
+            />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/transport" element={<TransportList />} />
-            <Route path="/admin/accommodations" element={<AdminAccommodations />} />
+            <Route
+              path="/admin/accommodations"
+              element={<AdminAccommodations />}
+            />
             <Route path="/admin/locations" element={<AdminLocations />} />
             <Route path="/admin/activities" element={<AdminActivities />} />
             <Route path="/admin/bookings" element={<AdminBookings />} />
@@ -550,91 +458,157 @@ function App() {
             <Route path="/admin/users" element={<UserManagement />} />
           </Routes>
         </main>
-
         {showProfile && profileData && (
-          <div style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1000,
-            padding: "20px"
-          }}>
-            <div style={{
-              backgroundColor: "white",
-              borderRadius: "15px",
-              padding: "30px",
-              width: "100%",
-              maxWidth: "520px",
-              maxHeight: "90vh",
-              overflow: "auto"
-            }}>
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(0,0,0,0.5)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 1000,
+              padding: "20px",
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: "white",
+                borderRadius: "15px",
+                padding: "30px",
+                width: "100%",
+                maxWidth: "520px",
+                maxHeight: "90vh",
+                overflow: "auto",
+              }}
+            >
               <h2 style={{ color: "#2d5a27", marginBottom: "25px" }}>
                 Edit Profile
               </h2>
               <form onSubmit={submitProfile}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginBottom: "20px" }}>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "15px",
+                    marginBottom: "20px",
+                  }}
+                >
                   <div>
-                    <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
+                    <label
+                      style={{
+                        display: "block",
+                        marginBottom: "8px",
+                        fontWeight: "600",
+                        color: "#2d5a27",
+                      }}
+                    >
                       First Name
                     </label>
                     <input
                       type="text"
                       value={profileData.firstName}
-                      onChange={(e) => setProfileData({ ...profileData, firstName: e.target.value })}
+                      onChange={(e) =>
+                        setProfileData({
+                          ...profileData,
+                          firstName: e.target.value,
+                        })
+                      }
                       style={{
                         width: "100%",
                         padding: "10px",
                         border: "2px solid #e8f5e8",
                         borderRadius: "6px",
                         fontSize: "14px",
-                        boxSizing: "border-box"
+                        boxSizing: "border-box",
+                        transition: "border-color 0.3s ease",
                       }}
+                      onFocus={(e) =>
+                        (e.currentTarget.style.borderColor = "#4a7c59")
+                      }
+                      onBlur={(e) =>
+                        (e.currentTarget.style.borderColor = "#e8f5e8")
+                      }
                     />
                   </div>
                   <div>
-                    <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
+                    <label
+                      style={{
+                        display: "block",
+                        marginBottom: "8px",
+                        fontWeight: "600",
+                        color: "#2d5a27",
+                      }}
+                    >
                       Last Name
                     </label>
                     <input
                       type="text"
                       value={profileData.lastName}
-                      onChange={(e) => setProfileData({ ...profileData, lastName: e.target.value })}
+                      onChange={(e) =>
+                        setProfileData({
+                          ...profileData,
+                          lastName: e.target.value,
+                        })
+                      }
                       style={{
                         width: "100%",
                         padding: "10px",
                         border: "2px solid #e8f5e8",
                         borderRadius: "6px",
                         fontSize: "14px",
-                        boxSizing: "border-box"
+                        boxSizing: "border-box",
+                        transition: "border-color 0.3s ease",
                       }}
+                      onFocus={(e) =>
+                        (e.currentTarget.style.borderColor = "#4a7c59")
+                      }
+                      onBlur={(e) =>
+                        (e.currentTarget.style.borderColor = "#e8f5e8")
+                      }
                     />
                   </div>
                 </div>
                 <div style={{ marginBottom: "20px" }}>
-                  <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#2d5a27" }}>
+                  <label
+                    style={{
+                      display: "block",
+                      marginBottom: "8px",
+                      fontWeight: "600",
+                      color: "#2d5a27",
+                    }}
+                  >
                     Phone Number
                   </label>
                   <input
                     type="tel"
                     value={profileData.phone}
-                    onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
+                    onChange={(e) =>
+                      setProfileData({ ...profileData, phone: e.target.value })
+                    }
                     style={{
                       width: "100%",
                       padding: "10px",
                       border: "2px solid #e8f5e8",
                       borderRadius: "6px",
                       fontSize: "14px",
-                      boxSizing: "border-box"
+                      boxSizing: "border-box",
+                      transition: "border-color 0.3s ease",
                     }}
+                    onFocus={(e) =>
+                      (e.currentTarget.style.borderColor = "#4a7c59")
+                    }
+                    onBlur={(e) =>
+                      (e.currentTarget.style.borderColor = "#e8f5e8")
+                    }
                   />
                 </div>
-                <div style={{ display: "flex", gap: "10px", marginTop: "25px" }}>
+                <div
+                  style={{ display: "flex", gap: "10px", marginTop: "25px" }}
+                >
                   <button
                     type="submit"
                     style={{
@@ -646,8 +620,15 @@ function App() {
                       borderRadius: "6px",
                       fontSize: "14px",
                       fontWeight: "600",
-                      cursor: "pointer"
+                      cursor: "pointer",
+                      transition: "background-color 0.3s ease",
                     }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#3a6c49")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#4a7c59")
+                    }
                   >
                     Update Profile
                   </button>
@@ -663,8 +644,15 @@ function App() {
                       borderRadius: "6px",
                       fontSize: "14px",
                       fontWeight: "600",
-                      cursor: "pointer"
+                      cursor: "pointer",
+                      transition: "background-color 0.3s ease",
                     }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#5a6268")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#6c757d")
+                    }
                   >
                     Cancel
                   </button>
@@ -673,69 +661,75 @@ function App() {
             </div>
           </div>
         )}
-
-        <footer style={{
-          backgroundColor: "white",
-          color: "#4a7c59",
-          padding: "15px 0",
-          marginTop: "40px",
-          borderTop: "2px solid #4a7c59",
-          boxShadow: "0 -2px 8px rgba(45, 90, 39, 0.1)"
-        }}>
-          <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "10px", textAlign: "center" }}>
-            <div style={{ 
-              width: "30px", 
-              height: "30px", 
-              marginRight: "10px",
-              position: "relative"
-            }}>
-              <svg width="30" height="30" viewBox="0 0 100 100" style={{ position: "absolute", top: 0, left: 0 }}>
-                <path
-                  d="M20 30 L25 25 L35 20 L45 18 L55 20 L65 25 L75 30 L80 35 L82 45 L80 55 L75 65 L70 70 L60 75 L50 78 L40 75 L30 70 L25 65 L22 55 L20 45 Z"
-                  fill="none"
-                  stroke="#2d5a27"
-                  strokeWidth="3"
+        <footer
+          style={{
+            backgroundColor: "white",
+            color: "#4a7c59",
+            padding: "20px 0",
+            marginTop: "40px",
+            borderTop: "2px solid #4a7c59",
+            boxShadow: "0 -2px 8px rgba(45, 90, 39, 0.1)",
+          }}
+        >
+          <div
+            style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "15px",
+                textAlign: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  marginRight: "15px",
+                  position: "relative",
+                  transition: "transform 0.3s ease",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "scale(1.05)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = "scale(1)")
+                }
+              >
+                <img
+                  src={logo}
+                  alt="CeylonEye Logo"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                  }}
                 />
-                <path
-                  d="M30 45 L35 40 L40 42 L45 38 L50 40 L55 35 L60 37 L65 40"
-                  fill="none"
-                  stroke="#2d5a27"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M35 60 L35 70 M32 65 L38 65 M33 62 L37 62"
-                  fill="none"
-                  stroke="#2d5a27"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M45 65 L45 72 M42 68 L48 68 M43 66 L47 66"
-                  fill="none"
-                  stroke="#2d5a27"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M25 75 Q30 73 35 75 Q40 77 45 75 Q50 73 55 75 Q60 77 65 75 Q70 73 75 75"
-                  fill="none"
-                  stroke="#2d5a27"
-                  strokeWidth="1"
-                />
-              </svg>
+              </div>
+              <h3
+                style={{
+                  margin: "0",
+                  fontSize: "1.4rem",
+                  fontWeight: "bold",
+                  color: "#2d5a27",
+                  letterSpacing: "1px",
+                }}
+              >
+                CEYLONEYE
+              </h3>
             </div>
-            <h3 style={{ 
-              margin: "0", 
-              fontSize: "1.2rem", 
-              fontWeight: "bold",
-              color: "#2d5a27",
-              letterSpacing: "1px"
-            }}>
-              CEYLONEYE
-            </h3>
-          </div>
-          <p style={{ margin: "0", opacity: "0.8", fontSize: "0.9rem", textAlign: "center" }}>
-            © 2024 CeylonEye Tourism Management System
-          </p>
+            <p
+              style={{
+                margin: "0",
+                opacity: "0.8",
+                fontSize: "1rem",
+                textAlign: "center",
+              }}
+            >
+              © 2024 CeylonEye Tourism Management System
+            </p>
           </div>
         </footer>
       </div>
