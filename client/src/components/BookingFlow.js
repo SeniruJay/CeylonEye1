@@ -127,7 +127,7 @@ const BookingFlow = () => {
           }
         `}
       </style>
-      <div style={{ maxWidth: "100%", margin: "0", padding: "0 40px", width: "100%" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "40px" }}>
           <h1 style={{ 
