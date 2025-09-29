@@ -9,6 +9,61 @@ const Locations = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [booking, setBooking] = useState(null); // store selected card for booking modal
+  const [validationErrors, setValidationErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Validation functions
+  const validatePhoneNumber = (phone) => {
+    const phoneRegex = /^\d{10}$/;
+    return phoneRegex.test(phone);
+  };
+
+  const validateDate = (date) => {
+    const selectedDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to start of day
+    return selectedDate >= today;
+  };
+
+  const validateForm = (formData) => {
+    const errors = {};
+    
+    // Validate phone number
+    if (!formData.customerPhone) {
+      errors.customerPhone = "Phone number is required";
+    } else if (!validatePhoneNumber(formData.customerPhone)) {
+      errors.customerPhone = "Phone number must be exactly 10 digits";
+    }
+    
+    // Validate date
+    if (!formData.visitDate) {
+      errors.visitDate = "Visit date is required";
+    } else if (!validateDate(formData.visitDate)) {
+      errors.visitDate = "Visit date cannot be in the past";
+    }
+    
+    // Validate name
+    if (!formData.customerName || formData.customerName.trim().length < 2) {
+      errors.customerName = "Full name must be at least 2 characters";
+    }
+    
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.customerEmail) {
+      errors.customerEmail = "Email is required";
+    } else if (!emailRegex.test(formData.customerEmail)) {
+      errors.customerEmail = "Please enter a valid email address";
+    }
+    
+    // Validate group size
+    if (!formData.groupSize || formData.groupSize < 1) {
+      errors.groupSize = "Group size must be at least 1";
+    } else if (formData.groupSize > 50) {
+      errors.groupSize = "Group size cannot exceed 50 people";
+    }
+    
+    return errors;
+  };
 
   useEffect(() => {
     (async () => {
@@ -63,6 +118,14 @@ const Locations = () => {
 
       <style>
         {`
+          html, body, #root {
+            overflow-x: hidden !important;
+            width: 100vw !important;
+            position: relative;
+          }
+          body {
+            overscroll-behavior-x: none;
+          }
           .card-hover { transition: 0.3s; }
           .card-hover:hover { transform: translateY(-6px); box-shadow: 0 12px 28px rgba(0,0,0,0.25); }
 
@@ -91,6 +154,9 @@ const Locations = () => {
           maxWidth: "1200px",
           margin: "0 auto",
           padding: "40px 20px",
+          width: "100%",
+          boxSizing: "border-box",
+          overflowX: "hidden",
         }}
       >
         {/* Banner */}
@@ -301,21 +367,47 @@ const Locations = () => {
               <form
                 onSubmit={async (e) => {
                   e.preventDefault();
+                  setIsSubmitting(true);
+                  setValidationErrors({});
+
                   const fd = new FormData(e.currentTarget);
                   const payload = Object.fromEntries(fd.entries());
+
+                  // Validate form data
+                  const errors = validateForm(payload);
+                  if (Object.keys(errors).length > 0) {
+                    setValidationErrors(errors);
+                    setIsSubmitting(false);
+                    return;
+                  }
+
                   try {
                     await axios.post(
                       "http://localhost:5000/api/bookings-extra/location",
                       {
                         locationId: booking._id,
-                        ...payload,
+                        customerName: payload.customerName,
+                        customerEmail: payload.customerEmail,
+                        customerPhone: payload.customerPhone,
+                        visitDate: payload.visitDate,
                         groupSize: Number(payload.groupSize),
+                        specialRequests: payload.specialRequests || "",
                       }
                     );
-                    alert("Booking created!");
+                    alert("Booking created successfully!");
                     setBooking(null);
-                  } catch {
-                    alert("Booking failed");
+                    setValidationErrors({});
+                  } catch (error) {
+                    console.error("Booking error:", error);
+                    let message = "Booking failed. Please try again.";
+                    if (error.response && error.response.data && error.response.data.message) {
+                      message = error.response.data.message;
+                    } else if (error.response && typeof error.response.data === 'string') {
+                      message = error.response.data;
+                    }
+                    alert(message);
+                  } finally {
+                    setIsSubmitting(false);
                   }
                 }}
               >
@@ -326,59 +418,108 @@ const Locations = () => {
                     gap: 10,
                   }}
                 >
-                  <input
-                    name="customerName"
-                    placeholder="Full name"
-                    required
-                    style={{
-                      padding: 10,
-                      borderRadius: 8,
-                      border: "2px solid #e8f5e8",
-                    }}
-                  />
-                  <input
-                    type="email"
-                    name="customerEmail"
-                    placeholder="Email"
-                    required
-                    style={{
-                      padding: 10,
-                      borderRadius: 8,
-                      border: "2px solid #e8f5e8",
-                    }}
-                  />
-                  <input
-                    name="customerPhone"
-                    placeholder="Phone"
-                    required
-                    style={{
-                      padding: 10,
-                      borderRadius: 8,
-                      border: "2px solid #e8f5e8",
-                    }}
-                  />
-                  <input
-                    type="date"
-                    name="visitDate"
-                    required
-                    style={{
-                      padding: 10,
-                      borderRadius: 8,
-                      border: "2px solid #e8f5e8",
-                    }}
-                  />
-                  <input
-                    type="number"
-                    name="groupSize"
-                    min="1"
-                    defaultValue="1"
-                    required
-                    style={{
-                      padding: 10,
-                      borderRadius: 8,
-                      border: "2px solid #e8f5e8",
-                    }}
-                  />
+                  <div>
+                    <input
+                      name="customerName"
+                      placeholder="Full name"
+                      required
+                      style={{
+                        padding: 10,
+                        borderRadius: 8,
+                        border: validationErrors.customerName ? "2px solid #dc3545" : "2px solid #e8f5e8",
+                        width: "100%",
+                        boxSizing: "border-box"
+                      }}
+                    />
+                    {validationErrors.customerName && (
+                      <div style={{ color: "#dc3545", fontSize: "0.8rem", marginTop: "4px" }}>
+                        {validationErrors.customerName}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      name="customerEmail"
+                      placeholder="Email"
+                      required
+                      style={{
+                        padding: 10,
+                        borderRadius: 8,
+                        border: validationErrors.customerEmail ? "2px solid #dc3545" : "2px solid #e8f5e8",
+                        width: "100%",
+                        boxSizing: "border-box"
+                      }}
+                    />
+                    {validationErrors.customerEmail && (
+                      <div style={{ color: "#dc3545", fontSize: "0.8rem", marginTop: "4px" }}>
+                        {validationErrors.customerEmail}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <input
+                      name="customerPhone"
+                      placeholder="Phone (10 digits)"
+                      required
+                      maxLength="10"
+                      pattern="[0-9]{10}"
+                      style={{
+                        padding: 10,
+                        borderRadius: 8,
+                        border: validationErrors.customerPhone ? "2px solid #dc3545" : "2px solid #e8f5e8",
+                        width: "100%",
+                        boxSizing: "border-box"
+                      }}
+                    />
+                    {validationErrors.customerPhone && (
+                      <div style={{ color: "#dc3545", fontSize: "0.8rem", marginTop: "4px" }}>
+                        {validationErrors.customerPhone}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <input
+                      type="date"
+                      name="visitDate"
+                      required
+                      min={new Date().toISOString().split('T')[0]}
+                      style={{
+                        padding: 10,
+                        borderRadius: 8,
+                        border: validationErrors.visitDate ? "2px solid #dc3545" : "2px solid #e8f5e8",
+                        width: "100%",
+                        boxSizing: "border-box"
+                      }}
+                    />
+                    {validationErrors.visitDate && (
+                      <div style={{ color: "#dc3545", fontSize: "0.8rem", marginTop: "4px" }}>
+                        {validationErrors.visitDate}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <input
+                      type="number"
+                      name="groupSize"
+                      min="1"
+                      max="50"
+                      defaultValue="1"
+                      required
+                      style={{
+                        padding: 10,
+                        borderRadius: 8,
+                        border: validationErrors.groupSize ? "2px solid #dc3545" : "2px solid #e8f5e8",
+                        width: "100%",
+                        boxSizing: "border-box"
+                      }}
+                    />
+                    {validationErrors.groupSize && (
+                      <div style={{ color: "#dc3545", fontSize: "0.8rem", marginTop: "4px" }}>
+                        {validationErrors.groupSize}
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <textarea
                   name="specialRequests"
@@ -395,22 +536,28 @@ const Locations = () => {
                 <div style={{ marginTop: 12, display: "flex", gap: 8 }}>
                   <button
                     type="submit"
+                    disabled={isSubmitting}
                     style={{
                       flex: 1,
                       padding: "10px 16px",
-                      background: "#2d6a4f",
+                      background: isSubmitting ? "#6c757d" : "#2d6a4f",
                       color: "#fff",
                       border: "none",
                       borderRadius: 8,
                       fontWeight: 700,
-                      cursor: "pointer",
+                      cursor: isSubmitting ? "not-allowed" : "pointer",
+                      opacity: isSubmitting ? 0.7 : 1,
                     }}
                   >
-                    Confirm
+                    {isSubmitting ? "Processing..." : "Confirm"}
                   </button>
                   <button
                     type="button"
-                    onClick={() => setBooking(null)}
+                    onClick={() => {
+                      setBooking(null);
+                      setValidationErrors({});
+                      setIsSubmitting(false);
+                    }}
                     style={{
                       flex: 1,
                       padding: "10px 16px",
