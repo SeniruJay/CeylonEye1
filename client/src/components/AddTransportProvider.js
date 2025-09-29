@@ -28,6 +28,8 @@ const AddTransportProvider = () => {
     contact: "",
     email: "",
     vehicleType: "",
+    vehicleBrand: "",
+    vehicleModel: "",
     seats: "",
     price: "",
   });
@@ -37,7 +39,7 @@ const AddTransportProvider = () => {
   const validateForm = () => {
     const errors = {};
     const nameRegex = /^[A-Za-z\s]{2,100}$/;
-    const contactRegex = /^[0-9+\-\s]{10,15}$/;
+    const contactRegex = /^\d{10}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const priceRegex = /^\d+(\.\d{1,2})?$/;
     const seatsRegex = /^[1-9][0-9]?$/;
@@ -46,14 +48,19 @@ const AddTransportProvider = () => {
       errors.name = "Name must be 2-100 characters, letters and spaces only";
     }
     if (!contactRegex.test(formData.contact)) {
-      errors.contact =
-        "Contact must be a valid phone number (10-15 digits, +, -, or spaces)";
+      errors.contact = "Contact number must be exactly 10 digits";
     }
     if (formData.email && !emailRegex.test(formData.email)) {
       errors.email = "Please enter a valid email address";
     }
     if (!formData.vehicleType) {
       errors.vehicleType = "Vehicle type is required";
+    }
+    if (!formData.vehicleBrand?.trim()) {
+      errors.vehicleBrand = "Vehicle brand is required";
+    }
+    if (!formData.vehicleModel?.trim()) {
+      errors.vehicleModel = "Vehicle model is required";
     }
     if (
       !seatsRegex.test(formData.seats.toString()) ||
@@ -73,6 +80,33 @@ const AddTransportProvider = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    if (name === "contact") {
+      const digitsOnly = value.replace(/\D/g, "").slice(0, 10);
+      setFormData({ ...formData, contact: digitsOnly });
+      return;
+    }
+    if (name === "seats") {
+      // prevent negatives and clamp between 1 and 50; allow empty while typing
+      if (value === "") {
+        setFormData({ ...formData, seats: "" });
+      } else {
+        const n = parseInt(value, 10);
+        const clamped = isNaN(n) ? "" : Math.max(1, Math.min(50, n));
+        setFormData({ ...formData, seats: clamped });
+      }
+      return;
+    }
+    if (name === "price") {
+      // prevent negatives; allow empty while typing
+      if (value === "") {
+        setFormData({ ...formData, price: "" });
+      } else {
+        const n = parseFloat(value);
+        const clamped = isNaN(n) ? "" : Math.max(0, n);
+        setFormData({ ...formData, price: clamped });
+      }
+      return;
+    }
     setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
   };
 
@@ -206,6 +240,7 @@ const AddTransportProvider = () => {
 
         <form
           onSubmit={handleSubmit}
+          noValidate
           style={{
             backgroundColor: "white",
             padding: "24px",
@@ -298,10 +333,15 @@ const AddTransportProvider = () => {
                   Contact Number *
                 </label>
                 <input
+                  type="tel"
                   name="contact"
                   value={formData.contact}
                   onChange={handleChange}
                   required
+                  inputMode="numeric"
+                  pattern="[0-9]{10}"
+                  maxLength={10}
+                  title="Please enter exactly 10 digits"
                   style={{
                     width: "100%",
                     padding: "10px",
@@ -477,24 +517,40 @@ const AddTransportProvider = () => {
                     fontSize: "14px",
                   }}
                 >
-                  Vehicle Brand
+                  Vehicle Brand *
                 </label>
                 <input
                   name="vehicleBrand"
                   value={formData.vehicleBrand}
                   onChange={handleChange}
+                  required
                   style={{
                     width: "100%",
                     padding: "10px",
-                    border: "1px solid #e8f5e8",
+                    border: `1px solid ${
+                      formErrors.vehicleBrand ? "#dc3545" : "#e8f5e8"
+                    }`,
                     borderRadius: "6px",
                     fontSize: "14px",
                     backgroundColor: "white",
                     transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-                    boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                    boxShadow: `0 1px 3px rgba(0,0,0,0.05) ${
+                      formErrors.vehicleBrand ? ", 0 0 0 2px rgba(220,53,69,0.2)" : ""
+                    }`,
                   }}
                   placeholder="e.g., Toyota"
                 />
+                {formErrors.vehicleBrand && (
+                  <p
+                    style={{
+                      color: "#dc3545",
+                      fontSize: "12px",
+                      marginTop: "4px",
+                    }}
+                  >
+                    {formErrors.vehicleBrand}
+                  </p>
+                )}
               </div>
               <div>
                 <label
@@ -506,24 +562,40 @@ const AddTransportProvider = () => {
                     fontSize: "14px",
                   }}
                 >
-                  Vehicle Model
+                  Vehicle Model *
                 </label>
                 <input
                   name="vehicleModel"
                   value={formData.vehicleModel}
                   onChange={handleChange}
+                  required
                   style={{
                     width: "100%",
                     padding: "10px",
-                    border: "1px solid #e8f5e8",
+                    border: `1px solid ${
+                      formErrors.vehicleModel ? "#dc3545" : "#e8f5e8"
+                    }`,
                     borderRadius: "6px",
                     fontSize: "14px",
                     backgroundColor: "white",
                     transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-                    boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                    boxShadow: `0 1px 3px rgba(0,0,0,0.05) ${
+                      formErrors.vehicleModel ? ", 0 0 0 2px rgba(220,53,69,0.2)" : ""
+                    }`,
                   }}
                   placeholder="e.g., Prius"
                 />
+                {formErrors.vehicleModel && (
+                  <p
+                    style={{
+                      color: "#dc3545",
+                      fontSize: "12px",
+                      marginTop: "4px",
+                    }}
+                  >
+                    {formErrors.vehicleModel}
+                  </p>
+                )}
               </div>
             </div>
             <div
