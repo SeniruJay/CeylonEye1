@@ -5,6 +5,8 @@ const LocationSelection = ({ onNext, onSkip, selectedLocations = [] }) => {
   const [locations, setLocations] = useState([]);
   const [selected, setSelected] = useState(selectedLocations);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [validationError, setValidationError] = useState("");
 
   useEffect(() => {
     fetchLocations();
@@ -12,16 +14,23 @@ const LocationSelection = ({ onNext, onSkip, selectedLocations = [] }) => {
 
   const fetchLocations = async () => {
     try {
+      setError("");
       const response = await axios.get("http://localhost:5000/api/locations");
-      setLocations(response.data);
+      if (response.data && response.data.length > 0) {
+        setLocations(response.data);
+      } else {
+        setError("No locations available at the moment. Please try again later.");
+      }
     } catch (error) {
       console.error("Failed to fetch locations:", error);
+      setError("Failed to load locations. Please check your connection and try again.");
     } finally {
       setLoading(false);
     }
   };
 
   const handleLocationToggle = (location) => {
+    setValidationError("");
     setSelected(prev => {
       const isSelected = prev.find(loc => loc._id === location._id);
       if (isSelected) {
@@ -33,6 +42,19 @@ const LocationSelection = ({ onNext, onSkip, selectedLocations = [] }) => {
   };
 
   const handleNext = () => {
+    // Validation: Check if at least one location is selected
+    if (selected.length === 0) {
+      setValidationError("Please select at least one location to continue.");
+      return;
+    }
+    
+    // Validation: Check if too many locations are selected (optional limit)
+    if (selected.length > 10) {
+      setValidationError("Please select no more than 10 locations for a better experience.");
+      return;
+    }
+    
+    setValidationError("");
     onNext({ locations: selected });
   };
 
@@ -62,6 +84,40 @@ const LocationSelection = ({ onNext, onSkip, selectedLocations = [] }) => {
     );
   }
 
+  if (error) {
+    return (
+      <div style={{ textAlign: "center", padding: "40px" }}>
+        <div style={{ fontSize: "2rem", marginBottom: "20px" }}>⚠️</div>
+        <p style={{ color: "#dc3545", fontSize: "1.1rem", marginBottom: "20px" }}>{error}</p>
+        <button
+          onClick={fetchLocations}
+          style={{
+            padding: "12px 24px",
+            backgroundColor: "#4a7c59",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            fontSize: "1rem",
+            fontWeight: "600",
+            cursor: "pointer",
+            boxShadow: "0 4px 12px rgba(74, 124, 89, 0.3)",
+            transition: "all 0.3s ease"
+          }}
+          onMouseOver={(e) => {
+            e.target.style.backgroundColor = "#3d6b4a";
+            e.target.style.transform = "translateY(-2px)";
+          }}
+          onMouseOut={(e) => {
+            e.target.style.backgroundColor = "#4a7c59";
+            e.target.style.transform = "translateY(0)";
+          }}
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div style={{ textAlign: "center", marginBottom: "30px" }}>
@@ -71,6 +127,20 @@ const LocationSelection = ({ onNext, onSkip, selectedLocations = [] }) => {
         <p style={{ color: "#4a7c59", fontSize: "1.1rem" }}>
           Select the places you'd like to visit in Sri Lanka
         </p>
+        {validationError && (
+          <div style={{
+            backgroundColor: "#f8d7da",
+            color: "#721c24",
+            padding: "12px 20px",
+            borderRadius: "8px",
+            marginTop: "15px",
+            border: "1px solid #f5c6cb",
+            fontSize: "0.9rem",
+            fontWeight: "500"
+          }}>
+            ⚠️ {validationError}
+          </div>
+        )}
       </div>
 
       <div style={{ 
@@ -188,6 +258,11 @@ const LocationSelection = ({ onNext, onSkip, selectedLocations = [] }) => {
       }}>
         <div style={{ color: "#4a7c59", fontSize: "1rem" }}>
           {selected.length} location{selected.length !== 1 ? 's' : ''} selected
+          {selected.length === 0 && (
+            <span style={{ color: "#dc3545", marginLeft: "10px", fontSize: "0.9rem" }}>
+              (Minimum 1 required)
+            </span>
+          )}
         </div>
         <div style={{ display: "flex", gap: "10px" }}>
           <button
@@ -217,28 +292,34 @@ const LocationSelection = ({ onNext, onSkip, selectedLocations = [] }) => {
           </button>
           <button
             onClick={handleNext}
+            disabled={selected.length === 0}
             style={{
               padding: "15px 30px",
-              backgroundColor: "#4a7c59",
+              backgroundColor: selected.length === 0 ? "#6c757d" : "#4a7c59",
               color: "white",
               border: "none",
               borderRadius: "8px",
               fontSize: "1rem",
               fontWeight: "600",
-              cursor: "pointer",
-              boxShadow: "0 4px 12px rgba(74, 124, 89, 0.3)",
-              transition: "all 0.3s ease"
+              cursor: selected.length === 0 ? "not-allowed" : "pointer",
+              boxShadow: selected.length === 0 ? "0 2px 6px rgba(108, 117, 125, 0.2)" : "0 4px 12px rgba(74, 124, 89, 0.3)",
+              transition: "all 0.3s ease",
+              opacity: selected.length === 0 ? 0.6 : 1
             }}
             onMouseOver={(e) => {
-              e.target.style.backgroundColor = "#3d6b4a";
-              e.target.style.transform = "translateY(-2px)";
+              if (selected.length > 0) {
+                e.target.style.backgroundColor = "#3d6b4a";
+                e.target.style.transform = "translateY(-2px)";
+              }
             }}
             onMouseOut={(e) => {
-              e.target.style.backgroundColor = "#4a7c59";
-              e.target.style.transform = "translateY(0)";
+              if (selected.length > 0) {
+                e.target.style.backgroundColor = "#4a7c59";
+                e.target.style.transform = "translateY(0)";
+              }
             }}
           >
-            Next: Transport Selection →
+            {selected.length === 0 ? "Select at least 1 location" : "Next: Transport Selection →"}
           </button>
         </div>
       </div>

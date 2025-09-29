@@ -538,7 +538,12 @@ function App() {
           </div>
         </header>
         <main
-          style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}
+          style={{ 
+            maxWidth: "100%", 
+            margin: "0", 
+            padding: "0 40px",
+            width: "100%"
+          }}
         >
           <Routes>
             <Route
