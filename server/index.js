@@ -39,7 +39,7 @@ app.use("/api/users", userRoutes);
 
 
 // MongoDB Connection
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/tourism_management";
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://asankagayanekanayake_db_user:asa123@cluster0.whwxknj.mongodb.net/tourism_management?retryWrites=true&w=majority&appName=Cluster0";
 const PORT = process.env.PORT || 5000;
 
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
