@@ -57,10 +57,12 @@ const BookingFlow = () => {
   const handleBookingSubmit = async (paymentData) => {
     setLoading(true);
     try {
+      const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+      const resolvedUserId = storedUser?._id || storedUser?.id || storedUser?.userId || null;
       const finalBookingData = {
         ...bookingData,
         payment: paymentData,
-        userId: JSON.parse(localStorage.getItem("user"))?._id,
+        userId: resolvedUserId,
         bookingDate: new Date().toISOString(),
         status: "pending"
       };
