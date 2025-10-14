@@ -147,9 +147,7 @@ function App() {
       <div
         style={{
           minHeight: "100vh",
-          background: "linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #0f0f23 100%)",
-          backgroundSize: "400% 400%",
-          animation: "gradientShift 20s ease infinite",
+          backgroundColor: "#ffffff",
           fontFamily:
             "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif",
         }}
@@ -165,17 +163,18 @@ function App() {
         </style>
         <header
           style={{
-            backgroundColor: "rgba(15, 15, 35, 0.8)",
+            backgroundColor: "rgba(255, 255, 255, 0.05)",
             backdropFilter: "blur(20px)",
-            padding: "16px 0",
-            marginBottom: "25px",
-            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+            padding: "20px 0",
+            marginBottom: "0",
+            boxShadow: "none",
             borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
-            position: "sticky",
+            position: "absolute",
             top: 0,
+            left: 0,
+            right: 0,
             zIndex: 1000,
-            border: "1px solid rgba(255, 255, 255, 0.05)",
-            borderRadius: "0 0 20px 20px",
+            background: "rgba(0, 0, 0, 0.1)",
           }}
         >
           <div
@@ -192,8 +191,8 @@ function App() {
             <div style={{ display: "flex", alignItems: "center" }}>
               <div
                 style={{
-                  width: "140px",
-                  height: "80px",
+                  width: "120px",
+                  height: "60px",
                   marginRight: "24px",
                   position: "relative",
                   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -230,315 +229,286 @@ function App() {
               <Link
                 to="/"
                 style={{
-                  padding: "12px 24px",
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  padding: "12px 20px",
+                  backgroundColor: "rgba(255, 255, 255, 0.08)",
                   color: "rgba(255, 255, 255, 0.9)",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
                   borderRadius: "8px",
-                  fontSize: "15px",
+                  fontSize: "14px",
                   fontWeight: "500",
                   textDecoration: "none",
                   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                   position: "relative",
-                  overflow: "hidden",
-                  backdropFilter: "blur(10px)",
-                  letterSpacing: "0.5px",
+                  letterSpacing: "0.3px",
+                  backdropFilter: "blur(15px)",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
                   e.currentTarget.style.color = "white";
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.3)";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                  e.currentTarget.style.boxShadow = "0 4px 20px rgba(255, 255, 255, 0.1)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
                   e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
                   e.currentTarget.style.transform = "translateY(0)";
                   e.currentTarget.style.boxShadow = "none";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
                 }}
               >
-                Home
+                HOME
               </Link>
               <Link
                 to="/services"
                 style={{
-                  padding: "12px 24px",
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  padding: "12px 20px",
+                  backgroundColor: "rgba(255, 255, 255, 0.08)",
                   color: "rgba(255, 255, 255, 0.9)",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
                   borderRadius: "8px",
-                  fontSize: "15px",
+                  fontSize: "14px",
                   fontWeight: "500",
                   textDecoration: "none",
                   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                   position: "relative",
-                  overflow: "hidden",
-                  backdropFilter: "blur(10px)",
-                  letterSpacing: "0.5px",
+                  letterSpacing: "0.3px",
+                  backdropFilter: "blur(15px)",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
                   e.currentTarget.style.color = "white";
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.3)";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                  e.currentTarget.style.boxShadow = "0 4px 20px rgba(255, 255, 255, 0.1)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
                   e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
                   e.currentTarget.style.transform = "translateY(0)";
                   e.currentTarget.style.boxShadow = "none";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
                 }}
               >
-                Services
+                SERVICES
               </Link>
               <Link
                 to="/about"
                 style={{
-                  padding: "12px 24px",
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  padding: "12px 20px",
+                  backgroundColor: "rgba(255, 255, 255, 0.08)",
                   color: "rgba(255, 255, 255, 0.9)",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
                   borderRadius: "8px",
-                  fontSize: "15px",
+                  fontSize: "14px",
                   fontWeight: "500",
                   textDecoration: "none",
                   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                   position: "relative",
-                  overflow: "hidden",
-                  backdropFilter: "blur(10px)",
-                  letterSpacing: "0.5px",
+                  letterSpacing: "0.3px",
+                  backdropFilter: "blur(15px)",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
                   e.currentTarget.style.color = "white";
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.3)";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                  e.currentTarget.style.boxShadow = "0 4px 20px rgba(255, 255, 255, 0.1)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
                   e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
                   e.currentTarget.style.transform = "translateY(0)";
                   e.currentTarget.style.boxShadow = "none";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
                 }}
               >
-                About
-              </Link>
-              <Link
-                to="/contact"
-                style={{
-                  padding: "12px 24px",
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  color: "rgba(255, 255, 255, 0.9)",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  borderRadius: "8px",
-                  fontSize: "15px",
-                  fontWeight: "500",
-                  textDecoration: "none",
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  position: "relative",
-                  overflow: "hidden",
-                  backdropFilter: "blur(10px)",
-                  letterSpacing: "0.5px",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
-                  e.currentTarget.style.color = "white";
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.3)";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
-                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
-                }}
-              >
-                Contact
+                ABOUT US
               </Link>
               <Link
                 to="/faqs"
                 style={{
-                  padding: "12px 24px",
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  padding: "12px 20px",
+                  backgroundColor: "rgba(255, 255, 255, 0.08)",
                   color: "rgba(255, 255, 255, 0.9)",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
                   borderRadius: "8px",
-                  fontSize: "15px",
+                  fontSize: "14px",
                   fontWeight: "500",
                   textDecoration: "none",
                   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                   position: "relative",
-                  overflow: "hidden",
-                  backdropFilter: "blur(10px)",
-                  letterSpacing: "0.5px",
+                  letterSpacing: "0.3px",
+                  backdropFilter: "blur(15px)",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
                   e.currentTarget.style.color = "white";
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.3)";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                  e.currentTarget.style.boxShadow = "0 4px 20px rgba(255, 255, 255, 0.1)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
                   e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
                   e.currentTarget.style.transform = "translateY(0)";
                   e.currentTarget.style.boxShadow = "none";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
                 }}
               >
-                FAQs
+                FAQ
+              </Link>
+              <Link
+                to="/contact"
+                style={{
+                  padding: "12px 20px",
+                  backgroundColor: "rgba(255, 255, 255, 0.08)",
+                  color: "rgba(255, 255, 255, 0.9)",
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  textDecoration: "none",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  position: "relative",
+                  letterSpacing: "0.3px",
+                  backdropFilter: "blur(15px)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
+                  e.currentTarget.style.color = "white";
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                  e.currentTarget.style.boxShadow = "0 4px 20px rgba(255, 255, 255, 0.1)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
+                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                CONTACT US
               </Link>
               <Link
                 to="/booking"
                 style={{
-                  padding: "12px 24px",
-                  backgroundColor: "rgba(74, 124, 89, 0.8)",
+                  padding: "14px 28px",
+                  backgroundColor: "rgba(255, 255, 255, 0.2)",
                   color: "white",
-                  border: "1px solid rgba(74, 124, 89, 0.6)",
-                  borderRadius: "8px",
-                  fontSize: "15px",
+                  border: "2px solid rgba(255, 255, 255, 0.3)",
+                  borderRadius: "12px",
+                  fontSize: "14px",
                   fontWeight: "600",
                   textDecoration: "none",
                   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  boxShadow: "0 4px 15px rgba(74, 124, 89, 0.3)",
                   position: "relative",
-                  overflow: "hidden",
-                  backdropFilter: "blur(10px)",
                   letterSpacing: "0.5px",
+                  backdropFilter: "blur(20px)",
+                  boxShadow: "0 8px 32px rgba(255, 255, 255, 0.1)",
+                  marginLeft: "12px",
                 }}
                 onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.25)";
                   e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(74, 124, 89, 0.4)";
-                  e.currentTarget.style.backgroundColor = "rgba(74, 124, 89, 0.9)";
-                  e.currentTarget.style.borderColor = "rgba(74, 124, 89, 0.8)";
+                  e.currentTarget.style.boxShadow = "0 12px 40px rgba(255, 255, 255, 0.15)";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.4)";
                 }}
                 onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
                   e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 4px 15px rgba(74, 124, 89, 0.3)";
-                  e.currentTarget.style.backgroundColor = "rgba(74, 124, 89, 0.8)";
-                  e.currentTarget.style.borderColor = "rgba(74, 124, 89, 0.6)";
-                }}
-              >
-                Book Now
-              </Link>
-              <button
-                onClick={openProfile}
-                style={{
-                  padding: "12px 24px",
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  color: "rgba(255, 255, 255, 0.9)",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  borderRadius: "8px",
-                  fontSize: "15px",
-                  fontWeight: "500",
-                  cursor: "pointer",
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  position: "relative",
-                  overflow: "hidden",
-                  backdropFilter: "blur(10px)",
-                  letterSpacing: "0.5px",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
-                  e.currentTarget.style.color = "white";
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.3)";
+                  e.currentTarget.style.boxShadow = "0 8px 32px rgba(255, 255, 255, 0.1)";
                   e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
                 }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
-                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
-                }}
               >
-                Edit Profile
-              </button>
-              <button
-                onClick={handleLogout}
-                style={{
-                  padding: "12px 24px",
-                  backgroundColor: "rgba(220, 53, 69, 0.8)",
-                  color: "white",
-                  border: "1px solid rgba(220, 53, 69, 0.6)",
-                  borderRadius: "8px",
-                  fontSize: "15px",
-                  fontWeight: "500",
-                  cursor: "pointer",
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  position: "relative",
-                  overflow: "hidden",
-                  backdropFilter: "blur(10px)",
-                  letterSpacing: "0.5px",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(220, 53, 69, 0.9)";
-                  e.currentTarget.style.color = "white";
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(220, 53, 69, 0.4)";
-                  e.currentTarget.style.borderColor = "rgba(220, 53, 69, 0.8)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(220, 53, 69, 0.8)";
-                  e.currentTarget.style.color = "white";
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                  e.currentTarget.style.borderColor = "rgba(220, 53, 69, 0.6)";
-                }}
-              >
-                Logout
-              </button>
+                BOOK NOW
+              </Link>
               {user.role === "admin" && (
                 <Link
                   to="/admin"
                   style={{
-                    padding: "12px 24px",
-                    backgroundColor: "rgba(255, 255, 255, 0.05)",
-                    color: "rgba(255, 255, 255, 0.9)",
-                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    padding: "10px 18px",
+                    backgroundColor: "rgba(255, 255, 255, 0.12)",
+                    color: "rgba(255, 255, 255, 0.95)",
+                    border: "1px solid rgba(255, 255, 255, 0.2)",
                     borderRadius: "8px",
-                    fontSize: "15px",
+                    fontSize: "13px",
                     fontWeight: "500",
                     textDecoration: "none",
                     transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                     position: "relative",
-                    overflow: "hidden",
-                    backdropFilter: "blur(10px)",
-                    letterSpacing: "0.5px",
+                    letterSpacing: "0.3px",
+                    marginLeft: "12px",
+                    backdropFilter: "blur(15px)",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
-                    e.currentTarget.style.color = "white";
-                    e.currentTarget.style.transform = "translateY(-2px)";
-                    e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.3)";
-                    e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
+                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.18)";
+                    e.currentTarget.style.transform = "translateY(-1px)";
+                    e.currentTarget.style.boxShadow = "0 4px 20px rgba(255, 255, 255, 0.1)";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
-                    e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
+                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)";
                     e.currentTarget.style.transform = "translateY(0)";
                     e.currentTarget.style.boxShadow = "none";
-                    e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
                   }}
                 >
-                  Admin
+                  ADMIN
                 </Link>
               )}
+              <button
+                onClick={openProfile}
+                style={{
+                  padding: "10px 18px",
+                  backgroundColor: "rgba(255, 255, 255, 0.12)",
+                  color: "rgba(255, 255, 255, 0.95)",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  borderRadius: "8px",
+                  fontSize: "13px",
+                  fontWeight: "500",
+                  cursor: "pointer",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  letterSpacing: "0.3px",
+                  marginLeft: "8px",
+                  backdropFilter: "blur(15px)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.18)";
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                  e.currentTarget.style.boxShadow = "0 4px 20px rgba(255, 255, 255, 0.1)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                PROFILE
+              </button>
+              <button
+                onClick={handleLogout}
+                style={{
+                  padding: "10px 18px",
+                  backgroundColor: "rgba(255, 255, 255, 0.12)",
+                  color: "rgba(255, 255, 255, 0.95)",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  borderRadius: "8px",
+                  fontSize: "13px",
+                  fontWeight: "500",
+                  cursor: "pointer",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  letterSpacing: "0.3px",
+                  marginLeft: "8px",
+                  backdropFilter: "blur(15px)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.18)";
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                  e.currentTarget.style.boxShadow = "0 4px 20px rgba(255, 255, 255, 0.1)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                LOGOUT
+              </button>
             </nav>
           </div>
         </header>
         <main
-          style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 20px" }}
+          style={{ margin: "0", padding: "0" }}
         >
           <Routes>
             <Route

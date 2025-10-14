@@ -17,20 +17,23 @@ const Contact = () => {
     <div
       style={{
         minHeight: "100vh",
-        backgroundImage:
-          "url('https://images.unsplash.com/photo-1581420456035-58b8efadcdea?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHNyaSUyMGxhbmthJTIwYmVhY2h8ZW58MHx8MHx8fDA%3D')",
+        padding: "80px 20px 60px 20px",
+        backgroundImage: "url('https://images.unsplash.com/photo-1734279135115-6d8984e08206?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1074')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
         position: "relative",
       }}
     >
-      {/* Overlay */}
+      {/* Black gradient overlay */}
       <div
         style={{
           position: "absolute",
-          inset: 0,
-          backgroundColor: "rgba(0,0,0,0.55)",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          background: "linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.7) 100%)",
           zIndex: 0,
         }}
       />

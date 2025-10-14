@@ -117,14 +117,13 @@ const AdminAccommodations = () => {
       data.append("city", formData.city);
       data.append("price", formData.price);
       data.append("rating", formData.rating);
-      data.append("availability", formData.availability);
+      data.append("availability", String(formData.availability));
       if (formData.image) {
         data.append("image", formData.image);
       }
       await method(url, data, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
         },
       });
       alert(
