@@ -5,21 +5,23 @@ const About = () => {
     <div
       style={{
         minHeight: "100vh",
-        backgroundImage:
-          "url('https://images.unsplash.com/photo-1566299597203-225f611b865f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDU5fHx8ZW58MHx8fHx8')",
+        padding: "80px 20px 60px 20px",
+        backgroundImage: "url('https://images.unsplash.com/photo-1734279135115-6d8984e08206?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1074')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
         position: "relative",
-        color: "white",
       }}
     >
-      {/* Overlay */}
+      {/* Black gradient overlay */}
       <div
         style={{
           position: "absolute",
-          inset: 0,
-          backgroundColor: "rgba(0,0,0,0.55)",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          background: "linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.7) 100%)",
           zIndex: 0,
         }}
       />
@@ -80,20 +82,32 @@ const About = () => {
         <div
           className="fade-section fade-delay-1"
           style={{
-            borderRadius: "18px",
-            padding: "60px 30px",
-            marginBottom: "30px",
             textAlign: "center",
-            background:
-              "linear-gradient(135deg, rgba(0,0,0,0.65), rgba(0,0,0,0.75)), url('https://media.istockphoto.com/id/1346277278/photo/lighthouse-in-galle-fort.jpg?s=612x612&w=0&k=20&c=-wYOG_WqCtCKqvI-8qAZf14BisAErHFQEar9g9epvgQ=') center/cover no-repeat",
-            boxShadow: "0 12px 32px rgba(0,0,0,0.4)",
+            padding: "40px 20px",
+            marginBottom: "60px",
+            color: "white",
           }}
         >
-          <h1 style={{ margin: 0, fontSize: "2.8rem", fontWeight: 800 }}>
-            About CeylonEye
+          <h1 style={{ 
+            margin: 0, 
+            fontSize: "3.5rem", 
+            fontWeight: 300,
+            letterSpacing: "2px",
+            marginBottom: "20px",
+            textShadow: "2px 2px 4px rgba(0,0,0,0.7)"
+          }}>
+            About Us
           </h1>
-          <p style={{ marginTop: 12, fontSize: "1.2rem", opacity: 0.95 }}>
-            Your companion for authentic Sri Lankan travel
+          <p style={{ 
+            fontSize: "1.3rem", 
+            color: "white",
+            fontWeight: 300,
+            letterSpacing: "1px",
+            maxWidth: "600px",
+            margin: "0 auto",
+            textShadow: "1px 1px 3px rgba(0,0,0,0.7)"
+          }}>
+            Your trusted companion for authentic Sri Lankan adventures
           </p>
         </div>
 
@@ -101,13 +115,15 @@ const About = () => {
         <div
           className="fade-section fade-delay-2"
           style={{
-            background: "white",
-            borderRadius: "16px",
-            padding: "30px",
-            marginBottom: "40px",
-            boxShadow: "0 6px 24px rgba(0,0,0,0.15)",
-            color: "#333",
+            background: "rgba(255, 255, 255, 0.1)",
+            borderRadius: "20px",
+            padding: "40px",
+            marginBottom: "50px",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
+            color: "white",
             lineHeight: 1.8,
+            backdropFilter: "blur(15px)",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
           }}
         >
           <p>
@@ -154,13 +170,15 @@ const About = () => {
             <div
               key={i}
               style={{
-                background: "#ffffff",
-                color: "#333",
+                background: "rgba(255, 255, 255, 0.1)",
+                color: "white",
                 borderRadius: "16px",
                 padding: "24px",
                 textAlign: "center",
-                boxShadow: "0 6px 20px rgba(0,0,0,0.15)",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
                 transition: "0.3s",
+                backdropFilter: "blur(15px)",
+                border: "1px solid rgba(255, 255, 255, 0.2)",
               }}
               onMouseEnter={(e) =>
                 (e.currentTarget.style.transform = "translateY(-6px) scale(1.03)")
@@ -172,7 +190,7 @@ const About = () => {
               <div style={{ fontSize: "2.5rem", marginBottom: 10 }}>
                 {item.icon}
               </div>
-              <h3 style={{ marginBottom: 10, color: "#2d6a4f" }}>
+              <h3 style={{ marginBottom: 10, color: "white", textShadow: "1px 1px 2px rgba(0,0,0,0.7)" }}>
                 {item.title}
               </h3>
               <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>{item.text}</p>

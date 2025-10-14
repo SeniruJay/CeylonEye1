@@ -18,280 +18,341 @@ const Homepage = () => {
   }, []);
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        position: "relative",
-        backgroundImage:
-          "url('https://images.unsplash.com/photo-1646894232861-a0ad84f1ad5d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-      }}
-    >
-      {/* Semi-transparent overlay */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundColor: "rgba(0,0,0,0.45)",
-          zIndex: 0,
-        }}
-      />
-
+    <div style={{ margin: 0, padding: 0 }}>
       <style>{`
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(40px); }
           to { opacity: 1; transform: translateY(0); }
         }
         .fade-in-up { animation: fadeUp 1s ease forwards; }
-
-        /* Gradient text animation */
-        @keyframes gradientText {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+        
+        .hero-section {
+          position: relative;
+          height: 100vh;
+          background: #000000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
         }
-        .animated-gradient {
-          background: linear-gradient(270deg, #ff6ec4, #7873f5, #42e695, #f7971e, #ff6ec4);
-          background-size: 1000% 1000%;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: gradientText 8s ease infinite;
+        
+        .hero-content {
+          text-align: center;
+          color: white;
+          z-index: 2;
+          position: relative;
+        }
+        
+        .hero-title {
+          font-size: 4rem;
+          font-weight: 300;
+          margin: 0 0 20px 0;
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+          letter-spacing: 2px;
+        }
+        
+        .hero-subtitle {
+          font-size: 1.5rem;
+          font-weight: 300;
+          margin: 0;
+          opacity: 0.9;
+          letter-spacing: 1px;
+        }
+        
+        .hero-background {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image: url('https://images.unsplash.com/photo-1566296314736-6eaac1ca0cb9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+          background-size: cover;
+          background-position: center;
+          opacity: 0.4;
+          z-index: 1;
+          animation: slideShow 20s infinite;
+        }
+        
+        @keyframes slideShow {
+          0% { background-image: url('https://images.unsplash.com/photo-1566296314736-6eaac1ca0cb9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'); }
+          25% { background-image: url('https://images.unsplash.com/photo-1539576776193-2c07122e5fee?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1171'); }
+          50% { background-image: url('https://images.unsplash.com/photo-1641482067662-e7d40548bf12?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170'); }
+          75% { background-image: url('https://fos.cmb.ac.lk/blog/wp-content/uploads/2021/06/Featured-Image-3-e1629564214632.jpg'); }
+          100% { background-image: url('https://images.unsplash.com/photo-1566296314736-6eaac1ca0cb9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'); }
+        }
+        
+        .navigation-arrows {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 3;
+        }
+        
+        .nav-arrow {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.2);
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          color: white;
+          font-size: 20px;
+        }
+        
+        .nav-arrow:hover {
+          background: rgba(255, 255, 255, 0.3);
+          border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .nav-arrow.left {
+          left: 30px;
+        }
+        
+        .nav-arrow.right {
+          right: 30px;
         }
       `}</style>
 
-      {/* Page content */}
-      <div style={{ position: "relative", zIndex: 1, padding: "20px" }}>
-        {/* ✅ Hero Banner */}
-        <div
-          className="scroll-animate"
-          style={{
-            borderRadius: "18px",
-            overflow: "hidden",
-            marginBottom: "50px",
-            boxShadow: "0 16px 40px rgba(0,0,0,0.4)",
-            position: "relative",
-            height: 450,
-            background: `linear-gradient(rgba(104, 104, 98, 0.3), rgba(0, 0, 0, 0.54)), 
-                        url('https://images.unsplash.com/photo-1549893079-842e6d278e2a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80') 
-                        center/cover no-repeat`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "0 50px",
-          }}
-        >
-          {/* Left Side Text */}
-          <div style={{ maxWidth: "600px", color: "white" }}>
-            <h1
-              className="animated-gradient"
-              style={{
-                margin: 0,
-                fontSize: "3.8rem",
-                fontWeight: 900,
-                lineHeight: 1.2,
-                textShadow: "2px 4px 12px rgba(0,0,0,0.5)",
-              }}
-            >
-              Discover Sri Lanka with CEYLONEYE
-            </h1>
-            <p style={{ marginTop: 12, fontSize: "1.3rem", color: "#f8f9fa" }}>
-              Paradise island of golden beaches, rich heritage & lush adventures.
+      {/* Hero Section */}
+      <div className="hero-section">
+        <div className="hero-background"></div>
+        
+        {/* Navigation Arrows */}
+        <div className="navigation-arrows nav-arrow left">
+          ‹
+        </div>
+        <div className="navigation-arrows nav-arrow right">
+          ›
+        </div>
+        
+        {/* Hero Content */}
+        <div className="hero-content">
+          <h1 className="hero-title"><b>CeylonEye</b></h1>
+          <p className="hero-subtitle">Walk the island's untold paths</p>
+        </div>
+      </div>
+
+      {/* Scrollable Content Sections */}
+      <div style={{ backgroundColor: "#ffffff", padding: "80px 0" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
+          
+          {/* Popular Destinations Section */}
+          <div className="scroll-animate" style={{ marginBottom: "80px", textAlign: "center" }}>
+            <h2 style={{ 
+              fontSize: "2.5rem", 
+              fontWeight: "300", 
+              color: "#333", 
+              marginBottom: "20px",
+              letterSpacing: "1px"
+            }}>
+              Popular Destinations
+            </h2>
+            <p style={{ 
+              fontSize: "1.1rem", 
+              color: "#666", 
+              marginBottom: "50px",
+              maxWidth: "600px",
+              margin: "0 auto 50px auto"
+            }}>
+              Discover breathtaking locations that will create memories to last a lifetime
             </p>
-            <Link
-              to="/services"
-              style={{
-                display: "inline-block",
-                marginTop: "18px",
-                padding: "14px 28px",
-                background: "#2d6a4f",
-                color: "white",
-                fontWeight: "700",
-                fontSize: "1.1rem",
-                borderRadius: "12px",
-                textDecoration: "none",
-                boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
-                transition: "all 0.3s ease",
-              }}
-            >
-              🌴 Start Your Journey
-            </Link>
-          </div>
-
-          {/* Right Side Image */}
-          <div
-            style={{
-              flex: "0 0 40%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <img
-              src="https://yeadimtours.com/wp-content/uploads/2020/01/%D7%A7%D7%95%D7%9C%D7%90%D7%96-%D7%A1%D7%A8%D7%99-%D7%9C%D7%A0%D7%A7%D7%94-1.jpg"
-              alt="Sri Lanka Collage"
-              style={{
-                width: "100%",
-                maxWidth: "420px",
-                height: "auto",
-                borderRadius: "14px",
-                boxShadow: "0 10px 25px rgba(0,0,0,0.4)",
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Highlights */}
-        <div
-          className="scroll-animate"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: 20,
-            marginBottom: 50,
-          }}
-        >
-          {[
-            { icon: "🏖️", title: "Beaches", text: "Relax at Mirissa, Bentota & Unawatuna" },
-            { icon: "🏯", title: "Culture", text: "Sigiriya, Anuradhapura & Kandy" },
-            { icon: "🐆", title: "Wildlife", text: "Yala & Minneriya safaris" },
-            { icon: "🚂", title: "Scenic Rides", text: "World-famous train to Ella" },
-          ].map((h, i) => (
-            <div
-              key={i}
-              style={{
-                background: "rgba(255, 255, 255, 0.15)",
-                borderRadius: 16,
-                padding: 24,
-                border: "1px solid rgba(255, 255, 255, 0.3)",
-                boxShadow: "0 8px 20px rgba(0,0,0,0.25)",
-                textAlign: "center",
-                backdropFilter: "blur(12px)",
-                WebkitBackdropFilter: "blur(12px)",
-                transition: "transform 0.3s, box-shadow 0.3s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-6px)";
-                e.currentTarget.style.boxShadow = "0 12px 30px rgba(0,0,0,0.35)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.25)";
-              }}
-            >
-              <div style={{ fontSize: "2.6rem" }}>{h.icon}</div>
-              <div
-                style={{
-                  color: "#fff",
-                  fontWeight: 800,
-                  marginTop: 10,
-                  fontSize: "1.3rem",
-                  textShadow: "1px 1px 4px rgba(0,0,0,0.6)",
-                }}
-              >
-                {h.title}
-              </div>
-              <div
-                style={{
-                  color: "#eee",
-                  marginTop: 6,
-                  fontSize: "1rem",
-                  textShadow: "1px 1px 3px rgba(0,0,0,0.5)",
-                }}
-              >
-                {h.text}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Top Destinations */}
-        <div className="scroll-animate" style={{ marginBottom: 50 }}>
-          <h2 style={{ color: "white", fontWeight: 800, marginBottom: 20 }}>
-            🌏 Top Destinations
-          </h2>
-          <div
-            style={{
+            
+            <div style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-              gap: 20,
-            }}
-          >
-            {[
-              {
-                img: "https://images.unsplash.com/photo-1642095012245-bda8033e8ee3?fm=jpg&q=60&w=3000",
-                name: "Kandy",
-              },
-              {
-                img: "https://media.istockphoto.com/id/684887518/photo/deer-at-hortons-plain-national-park-sri-lanka.jpg?s=612x612&w=0&k=20&c=KetJ0uC9sjNxwNEH_LEdHEV2nNOFUMPMpjvaijF4Rdk=",
-                name: "Nuwara Eliya",
-              },
-              {
-                img: "https://images.unsplash.com/photo-1591351373936-3d5bf044b854?fm=jpg&q=60&w=3000",
-                name: "Mirissa",
-              },
-              {
-                img: "https://images.unsplash.com/photo-1546656495-fc838de15e5c?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0",
-                name: "Colombo",
-              },
-            ].map((d, i) => (
-              <div
-                key={i}
-                style={{
-                  borderRadius: 16,
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: "30px",
+              marginTop: "40px"
+            }}>
+              {[
+                {
+                  img: "https://images.unsplash.com/photo-1548957175-84f0f9af659e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1182",
+                  title: "Mountain Adventures",
+                  description: "Experience breathtaking peaks and serene valleys"
+                },
+                {
+                  img: "https://images.unsplash.com/photo-1613693699413-7dde0260f437?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1169",
+                  title: "Tropical Beaches",
+                  description: "Relax on pristine shores with crystal clear waters"
+                },
+                {
+                  img: "https://images.unsplash.com/photo-1559038300-2c1c9d6d7d5f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170",
+                  title: "Forest Retreats",
+                  description: "Immerse yourself in nature's tranquil embrace"
+                }
+              ].map((destination, index) => (
+                <div key={index} style={{
+                  borderRadius: "15px",
                   overflow: "hidden",
-                  boxShadow: "0 6px 18px rgba(0,0,0,0.25)",
-                  position: "relative",
-                  transition: "transform 0.3s",
+                  boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                  backgroundColor: "white"
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-                onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-              >
-                <img
-                  src={d.img}
-                  alt={d.name}
-                  style={{ width: "100%", height: 180, objectFit: "cover" }}
-                />
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    padding: "10px",
-                    background: "rgba(0,0,0,0.55)",
-                    color: "white",
-                    fontWeight: 700,
-                    textAlign: "center",
-                  }}
-                >
-                  {d.name}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-10px)";
+                  e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.15)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 10px 30px rgba(0,0,0,0.1)";
+                }}>
+                  <img 
+                    src={destination.img} 
+                    alt={destination.title}
+                    style={{ width: "100%", height: "200px", objectFit: "cover" }}
+                  />
+                  <div style={{ padding: "25px" }}>
+                    <h3 style={{ 
+                      fontSize: "1.3rem", 
+                      fontWeight: "600", 
+                      color: "#333", 
+                      marginBottom: "10px" 
+                    }}>
+                      {destination.title}
+                    </h3>
+                    <p style={{ 
+                      color: "#666", 
+                      lineHeight: "1.6",
+                      margin: 0
+                    }}>
+                      {destination.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Why Choose Us */}
-        <div
-          className="scroll-animate"
-          style={{
-            background: "rgba(255,255,255,0.9)",
-            borderRadius: 16,
-            padding: 30,
-            boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
-            marginBottom: 50,
-          }}
-        >
-          <h2 style={{ color: "#2d5a27", fontWeight: 800, marginBottom: 20 }}>
-            🌟 Why Choose CeylonEye?
-          </h2>
-          <ul style={{ color: "#333", lineHeight: "1.8" }}>
-            <li>✔️ Personalized tours & transport</li>
-            <li>✔️ Local expert guides</li>
-            <li>✔️ 24/7 customer support</li>
-            <li>✔️ Best price guarantee</li>
-          </ul>
+          {/* Travel Experiences Section */}
+          <div className="scroll-animate" style={{ marginBottom: "80px", textAlign: "center" }}>
+            <h2 style={{ 
+              fontSize: "2.5rem", 
+              fontWeight: "300", 
+              color: "#333", 
+              marginBottom: "20px",
+              letterSpacing: "1px"
+            }}>
+              Unique Travel Experiences
+            </h2>
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+              gap: "30px",
+              marginTop: "40px"
+            }}>
+              {[
+                { icon: "🏔️", title: "Adventure Tours", description: "Thrilling experiences in nature" },
+                { icon: "🏛️", title: "Cultural Heritage", description: "Explore ancient traditions and history" },
+                { icon: "🍽️", title: "Culinary Journeys", description: "Taste authentic local cuisines" },
+                { icon: "🧘", title: "Wellness Retreats", description: "Rejuvenate your mind and body" }
+              ].map((experience, index) => (
+                <div key={index} style={{
+                  padding: "40px 20px",
+                  backgroundColor: "white",
+                  borderRadius: "15px",
+                  boxShadow: "0 5px 20px rgba(0,0,0,0.08)",
+                  transition: "transform 0.3s ease"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-5px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}>
+                  <div style={{ fontSize: "3rem", marginBottom: "20px" }}>{experience.icon}</div>
+                  <h3 style={{ 
+                    fontSize: "1.2rem", 
+                    fontWeight: "600", 
+                    color: "#333", 
+                    marginBottom: "15px" 
+                  }}>
+                    {experience.title}
+                  </h3>
+                  <p style={{ color: "#666", lineHeight: "1.6", margin: 0 }}>
+                    {experience.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Testimonials Section */}
+          <div className="scroll-animate" style={{ textAlign: "center" }}>
+            <h2 style={{ 
+              fontSize: "2.5rem", 
+              fontWeight: "300", 
+              color: "#333", 
+              marginBottom: "50px",
+              letterSpacing: "1px"
+            }}>
+              What Our Travelers Say
+            </h2>
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: "30px"
+            }}>
+              {[
+                {
+                  name: "Sarah Johnson",
+                  location: "New York, USA",
+                  text: "An absolutely magical experience! The attention to detail and personalized service made our trip unforgettable.",
+                  rating: "★★★★★"
+                },
+                {
+                  name: "Michael Chen",
+                  location: "Toronto, Canada", 
+                  text: "Professional, reliable, and truly passionate about creating amazing travel experiences. Highly recommended!",
+                  rating: "★★★★★"
+                },
+                {
+                  name: "Emma Wilson",
+                  location: "London, UK",
+                  text: "From planning to execution, everything was perfect. They turned our dream vacation into reality.",
+                  rating: "★★★★★"
+                }
+              ].map((testimonial, index) => (
+                <div key={index} style={{
+                  backgroundColor: "white",
+                  padding: "30px",
+                  borderRadius: "15px",
+                  boxShadow: "0 5px 20px rgba(0,0,0,0.08)",
+                  textAlign: "left"
+                }}>
+                  <div style={{ 
+                    color: "#ffd700", 
+                    fontSize: "1.2rem", 
+                    marginBottom: "15px" 
+                  }}>
+                    {testimonial.rating}
+                  </div>
+                  <p style={{ 
+                    color: "#666", 
+                    lineHeight: "1.6", 
+                    marginBottom: "20px",
+                    fontStyle: "italic"
+                  }}>
+                    "{testimonial.text}"
+                  </p>
+                  <div>
+                    <div style={{ 
+                      fontWeight: "600", 
+                      color: "#333", 
+                      marginBottom: "5px" 
+                    }}>
+                      {testimonial.name}
+                    </div>
+                    <div style={{ color: "#999", fontSize: "0.9rem" }}>
+                      {testimonial.location}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

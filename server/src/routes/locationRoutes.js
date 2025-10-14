@@ -2,6 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const Location = require("../models/Location");
+const { verifyToken, requireAdmin } = require("./authRoutes");
 const router = express.Router();
 
 // Configure Multer for file uploads
@@ -36,7 +37,7 @@ const upload = multer({
 });
 
 // Create a new location with image upload
-router.post("/", upload.single("image"), async (req, res) => {
+router.post("/", verifyToken, requireAdmin, upload.single("image"), async (req, res) => {
   try {
     const { name, region, type, description } = req.body;
     const image = req.file ? `/uploads/location/${req.file.filename}` : "";
@@ -53,7 +54,7 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
-// Get all locations with filtering
+// Get all locations with filtering (public endpoint - no auth required)
 router.get("/", async (req, res) => {
   try {
     const { q, region, type } = req.query;
@@ -80,7 +81,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Update a location with optional image upload
-router.put("/:id", upload.single("image"), async (req, res) => {
+router.put("/:id", verifyToken, requireAdmin, upload.single("image"), async (req, res) => {
   try {
     const { name, region, type, description } = req.body;
     const updateData = { name, region, type, description };
@@ -99,7 +100,7 @@ router.put("/:id", upload.single("image"), async (req, res) => {
 });
 
 // Delete a location
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verifyToken, requireAdmin, async (req, res) => {
   try {
     const doc = await Location.findByIdAndDelete(req.params.id);
     if (!doc) return res.status(404).json({ error: "Not found" });

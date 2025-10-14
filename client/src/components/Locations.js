@@ -18,7 +18,8 @@ const Locations = () => {
         setItems(data);
         setError(null);
       } catch (e) {
-        setError("Failed to load locations");
+        console.error("Error loading locations:", e);
+        setError("Failed to load locations. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -44,7 +45,7 @@ const Locations = () => {
       style={{
         minHeight: "100vh",
         backgroundImage:
-          "url('https://holidayssrilanka.com/wp-content/uploads/2019/02/3-145.jpg')",
+          "url('https://images.unsplash.com/photo-1708338914870-797de586672d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1332')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",

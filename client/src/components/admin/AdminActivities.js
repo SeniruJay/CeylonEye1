@@ -113,14 +113,13 @@ const AdminActivities = () => {
       data.append("location", formData.location);
       data.append("duration", formData.duration);
       data.append("price", formData.price);
-      data.append("availability", formData.availability);
+      data.append("availability", String(formData.availability));
       if (formData.image) {
         data.append("image", formData.image);
       }
       await method(url, data, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
         },
       });
       alert(
