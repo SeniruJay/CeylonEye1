@@ -9,6 +9,7 @@ const AddTransportProvider = () => {
     name: "",
     contact: "",
     email: "",
+    location: "",
     vehicleType: "",
     vehicleBrand: "",
     vehicleModel: "",
@@ -27,6 +28,7 @@ const AddTransportProvider = () => {
     name: "",
     contact: "",
     email: "",
+    location: "",
     vehicleType: "",
     vehicleBrand: "",
     vehicleModel: "",
@@ -55,6 +57,9 @@ const AddTransportProvider = () => {
     }
     if (!formData.vehicleType) {
       errors.vehicleType = "Vehicle type is required";
+    }
+    if (!formData.location?.trim()) {
+      errors.location = "Location is required";
     }
     if (!formData.vehicleBrand?.trim()) {
       errors.vehicleBrand = "Vehicle brand is required";
@@ -392,9 +397,7 @@ const AddTransportProvider = () => {
                   style={{
                     width: "100%",
                     padding: "10px",
-                    border: `1px solid ${
-                      formErrors.email ? "#dc3545" : "#e8f5e8"
-                    }`,
+                    border: `1px solid ${formErrors.email ? "#dc3545" : "#e8f5e8"}`,
                     borderRadius: "6px",
                     fontSize: "14px",
                     backgroundColor: "white",
@@ -403,7 +406,7 @@ const AddTransportProvider = () => {
                       formErrors.email ? ", 0 0 0 2px rgba(220,53,69,0.2)" : ""
                     }`,
                   }}
-                  placeholder="Enter email (optional)"
+                  placeholder="Enter email address"
                 />
                 {formErrors.email && (
                   <p
@@ -414,6 +417,53 @@ const AddTransportProvider = () => {
                     }}
                   >
                     {formErrors.email}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginTop: "16px" }}>
+              <div>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "6px",
+                    fontWeight: "600",
+                    color: "#2d5a27",
+                    fontSize: "14px",
+                  }}
+                >
+                  Location (District / City) *
+                </label>
+                <input
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  required
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    border: `1px solid ${
+                      formErrors.location ? "#dc3545" : "#e8f5e8"
+                    }`,
+                    borderRadius: "6px",
+                    fontSize: "14px",
+                    backgroundColor: "white",
+                    transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+                    boxShadow: `0 1px 3px rgba(0,0,0,0.05) ${
+                      formErrors.location ? ", 0 0 0 2px rgba(220,53,69,0.2)" : ""
+                    }`,
+                  }}
+                  placeholder="e.g., Colombo / Malabe"
+                />
+                {formErrors.location && (
+                  <p
+                    style={{
+                      color: "#dc3545",
+                      fontSize: "12px",
+                      marginTop: "4px",
+                    }}
+                  >
+                    {formErrors.location}
                   </p>
                 )}
               </div>

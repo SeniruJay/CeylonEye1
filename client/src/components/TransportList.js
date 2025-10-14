@@ -513,7 +513,7 @@ const TransportList = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{
-              width: "100%",
+              width: "360px",
               padding: "12px 40px 12px 16px",
               border: "1px solid #e8f5e8",
               borderRadius: "8px",
@@ -584,10 +584,11 @@ const TransportList = () => {
                   {[
                     "Name",
                     "Contact",
+                    "Location",
                     "Vehicle Type",
                     "Description",
                     "Availability",
-                    "Actions",
+                    "Actions"
                   ].map((header, idx) => (
                     <th
                       key={idx}
@@ -627,13 +628,52 @@ const TransportList = () => {
                         fontWeight: "500",
                       }}
                     >
-                      {provider.name}
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                        <div
+                          style={{
+                            width: "64px",
+                            height: "48px",
+                            borderRadius: "8px",
+                            overflow: "hidden",
+                            backgroundColor: "#f0f7f0",
+                            border: "1px solid #e8f5e8",
+                            flex: "0 0 auto",
+                          }}
+                        >
+                          { (provider.images && provider.images.length > 0) || provider.image ? (
+                            <img
+                              src={
+                                (provider.images && provider.images.length > 0)
+                                  ? `http://localhost:5000${provider.images[0]}`
+                                  : `http://localhost:5000${provider.image}`
+                              }
+                              alt={`${provider.name} thumbnail`}
+                              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                            />
+                          ) : (
+                            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#6c757d", fontSize: "10px" }}>
+                              No image
+                            </div>
+                          )}
+                        </div>
+                        <div style={{ minWidth: 0 }}>
+                          <div style={{ fontWeight: 600, color: "#2d5a27" }}>
+                            {provider.name}
+                          </div>
+                          <div style={{ color: "#666", fontSize: "12px" }}>
+                            {(provider.vehicleBrand || "") + (provider.vehicleModel ? ` ${provider.vehicleModel}` : "")}
+                          </div>
+                        </div>
+                      </div>
                     </td>
                     <td style={{ padding: "16px", fontSize: "14px" }}>
                       {provider.contact}
                     </td>
                     <td style={{ padding: "16px", fontSize: "14px" }}>
                       {provider.vehicleType}
+                    </td>
+                    <td style={{ padding: "16px", fontSize: "14px" }}>
+                      {provider.location}
                     </td>
                     <td style={{ padding: "16px", fontSize: "14px" }}>
                       {provider.description || "-"}

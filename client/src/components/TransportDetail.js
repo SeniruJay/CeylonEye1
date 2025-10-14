@@ -141,6 +141,7 @@ const TransportDetail = () => {
         <div style={{ background: "white", padding: 18, borderRadius: 12, border: "1px solid #e8f5e8" }}>
           <h4 style={{ marginTop: 0, color: "#2d5a27" }}>Details</h4>
           <p style={{ margin: "0 0 10px 0" }}><strong>Seats:</strong> {provider.seats}</p>
+          <p style={{ margin: "0 0 10px 0" }}><strong>Location:</strong> {provider.location}</p>
           <p style={{ margin: "0 0 10px 0" }}><strong>Availability:</strong> {provider.availability ? "Available" : "Booked"}</p>
           {provider.vehicleBrand || provider.vehicleModel ? (
             <p style={{ margin: "0 0 10px 0" }}><strong>Vehicle:</strong> {provider.vehicleBrand} {provider.vehicleModel}</p>

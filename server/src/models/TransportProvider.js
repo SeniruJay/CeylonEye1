@@ -4,6 +4,7 @@ const transportProviderSchema = new mongoose.Schema({
   name: { type: String, required: true },
   contact: { type: String, required: true },
   email: { type: String, default: "" },
+  location: { type: String, required: true },
   vehicleType: { type: String, required: true },
   vehicleBrand: { type: String, default: "" },
   vehicleModel: { type: String, default: "" },

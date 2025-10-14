@@ -16,12 +16,32 @@ const AdminBookings = () => {
   const baseUrl = "http://localhost:5000";
   const bookingsPerPage = 10;
 
+  // Derive a human-readable service type label for each booking
+  const serviceLabel = (booking) => {
+    // Comprehensive/multiple booking indicator
+    if (booking?.comprehensiveData || (typeof booking?.specialRequests === 'string' && booking.specialRequests.includes('Comprehensive booking'))) {
+      return 'Multiple booking';
+    }
+    // Explicit type from unified endpoint
+    const t = (booking?.type || '').toLowerCase();
+    if (t === 'transport') return 'Transport';
+    if (t === 'accommodation') return 'Accommodation';
+    if (t === 'location') return 'Location';
+    if (t === 'activity') return 'Activity';
+    // Heuristics for legacy data
+    if (booking?.vehicleType || booking?.providerId) return 'Transport';
+    if (booking?.accommodationName) return 'Accommodation';
+    if (booking?.locationName) return 'Location';
+    if (booking?.activityName) return 'Activity';
+    return 'Service';
+  };
+
   const loadBookings = async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No authentication token found");
-      const { data } = await axios.get(`${baseUrl}/api/bookings`, {
+      const { data } = await axios.get(`${baseUrl}/api/bookings/all`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBookings(data);
@@ -288,7 +308,7 @@ const AdminBookings = () => {
           const tableData = filteredBookings.map((booking) => [
             booking.bookingId || "N/A",
             booking.customerName || "Unknown",
-            booking.providerName || "Unknown",
+            serviceLabel(booking),
             `${booking.currency || "USD"} ${
               booking.totalPrice?.toFixed(2) || "0.00"
             }`,
@@ -479,7 +499,7 @@ const AdminBookings = () => {
           const tableData = filteredBookings.map((booking) => [
             booking.bookingId || "N/A",
             booking.customerName || "Unknown",
-            booking.providerName || "Unknown",
+            serviceLabel(booking),
             `${booking.currency || "USD"} ${
               booking.totalPrice?.toFixed(2) || "0.00"
             }`,
@@ -1059,7 +1079,7 @@ const AdminBookings = () => {
                     </td>
                     <td style={{ padding: "12px", fontSize: "14px" }}>
                       <div style={{ fontWeight: "600", color: "#2d5a27" }}>
-                        {booking.providerName || "Unknown"}
+                        {serviceLabel(booking)}
                       </div>
                       <div style={{ color: "#666", fontSize: "12px" }}>
                         {booking.vehicleType || "N/A"}

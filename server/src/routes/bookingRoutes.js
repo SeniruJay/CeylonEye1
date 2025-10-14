@@ -1,6 +1,9 @@
 const express = require("express");
 const Booking = require("../models/Booking");
 const TransportProvider = require("../models/TransportProvider");
+const AccommodationBooking = require("../models/AccommodationBooking");
+const LocationBooking = require("../models/LocationBooking");
+const ActivityBooking = require("../models/ActivityBooking");
 const { generateBookingPDF } = require("../services/pdfService");
 const router = express.Router();
 
@@ -24,6 +27,93 @@ router.get("/", async (req, res) => {
       error: "Failed to fetch bookings",
       message: err.message 
     });
+  }
+});
+
+// Get ALL booking types for admin (transport + accommodation + location + activity)
+router.get("/all", async (req, res) => {
+  try {
+    const [transport, accommodations, locations, activities] = await Promise.all([
+      Booking.find().populate('providerId', 'name contact vehicleType').lean(),
+      AccommodationBooking.find().lean(),
+      LocationBooking.find().lean(),
+      ActivityBooking.find().lean(),
+    ]);
+
+    const currency = 'LKR';
+
+    const normalizeTransport = transport.map((b) => ({
+      ...b,
+      type: 'transport',
+      providerName: b.providerName,
+      currency: b.currency || currency,
+    }));
+
+    const normalizeAccom = accommodations.map((b) => ({
+      _id: b._id,
+      bookingId: b.bookingId,
+      customerName: b.customerName,
+      customerEmail: b.customerEmail,
+      customerPhone: b.customerPhone,
+      providerName: b.accommodationName,
+      totalPrice: b.totalPrice,
+      status: b.status,
+      adminStatus: 'n/a',
+      userConfirmed: false,
+      paymentStatus: 'n/a',
+      createdAt: b.createdAt,
+      updatedAt: b.updatedAt,
+      type: 'accommodation',
+      currency,
+    }));
+
+    const normalizeLocations = locations.map((b) => ({
+      _id: b._id,
+      bookingId: b.bookingId,
+      customerName: b.customerName,
+      customerEmail: b.customerEmail,
+      customerPhone: b.customerPhone,
+      providerName: b.locationName,
+      totalPrice: b.totalPrice,
+      status: b.status,
+      adminStatus: 'n/a',
+      userConfirmed: false,
+      paymentStatus: 'n/a',
+      createdAt: b.createdAt,
+      updatedAt: b.updatedAt,
+      type: 'location',
+      currency,
+    }));
+
+    const normalizeActivities = activities.map((b) => ({
+      _id: b._id,
+      bookingId: b.bookingId,
+      customerName: b.customerName,
+      customerEmail: b.customerEmail,
+      customerPhone: b.customerPhone,
+      providerName: b.activityName,
+      totalPrice: b.totalPrice,
+      status: b.status,
+      adminStatus: 'n/a',
+      userConfirmed: false,
+      paymentStatus: 'n/a',
+      createdAt: b.createdAt,
+      updatedAt: b.updatedAt,
+      type: 'activity',
+      currency,
+    }));
+
+    const all = [
+      ...normalizeTransport,
+      ...normalizeAccom,
+      ...normalizeLocations,
+      ...normalizeActivities,
+    ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    res.json(all);
+  } catch (err) {
+    console.error("Error fetching all bookings:", err);
+    res.status(500).json({ error: "Failed to fetch bookings", message: err.message });
   }
 });
 
