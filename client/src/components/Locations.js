@@ -42,6 +42,59 @@ const Locations = () => {
     });
   }, [items, search, region, type]);
 
+  // Get today's date in YYYY-MM-DD format for min date
+  const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  // Validate phone number (max 10 digits)
+  const validatePhone = (phone) => {
+    const phoneRegex = /^[0-9]{1,10}$/;
+    if (!phone) return "Phone number is required";
+    if (!phoneRegex.test(phone)) return "Phone number must be 1-10 digits only";
+    if (phone.length < 10) return "Phone number must be 10 digits";
+    return "";
+  };
+
+  // Validate email
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) return "Email is required";
+    if (!emailRegex.test(email)) return "Please enter a valid email";
+    return "";
+  };
+
+  // Validate name
+  const validateName = (name) => {
+    if (!name) return "Name is required";
+    if (name.length < 2) return "Name must be at least 2 characters";
+    if (name.length > 50) return "Name must be less than 50 characters";
+    if (!/^[a-zA-Z\s]+$/.test(name)) return "Name can only contain letters and spaces";
+    return "";
+  };
+
+  // Validate date
+  const validateDate = (date) => {
+    if (!date) return "Visit date is required";
+    const selectedDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (selectedDate < today) return "Cannot select past dates";
+    return "";
+  };
+
+  // Validate group size
+  const validateGroupSize = (size) => {
+    if (!size) return "Group size is required";
+    if (size < 1) return "Group size must be at least 1";
+    if (size > 50) return "Group size cannot exceed 50";
+    return "";
+  };
+
   return (
     <div
       style={{
@@ -330,6 +383,29 @@ const Locations = () => {
                   e.preventDefault();
                   const fd = new FormData(e.currentTarget);
                   const payload = Object.fromEntries(fd.entries());
+                  
+                  // Validate all fields
+                  const errors = {};
+                  errors.customerName = validateName(payload.customerName);
+                  errors.customerEmail = validateEmail(payload.customerEmail);
+                  errors.customerPhone = validatePhone(payload.customerPhone);
+                  errors.visitDate = validateDate(payload.visitDate);
+                  errors.groupSize = validateGroupSize(payload.groupSize);
+                  
+                  // Filter out empty error messages
+                  const actualErrors = Object.fromEntries(
+                    Object.entries(errors).filter(([_, value]) => value !== "")
+                  );
+                  
+                  // If there are errors, show them and don't submit
+                  if (Object.keys(actualErrors).length > 0) {
+                    setFormErrors(actualErrors);
+                    return;
+                  }
+                  
+                  // Clear errors if validation passes
+                  setFormErrors({});
+                  
                   try {
                     const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
                     const resolvedUserId = storedUser?._id || storedUser?.id || storedUser?.userId || null;
@@ -344,6 +420,7 @@ const Locations = () => {
                     );
                     setSuccess({ bookingId: data.bookingId });
                     setBooking(null);
+                    setFormErrors({});
                   } catch {
                     setError("Failed to create booking. Please try again.");
                   }
@@ -356,59 +433,111 @@ const Locations = () => {
                     gap: 10,
                   }}
                 >
-                  <input
-                    name="customerName"
-                    placeholder="Full name"
-                    required
-                    style={{
-                      padding: 10,
-                      borderRadius: 8,
-                      border: "2px solid #e8f5e8",
-                    }}
-                  />
-                  <input
-                    type="email"
-                    name="customerEmail"
-                    placeholder="Email"
-                    required
-                    style={{
-                      padding: 10,
-                      borderRadius: 8,
-                      border: "2px solid #e8f5e8",
-                    }}
-                  />
-                  <input
-                    name="customerPhone"
-                    placeholder="Phone"
-                    required
-                    style={{
-                      padding: 10,
-                      borderRadius: 8,
-                      border: "2px solid #e8f5e8",
-                    }}
-                  />
-                  <input
-                    type="date"
-                    name="visitDate"
-                    required
-                    style={{
-                      padding: 10,
-                      borderRadius: 8,
-                      border: "2px solid #e8f5e8",
-                    }}
-                  />
-                  <input
-                    type="number"
-                    name="groupSize"
-                    min="1"
-                    defaultValue="1"
-                    required
-                    style={{
-                      padding: 10,
-                      borderRadius: 8,
-                      border: "2px solid #e8f5e8",
-                    }}
-                  />
+                  <div>
+                    <input
+                      name="customerName"
+                      placeholder="Full name"
+                      required
+                      maxLength="50"
+                      pattern="[a-zA-Z\s]+"
+                      title="Name can only contain letters and spaces"
+                      style={{
+                        padding: 10,
+                        borderRadius: 8,
+                        border: formErrors.customerName ? "2px solid red" : "2px solid #e8f5e8",
+                        width: "100%",
+                      }}
+                    />
+                    {formErrors.customerName && (
+                      <small style={{ color: "red", fontSize: "12px" }}>
+                        {formErrors.customerName}
+                      </small>
+                    )}
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      name="customerEmail"
+                      placeholder="Email"
+                      required
+                      style={{
+                        padding: 10,
+                        borderRadius: 8,
+                        border: formErrors.customerEmail ? "2px solid red" : "2px solid #e8f5e8",
+                        width: "100%",
+                      }}
+                    />
+                    {formErrors.customerEmail && (
+                      <small style={{ color: "red", fontSize: "12px" }}>
+                        {formErrors.customerEmail}
+                      </small>
+                    )}
+                  </div>
+                  <div>
+                    <input
+                      name="customerPhone"
+                      placeholder="Phone (10 digits)"
+                      required
+                      maxLength="10"
+                      pattern="[0-9]{10}"
+                      title="Phone number must be exactly 10 digits"
+                      onInput={(e) => {
+                        // Only allow numbers
+                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                      }}
+                      style={{
+                        padding: 10,
+                        borderRadius: 8,
+                        border: formErrors.customerPhone ? "2px solid red" : "2px solid #e8f5e8",
+                        width: "100%",
+                      }}
+                    />
+                    {formErrors.customerPhone && (
+                      <small style={{ color: "red", fontSize: "12px" }}>
+                        {formErrors.customerPhone}
+                      </small>
+                    )}
+                  </div>
+                  <div>
+                    <input
+                      type="date"
+                      name="visitDate"
+                      required
+                      min={getTodayDate()}
+                      style={{
+                        padding: 10,
+                        borderRadius: 8,
+                        border: formErrors.visitDate ? "2px solid red" : "2px solid #e8f5e8",
+                        width: "100%",
+                      }}
+                    />
+                    {formErrors.visitDate && (
+                      <small style={{ color: "red", fontSize: "12px" }}>
+                        {formErrors.visitDate}
+                      </small>
+                    )}
+                  </div>
+                  <div>
+                    <input
+                      type="number"
+                      name="groupSize"
+                      min="1"
+                      max="50"
+                      defaultValue="1"
+                      required
+                      style={{
+                        padding: 10,
+                        borderRadius: 8,
+                        border: formErrors.groupSize ? "2px solid red" : "2px solid #e8f5e8",
+                        width: "100%",
+                      }}
+                    />
+                    {formErrors.groupSize && (
+                      <small style={{ color: "red", fontSize: "12px" }}>
+                        {formErrors.groupSize}
+                      </small>
+                    )}
+                  </div>
                 </div>
                 <textarea
                   name="specialRequests"
@@ -440,7 +569,10 @@ const Locations = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setBooking(null)}
+                    onClick={() => {
+                      setBooking(null);
+                      setFormErrors({});
+                    }}
                     style={{
                       flex: 1,
                       padding: "10px 16px",
