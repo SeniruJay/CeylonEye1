@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const Booking = require("../models/Booking");
 const TransportProvider = require("../models/TransportProvider");
 const AccommodationBooking = require("../models/AccommodationBooking");
@@ -128,6 +129,95 @@ router.get("/by-user/:userId", async (req, res) => {
   } catch (err) {
     console.error("Error fetching user bookings:", err);
     res.status(500).json({ error: "Failed to fetch user bookings", message: err.message });
+  }
+});
+
+// Get ALL booking types for a specific user (transport + accommodation + location + activity)
+router.get('/all/by-user/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const [transport, accommodations, locations, activities] = await Promise.all([
+      Booking.find({ userId }).populate('providerId', 'name contact vehicleType').lean(),
+      AccommodationBooking.find({ userId }).lean(),
+      LocationBooking.find({ userId }).lean(),
+      ActivityBooking.find({ userId }).lean(),
+    ]);
+
+    const currency = 'LKR';
+
+    const normalizeTransport = transport.map((b) => ({
+      ...b,
+      type: 'transport',
+      providerName: b.providerName,
+      vehicleType: b.vehicleType,
+      currency: b.currency || currency,
+    }));
+
+    const normalizeAccom = accommodations.map((b) => ({
+      _id: b._id,
+      bookingId: b.bookingId,
+      customerName: b.customerName,
+      customerEmail: b.customerEmail,
+      customerPhone: b.customerPhone,
+      providerName: b.accommodationName,
+      totalPrice: b.totalPrice,
+      status: b.status,
+      adminStatus: 'n/a',
+      userConfirmed: false,
+      paymentStatus: 'n/a',
+      createdAt: b.createdAt,
+      updatedAt: b.updatedAt,
+      type: 'accommodation',
+      currency,
+    }));
+
+    const normalizeLocations = locations.map((b) => ({
+      _id: b._id,
+      bookingId: b.bookingId,
+      customerName: b.customerName,
+      customerEmail: b.customerEmail,
+      customerPhone: b.customerPhone,
+      providerName: b.locationName,
+      totalPrice: b.totalPrice,
+      status: b.status,
+      adminStatus: 'n/a',
+      userConfirmed: false,
+      paymentStatus: 'n/a',
+      createdAt: b.createdAt,
+      updatedAt: b.updatedAt,
+      type: 'location',
+      currency,
+    }));
+
+    const normalizeActivities = activities.map((b) => ({
+      _id: b._id,
+      bookingId: b.bookingId,
+      customerName: b.customerName,
+      customerEmail: b.customerEmail,
+      customerPhone: b.customerPhone,
+      providerName: b.activityName,
+      totalPrice: b.totalPrice,
+      status: b.status,
+      adminStatus: 'n/a',
+      userConfirmed: false,
+      paymentStatus: 'n/a',
+      createdAt: b.createdAt,
+      updatedAt: b.updatedAt,
+      type: 'activity',
+      currency,
+    }));
+
+    const all = [
+      ...normalizeTransport,
+      ...normalizeAccom,
+      ...normalizeLocations,
+      ...normalizeActivities,
+    ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    res.json(all);
+  } catch (err) {
+    console.error('Error fetching user all bookings:', err);
+    res.status(500).json({ error: 'Failed to fetch user bookings', message: err.message });
   }
 });
 
@@ -435,8 +525,11 @@ router.put('/:id/pay', async (req, res) => {
 router.get('/total/by-user/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ error: 'Invalid userId' });
+    }
     const result = await Booking.aggregate([
-      { $match: { userId: new require('mongoose').Types.ObjectId(userId) } },
+      { $match: { userId: new mongoose.Types.ObjectId(userId) } },
       { $group: { _id: null, total: { $sum: '$totalPrice' } } }
     ]);
     const total = result[0]?.total || 0;

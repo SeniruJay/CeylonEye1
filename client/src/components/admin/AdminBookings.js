@@ -47,7 +47,12 @@ const AdminBookings = () => {
       setBookings(data);
 
       const userIds = [
-        ...new Set(data.map((booking) => booking.userId).filter(Boolean)),
+        ...new Set(
+          data
+            .map((booking) => booking.userId)
+            .filter(Boolean)
+            .map((id) => (id && typeof id === 'object' && id.toString ? id.toString() : String(id)))
+        ),
       ];
       const totals = {};
       for (const userId of userIds) {

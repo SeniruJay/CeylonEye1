@@ -11,7 +11,8 @@ const locationBookingSchema = new mongoose.Schema({
   groupSize: { type: Number, required: true },
   specialRequests: { type: String, default: "" },
   totalPrice: { type: Number, required: true },
-  status: { type: String, enum: ['pending', 'confirmed', 'cancelled'], default: 'pending' }
+  status: { type: String, enum: ['pending', 'confirmed', 'cancelled'], default: 'pending' },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null }
 }, { timestamps: true });
 
 module.exports = mongoose.model("LocationBooking", locationBookingSchema);

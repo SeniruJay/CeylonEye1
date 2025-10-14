@@ -22,6 +22,7 @@ import TransportBooking from "./components/TransportBooking";
 import TransportDetail from "./components/TransportDetail";
 import BookingFlow from "./components/BookingFlow";
 import UserManagement from "./components/UserManagement";
+import MyBookings from "./components/MyBookings";
 import logo from "./assets/horizontal logo.png"; 
 
 // CeylonEye Logo Component
@@ -414,6 +415,38 @@ function App() {
               >
                 BOOK NOW
               </Link>
+              {user.role !== "admin" && (
+                <Link
+                  to="/my-bookings"
+                  style={{
+                    padding: "10px 18px",
+                    backgroundColor: "rgba(255, 255, 255, 0.12)",
+                    color: "rgba(255, 255, 255, 0.95)",
+                    border: "1px solid rgba(255, 255, 255, 0.2)",
+                    borderRadius: "8px",
+                    fontSize: "13px",
+                    fontWeight: "500",
+                    textDecoration: "none",
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                    position: "relative",
+                    letterSpacing: "0.3px",
+                    marginLeft: "8px",
+                    backdropFilter: "blur(15px)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.18)";
+                    e.currentTarget.style.transform = "translateY(-1px)";
+                    e.currentTarget.style.boxShadow = "0 4px 20px rgba(255, 255, 255, 0.1)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)";
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "none";
+                  }}
+                >
+                  MY BOOKINGS
+                </Link>
+              )}
               {user.role === "admin" && (
                 <Link
                   to="/admin"
@@ -528,6 +561,7 @@ function App() {
               path="/transport/provider/:id"
               element={<TransportDetail />}
             />
+            <Route path="/my-bookings" element={<MyBookings />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/transport" element={<TransportList />} />
             <Route

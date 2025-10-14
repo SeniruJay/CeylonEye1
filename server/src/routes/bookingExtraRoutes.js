@@ -17,7 +17,7 @@ const generateBookingId = (prefix) => {
 // Accommodation booking
 router.post("/accommodation", async (req, res) => {
   try {
-    const { accommodationId, customerName, customerEmail, customerPhone, checkInDate, checkOutDate, guests, specialRequests } = req.body;
+    const { accommodationId, customerName, customerEmail, customerPhone, checkInDate, checkOutDate, guests, specialRequests, userId } = req.body;
     if (!accommodationId || !customerName || !customerEmail || !customerPhone || !checkInDate || !checkOutDate || !guests) {
       return res.status(400).json({ error: "Missing required fields" });
     }
@@ -35,7 +35,8 @@ router.post("/accommodation", async (req, res) => {
       guests,
       specialRequests: specialRequests || "",
       totalPrice,
-      status: 'pending'
+      status: 'pending',
+      userId: userId || null
     });
     res.status(201).json(booking);
   } catch (err) { res.status(500).json({ error: "Failed to book accommodation", message: err.message }); }
@@ -44,7 +45,7 @@ router.post("/accommodation", async (req, res) => {
 // Location booking (e.g., guided visit)
 router.post("/location", async (req, res) => {
   try {
-    const { locationId, customerName, customerEmail, customerPhone, visitDate, groupSize, specialRequests } = req.body;
+    const { locationId, customerName, customerEmail, customerPhone, visitDate, groupSize, specialRequests, userId } = req.body;
     if (!locationId || !customerName || !customerEmail || !customerPhone || !visitDate || !groupSize) {
       return res.status(400).json({ error: "Missing required fields" });
     }
@@ -61,7 +62,8 @@ router.post("/location", async (req, res) => {
       groupSize,
       specialRequests: specialRequests || "",
       totalPrice,
-      status: 'pending'
+      status: 'pending',
+      userId: userId || null
     });
     res.status(201).json(booking);
   } catch (err) { res.status(500).json({ error: "Failed to book location", message: err.message }); }
@@ -70,7 +72,7 @@ router.post("/location", async (req, res) => {
 // Activity booking
 router.post("/activity", async (req, res) => {
   try {
-    const { activityId, customerName, customerEmail, customerPhone, scheduledDate, participants, specialRequests } = req.body;
+    const { activityId, customerName, customerEmail, customerPhone, scheduledDate, participants, specialRequests, userId } = req.body;
     if (!activityId || !customerName || !customerEmail || !customerPhone || !scheduledDate || !participants) {
       return res.status(400).json({ error: "Missing required fields" });
     }
@@ -86,10 +88,42 @@ router.post("/activity", async (req, res) => {
       participants,
       specialRequests: specialRequests || "",
       totalPrice,
-      status: 'pending'
+      status: 'pending',
+      userId: userId || null
     });
     res.status(201).json(booking);
   } catch (err) { res.status(500).json({ error: "Failed to book activity", message: err.message }); }
+});
+
+// Delete endpoints for each booking type
+router.delete('/accommodation/:id', async (req, res) => {
+  try {
+    const deleted = await AccommodationBooking.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: 'Accommodation booking not found' });
+    res.json({ message: 'Accommodation booking deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete accommodation booking', message: err.message });
+  }
+});
+
+router.delete('/location/:id', async (req, res) => {
+  try {
+    const deleted = await LocationBooking.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: 'Location booking not found' });
+    res.json({ message: 'Location booking deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete location booking', message: err.message });
+  }
+});
+
+router.delete('/activity/:id', async (req, res) => {
+  try {
+    const deleted = await ActivityBooking.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: 'Activity booking not found' });
+    res.json({ message: 'Activity booking deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete activity booking', message: err.message });
+  }
 });
 
 module.exports = router;
