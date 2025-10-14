@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 const Activities = () => {
   const [search, setSearch] = useState("");
@@ -10,7 +9,6 @@ const Activities = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [booking, setBooking] = useState(null);
-  const [success, setSuccess] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -174,30 +172,6 @@ const Activities = () => {
           </div>
         </div>
 
-        {/* Success Banner */}
-        {success && (
-          <div style={{
-            marginBottom: 16,
-            backgroundColor: "#e8f5e8",
-            border: "1px solid #cfe3cf",
-            color: "#2d5a27",
-            borderRadius: 8,
-            padding: "12px 16px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between"
-          }}>
-            <div>
-              <strong style={{ marginRight: 8 }}>Booking successful.</strong>
-              <span>Booking ID: {success.bookingId}</span>
-            </div>
-            <div style={{ display: "flex", gap: 8 }}>
-              <Link to="/my-bookings" style={{ padding: "8px 12px", backgroundColor: "#2d5a27", color: "white", borderRadius: 6, textDecoration: "none", fontWeight: 600 }}>My Bookings</Link>
-              <button type="button" onClick={() => setSuccess(null)} style={{ padding: "8px 12px", backgroundColor: "transparent", color: "#2d5a27", border: "1px solid #cfe3cf", borderRadius: 6, fontWeight: 600, cursor: "pointer" }}>Dismiss</button>
-            </div>
-          </div>
-        )}
-
         {/* Results */}
         {loading ? (
           <div style={{ textAlign: "center", padding: 30, color: "white" }}>
@@ -314,21 +288,21 @@ const Activities = () => {
                   const fd = new FormData(e.currentTarget);
                   const payload = Object.fromEntries(fd.entries());
                   try {
-                    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-                    const resolvedUserId = storedUser?._id || storedUser?.id || storedUser?.userId || null;
-                    const { data } = await axios.post(
+                    const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+                    const userId = currentUser?._id || currentUser?.id || currentUser?.userId || null;
+                    await axios.post(
                       "http://localhost:5000/api/bookings-extra/activity",
                       {
                         activityId: booking._id,
                         ...payload,
+                        userId,
                         participants: Number(payload.participants),
-                        userId: resolvedUserId
                       }
                     );
-                    setSuccess({ bookingId: data.bookingId });
+                    alert("Booking created!");
                     setBooking(null);
                   } catch {
-                    setError("Failed to create booking. Please try again.");
+                    alert("Booking failed");
                   }
                 }}
               >

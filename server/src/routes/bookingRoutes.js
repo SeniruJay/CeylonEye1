@@ -118,29 +118,20 @@ router.get("/all", async (req, res) => {
   }
 });
 
-// Get bookings by userId (for user)
-router.get("/by-user/:userId", async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const bookings = await Booking.find({ userId })
-      .populate('providerId', 'name contact vehicleType')
-      .sort({ createdAt: -1 });
-    res.json(bookings);
-  } catch (err) {
-    console.error("Error fetching user bookings:", err);
-    res.status(500).json({ error: "Failed to fetch user bookings", message: err.message });
-  }
-});
-
 // Get ALL booking types for a specific user (transport + accommodation + location + activity)
-router.get('/all/by-user/:userId', async (req, res) => {
+router.get("/all/by-user/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ error: "Invalid userId" });
+    }
+    const uid = new mongoose.Types.ObjectId(userId);
+
     const [transport, accommodations, locations, activities] = await Promise.all([
-      Booking.find({ userId }).populate('providerId', 'name contact vehicleType').lean(),
-      AccommodationBooking.find({ userId }).lean(),
-      LocationBooking.find({ userId }).lean(),
-      ActivityBooking.find({ userId }).lean(),
+      Booking.find({ userId: uid }).populate('providerId', 'name contact vehicleType').lean(),
+      AccommodationBooking.find({ userId: uid }).lean(),
+      LocationBooking.find({ userId: uid }).lean(),
+      ActivityBooking.find({ userId: uid }).lean(),
     ]);
 
     const currency = 'LKR';
@@ -149,7 +140,6 @@ router.get('/all/by-user/:userId', async (req, res) => {
       ...b,
       type: 'transport',
       providerName: b.providerName,
-      vehicleType: b.vehicleType,
       currency: b.currency || currency,
     }));
 
@@ -216,8 +206,22 @@ router.get('/all/by-user/:userId', async (req, res) => {
 
     res.json(all);
   } catch (err) {
-    console.error('Error fetching user all bookings:', err);
-    res.status(500).json({ error: 'Failed to fetch user bookings', message: err.message });
+    console.error("Error fetching all bookings for user:", err);
+    res.status(500).json({ error: "Failed to fetch user bookings", message: err.message });
+  }
+});
+
+// Get bookings by userId (for user)
+router.get("/by-user/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const bookings = await Booking.find({ userId })
+      .populate('providerId', 'name contact vehicleType')
+      .sort({ createdAt: -1 });
+    res.json(bookings);
+  } catch (err) {
+    console.error("Error fetching user bookings:", err);
+    res.status(500).json({ error: "Failed to fetch user bookings", message: err.message });
   }
 });
 

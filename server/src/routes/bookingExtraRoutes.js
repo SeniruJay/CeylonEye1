@@ -29,14 +29,14 @@ router.post("/accommodation", async (req, res) => {
       bookingId: generateBookingId("ACY"),
       accommodationId,
       accommodationName: accom.name,
+      userId: userId || null,
       customerName, customerEmail, customerPhone,
       checkInDate: new Date(checkInDate),
       checkOutDate: new Date(checkOutDate),
       guests,
       specialRequests: specialRequests || "",
       totalPrice,
-      status: 'pending',
-      userId: userId || null
+      status: 'pending'
     });
     res.status(201).json(booking);
   } catch (err) { res.status(500).json({ error: "Failed to book accommodation", message: err.message }); }
@@ -57,13 +57,13 @@ router.post("/location", async (req, res) => {
       bookingId: generateBookingId("LCY"),
       locationId,
       locationName: loc.name,
+      userId: userId || null,
       customerName, customerEmail, customerPhone,
       visitDate: new Date(visitDate),
       groupSize,
       specialRequests: specialRequests || "",
       totalPrice,
-      status: 'pending',
-      userId: userId || null
+      status: 'pending'
     });
     res.status(201).json(booking);
   } catch (err) { res.status(500).json({ error: "Failed to book location", message: err.message }); }
@@ -83,24 +83,24 @@ router.post("/activity", async (req, res) => {
       bookingId: generateBookingId("ATY"),
       activityId,
       activityName: act.name,
+      userId: userId || null,
       customerName, customerEmail, customerPhone,
       scheduledDate: new Date(scheduledDate),
       participants,
       specialRequests: specialRequests || "",
       totalPrice,
-      status: 'pending',
-      userId: userId || null
+      status: 'pending'
     });
     res.status(201).json(booking);
   } catch (err) { res.status(500).json({ error: "Failed to book activity", message: err.message }); }
 });
 
-// Delete endpoints for each booking type
+// Delete endpoints (by id)
 router.delete('/accommodation/:id', async (req, res) => {
   try {
     const deleted = await AccommodationBooking.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ error: 'Accommodation booking not found' });
-    res.json({ message: 'Accommodation booking deleted successfully' });
+    if (!deleted) return res.status(404).json({ error: 'Booking not found' });
+    res.json({ message: 'Accommodation booking deleted', deletedBooking: deleted });
   } catch (err) {
     res.status(500).json({ error: 'Failed to delete accommodation booking', message: err.message });
   }
@@ -109,8 +109,8 @@ router.delete('/accommodation/:id', async (req, res) => {
 router.delete('/location/:id', async (req, res) => {
   try {
     const deleted = await LocationBooking.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ error: 'Location booking not found' });
-    res.json({ message: 'Location booking deleted successfully' });
+    if (!deleted) return res.status(404).json({ error: 'Booking not found' });
+    res.json({ message: 'Location booking deleted', deletedBooking: deleted });
   } catch (err) {
     res.status(500).json({ error: 'Failed to delete location booking', message: err.message });
   }
@@ -119,8 +119,8 @@ router.delete('/location/:id', async (req, res) => {
 router.delete('/activity/:id', async (req, res) => {
   try {
     const deleted = await ActivityBooking.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ error: 'Activity booking not found' });
-    res.json({ message: 'Activity booking deleted successfully' });
+    if (!deleted) return res.status(404).json({ error: 'Booking not found' });
+    res.json({ message: 'Activity booking deleted', deletedBooking: deleted });
   } catch (err) {
     res.status(500).json({ error: 'Failed to delete activity booking', message: err.message });
   }

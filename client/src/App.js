@@ -561,7 +561,6 @@ function App() {
               path="/transport/provider/:id"
               element={<TransportDetail />}
             />
-            <Route path="/my-bookings" element={<MyBookings />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/transport" element={<TransportList />} />
             <Route
@@ -574,6 +573,7 @@ function App() {
             <Route path="/admin/add" element={<AddTransportProvider />} />
             <Route path="/admin/edit/:id" element={<EditTransportProvider />} />
             <Route path="/admin/users" element={<UserManagement />} />
+            <Route path="/my-bookings" element={<MyBookings />} />
           </Routes>
         </main>
         {showProfile && profileData && (

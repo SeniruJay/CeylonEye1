@@ -39,12 +39,18 @@ const MyBookings = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const onFocus = () => loadBookings();
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const deleteBooking = async (id, type) => {
     if (!window.confirm("Are you sure you want to delete this booking?")) return;
     try {
       setActionLoading((prev) => ({ ...prev, [id]: true }));
       const token = localStorage.getItem("token");
-      // route based on type
       if (type === 'transport') {
         await axios.delete(`${baseUrl}/api/bookings/${id}`, { headers: token ? { Authorization: `Bearer ${token}` } : {} });
       } else if (type === 'accommodation') {
@@ -57,6 +63,8 @@ const MyBookings = () => {
         await axios.delete(`${baseUrl}/api/bookings/${id}`, { headers: token ? { Authorization: `Bearer ${token}` } : {} });
       }
       setBookings((prev) => prev.filter((b) => b._id !== id));
+      // Ensure list is current
+      await loadBookings();
     } catch (e) {
       alert(e.response?.data?.error || "Failed to delete booking");
       console.error("Error deleting booking:", e);

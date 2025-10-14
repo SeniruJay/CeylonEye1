@@ -41,16 +41,7 @@ const ActivitySelection = ({ onNext, onSkip, onBack, selectedActivities = [] }) 
     onSkip();
   };
 
-  const getActivityIcon = (category) => {
-    const icons = {
-      "Wildlife": "🦁",
-      "Water Sports": "🏄‍♂️",
-      "Heritage": "🏛️",
-      "Adventure": "🧗‍♂️",
-      "Other": "🎯"
-    };
-    return icons[category] || "🎯";
-  };
+  // Removed emoji icons for cleaner UI
 
   const getCurrencySymbol = (currency = "USD") => {
     const symbols = {
@@ -125,23 +116,12 @@ const ActivitySelection = ({ onNext, onSkip, onBack, selectedActivities = [] }) 
               }
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
-              <div style={{ 
-                fontSize: "2.5rem", 
-                marginRight: "20px",
-                backgroundColor: selected.find(act => act._id === activity._id) 
-                  ? "#4a7c59" 
-                  : "#e8f5e8",
-                padding: "15px",
-                borderRadius: "50%",
-                width: "70px",
-                height: "70px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center"
-              }}>
-                {getActivityIcon(activity.category)}
-              </div>
+            <img
+              src={activity.image ? `http://localhost:5000${activity.image}` : "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?fm=jpg&q=80&w=1200"}
+              alt={activity.name}
+              style={{ width: "100%", height: 180, objectFit: "cover", borderRadius: 10, marginBottom: 12 }}
+            />
+            <div style={{ display: "block", marginBottom: "15px" }}>
               <div style={{ flex: 1 }}>
                 <h3 style={{ 
                   margin: "0 0 5px 0", 

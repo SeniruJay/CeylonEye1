@@ -41,17 +41,7 @@ const LocationSelection = ({ onNext, onSkip, selectedLocations = [] }) => {
     onSkip();
   };
 
-  const getLocationIcon = (type) => {
-    const icons = {
-      "Beach": "🏖️",
-      "Hill Country": "🏔️",
-      "Heritage": "🏛️",
-      "Wildlife": "🦁",
-      "City": "🏙️",
-      "Other": "📍"
-    };
-    return icons[type] || "📍";
-  };
+  // Removed emoji icons for cleaner UI
 
   if (loading) {
     return (
@@ -96,7 +86,8 @@ const LocationSelection = ({ onNext, onSkip, selectedLocations = [] }) => {
               transition: "all 0.3s ease",
               boxShadow: selected.find(loc => loc._id === location._id) 
                 ? "0 4px 15px rgba(74, 124, 89, 0.2)" 
-                : "0 2px 8px rgba(0, 0, 0, 0.1)"
+                : "0 2px 8px rgba(0, 0, 0, 0.1)",
+              position: "relative",
             }}
             onMouseOver={(e) => {
               if (!selected.find(loc => loc._id === location._id)) {
@@ -111,23 +102,13 @@ const LocationSelection = ({ onNext, onSkip, selectedLocations = [] }) => {
               }
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
-              <div style={{ 
-                fontSize: "2rem", 
-                marginRight: "15px",
-                backgroundColor: selected.find(loc => loc._id === location._id) 
-                  ? "#4a7c59" 
-                  : "#e8f5e8",
-                padding: "10px",
-                borderRadius: "50%",
-                width: "60px",
-                height: "60px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center"
-              }}>
-                {getLocationIcon(location.type)}
-              </div>
+            {/* Image */}
+            <img
+              src={location.image ? `http://localhost:5000${location.image}` : "https://images.unsplash.com/photo-1601918774946-2588f4c36de7?fm=jpg&q=80&w=1000"}
+              alt={location.name}
+              style={{ width: "100%", height: 160, objectFit: "cover", borderRadius: 10, marginBottom: 12 }}
+            />
+            <div style={{ display: "block", marginBottom: "15px" }}>
               <div>
                 <h3 style={{ 
                   margin: "0 0 5px 0", 

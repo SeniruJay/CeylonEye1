@@ -34,18 +34,7 @@ const TransportSelection = ({ onNext, onSkip, onBack, selectedTransport = null }
     onSkip();
   };
 
-  const getVehicleIcon = (vehicleType) => {
-    const icons = {
-      'Car': '🚗',
-      'Van': '🚐',
-      'Bus': '🚌',
-      'Motorcycle': '🏍️',
-      'Bicycle': '🚲',
-      'Tuk-tuk': '🛺',
-      'Other': '🚙'
-    };
-    return icons[vehicleType] || '🚙';
-  };
+  // Removed emoji icons for cleaner UI
 
   const getCurrencySymbol = (currency) => {
     const symbols = {
@@ -120,23 +109,18 @@ const TransportSelection = ({ onNext, onSkip, onBack, selectedTransport = null }
               }
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
-              <div style={{ 
-                fontSize: "2.5rem", 
-                marginRight: "20px",
-                backgroundColor: selected && selected._id === transport._id 
-                  ? "#4a7c59" 
-                  : "#e8f5e8",
-                padding: "15px",
-                borderRadius: "50%",
-                width: "70px",
-                height: "70px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center"
-              }}>
-                {getVehicleIcon(transport.vehicleType)}
-              </div>
+            <img
+              src={
+                transport.image
+                  ? `http://localhost:5000${transport.image}`
+                  : (Array.isArray(transport.images) && transport.images[0]
+                      ? `http://localhost:5000${transport.images[0]}`
+                      : "https://images.unsplash.com/photo-1515923162043-983c9f3d0b4b?fm=jpg&q=80&w=1200")
+              }
+              alt={transport.name}
+              style={{ width: "100%", height: 180, objectFit: "cover", borderRadius: 10, marginBottom: 12 }}
+            />
+            <div style={{ display: "block", marginBottom: "15px" }}>
               <div style={{ flex: 1 }}>
                 <h3 style={{ 
                   margin: "0 0 5px 0", 

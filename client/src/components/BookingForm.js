@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 const BookingForm = ({ provider, onSuccess, onCancel }) => {
@@ -16,7 +15,6 @@ const BookingForm = ({ provider, onSuccess, onCancel }) => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,13 +27,13 @@ const BookingForm = ({ provider, onSuccess, onCancel }) => {
     setError(null);
 
     try {
-      const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-      const resolvedUserId = storedUser?._id || storedUser?.id || storedUser?.userId || null;
+      const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+      const userId = currentUser?._id || currentUser?.id || currentUser?.userId || null;
       const bookingData = {
         providerId: provider._id,
         ...form,
         numberOfPassengers: parseInt(form.numberOfPassengers),
-        userId: resolvedUserId
+        userId,
       };
 
       const response = await axios.post("http://localhost:5000/api/bookings", bookingData);
@@ -52,12 +50,8 @@ const BookingForm = ({ provider, onSuccess, onCancel }) => {
       if (window.confirm(successMessage)) {
         downloadPDF();
       }
-
-      setSuccess({
-        bookingId: response.data.bookingId,
-        totalPrice: response.data.totalPrice
-      });
-      onSuccess && onSuccess();
+      
+      onSuccess();
     } catch (err) {
       setError(err.response?.data?.error || "Failed to create booking. Please try again.");
       console.error(err);
@@ -102,54 +96,6 @@ const BookingForm = ({ provider, onSuccess, onCancel }) => {
 
   return (
     <div style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }}>
-      {success && (
-        <div style={{
-          marginBottom: "16px",
-          backgroundColor: "#e8f5e8",
-          border: "1px solid #cfe3cf",
-          color: "#2d5a27",
-          borderRadius: 8,
-          padding: "12px 16px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between"
-        }}>
-          <div>
-            <strong style={{ marginRight: 8 }}>Booking successful.</strong>
-            <span>Booking ID: {success.bookingId}</span>
-          </div>
-          <div style={{ display: "flex", gap: 8 }}>
-            <Link
-              to="/my-bookings"
-              style={{
-                padding: "8px 12px",
-                backgroundColor: "#2d5a27",
-                color: "white",
-                borderRadius: 6,
-                textDecoration: "none",
-                fontWeight: 600
-              }}
-            >
-              My Bookings
-            </Link>
-            <button
-              type="button"
-              onClick={() => setSuccess(null)}
-              style={{
-                padding: "8px 12px",
-                backgroundColor: "transparent",
-                color: "#2d5a27",
-                border: "1px solid #cfe3cf",
-                borderRadius: 6,
-                fontWeight: 600,
-                cursor: "pointer"
-              }}
-            >
-              Dismiss
-            </button>
-          </div>
-        </div>
-      )}
       <div style={{ marginBottom: "20px" }}>
         <button 
           onClick={onCancel}

@@ -41,17 +41,7 @@ const AccommodationSelection = ({ onNext, onSkip, onBack, selectedAccommodations
     onSkip();
   };
 
-  const getAccommodationIcon = (type) => {
-    const icons = {
-      "Hotel": "🏨",
-      "Villa": "🏡",
-      "Homestay": "🏠",
-      "Hostel": "🛏️",
-      "Resort": "🏖️",
-      "Other": "🏘️"
-    };
-    return icons[type] || "🏘️";
-  };
+  // Removed emoji icons for cleaner UI
 
   const getCurrencySymbol = (currency = "USD") => {
     const symbols = {
@@ -140,23 +130,12 @@ const AccommodationSelection = ({ onNext, onSkip, onBack, selectedAccommodations
               }
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
-              <div style={{ 
-                fontSize: "2.5rem", 
-                marginRight: "20px",
-                backgroundColor: selected.find(acc => acc._id === accommodation._id) 
-                  ? "#4a7c59" 
-                  : "#e8f5e8",
-                padding: "15px",
-                borderRadius: "50%",
-                width: "70px",
-                height: "70px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center"
-              }}>
-                {getAccommodationIcon(accommodation.type)}
-              </div>
+            <img
+              src={accommodation.image ? `http://localhost:5000${accommodation.image}` : "https://images.unsplash.com/photo-1601918774946-2588f4c36de7?fm=jpg&q=80&w=1000"}
+              alt={accommodation.name}
+              style={{ width: "100%", height: 180, objectFit: "cover", borderRadius: 10, marginBottom: 12 }}
+            />
+            <div style={{ display: "block", marginBottom: "15px" }}>
               <div style={{ flex: 1 }}>
                 <h3 style={{ 
                   margin: "0 0 5px 0", 

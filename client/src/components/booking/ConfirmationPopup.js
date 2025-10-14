@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 const ConfirmationPopup = ({ onClose }) => {
   return (
@@ -81,57 +80,31 @@ const ConfirmationPopup = ({ onClose }) => {
           </ul>
         </div>
         
-        <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-          <button
-            onClick={onClose}
-            style={{
-              padding: "12px 20px",
-              backgroundColor: "#4a7c59",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              fontSize: "0.95rem",
-              fontWeight: "600",
-              cursor: "pointer",
-              boxShadow: "0 4px 12px rgba(74, 124, 89, 0.3)",
-              transition: "all 0.3s ease"
-            }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = "#3d6b4a";
-              e.target.style.transform = "translateY(-2px)";
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = "#4a7c59";
-              e.target.style.transform = "translateY(0)";
-            }}
-          >
-            Continue Planning
-          </button>
-          <Link
-            to="/my-bookings"
-            style={{
-              padding: "12px 20px",
-              backgroundColor: "#2d5a27",
-              color: "white",
-              borderRadius: "8px",
-              fontSize: "0.95rem",
-              fontWeight: "600",
-              textDecoration: "none",
-              boxShadow: "0 4px 12px rgba(45, 90, 39, 0.3)",
-              transition: "all 0.3s ease"
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = "#254b21";
-              e.currentTarget.style.transform = "translateY(-2px)";
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = "#2d5a27";
-              e.currentTarget.style.transform = "translateY(0)";
-            }}
-          >
-            My Bookings
-          </Link>
-        </div>
+        <button
+          onClick={onClose}
+          style={{
+            padding: "15px 40px",
+            backgroundColor: "#4a7c59",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            fontSize: "1rem",
+            fontWeight: "600",
+            cursor: "pointer",
+            boxShadow: "0 4px 12px rgba(74, 124, 89, 0.3)",
+            transition: "all 0.3s ease"
+          }}
+          onMouseOver={(e) => {
+            e.target.style.backgroundColor = "#3d6b4a";
+            e.target.style.transform = "translateY(-2px)";
+          }}
+          onMouseOut={(e) => {
+            e.target.style.backgroundColor = "#4a7c59";
+            e.target.style.transform = "translateY(0)";
+          }}
+        >
+          Continue Planning
+        </button>
       </div>
       
       <style jsx>{`
